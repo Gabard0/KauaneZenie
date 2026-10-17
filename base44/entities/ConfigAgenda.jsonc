@@ -1,0 +1,81 @@
+{
+  "name": "ConfigAgenda",
+  "type": "object",
+  "properties": {
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "funcionamento",
+        "excecao"
+      ]
+    },
+    "horarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dia": {
+            "type": "number"
+          },
+          "ativo": {
+            "type": "boolean",
+            "default": true
+          },
+          "periodos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inicio": {
+                  "type": "string"
+                },
+                "fim": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "inicio",
+                "fim"
+              ]
+            }
+          }
+        },
+        "required": [
+          "dia"
+        ]
+      }
+    },
+    "data": {
+      "type": "string",
+      "format": "date"
+    },
+    "motivo": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tipo"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "name": "Agendamento",
+  "type": "object",
+  "properties": {
+    "cliente_id": {
+      "type": "string"
+    },
+    "cliente_nome": {
+      "type": "string"
+    },
+    "servico_id": {
+      "type": "string"
+    },
+    "servico_nome": {
+      "type": "string"
+    },
+    "titulo": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string",
+      "format": "date"
+    },
+    "horario": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "agendado",
+        "confirmado",
+        "concluido",
+        "cancelado",
+        "nao_compareceu"
+      ],
+      "default": "agendado"
+    },
+    "observacao": {
+      "type": "string"
+    },
+    "origem": {
+      "type": "string",
+      "enum": [
+        "manual",
+        "online"
+      ],
+      "default": "manual"
+    },
+    "duracao": {
+      "type": "number",
+      "default": 60
+    },
+    "valor": {
+      "type": "number",
+      "default": 0
+    },
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "manutencao"
+      ],
+      "default": "normal"
+    },
+    "agendamento_principal_id": {
+      "type": "string"
+    },
+    "manutencao_vinculada_id": {
+      "type": "string"
+    },
+    "manutencao_status": {
+      "type": "string",
+      "enum": [
+        "agendada",
+        "aguardando_horario"
+      ],
+      "default": "agendada"
+    },
+    "taxa_reserva": {
+      "type": "number",
+      "default": 0
+    },
+    "status_pagamento": {
+      "type": "string",
+      "enum": [
+        "pendente",
+        "aguardando_comprovante",
+        "pago",
+        "cancelado",
+        "expirado"
+      ],
+      "default": "pendente"
+    },
+    "reserva_expira_em": {
+      "type": "string"
+    },
+    "comprovante_enviado": {
+      "type": "boolean",
+      "default": false
+    },
+    "demo": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

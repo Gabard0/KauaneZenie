@@ -1,0 +1,61 @@
+{
+  "name": "Servico",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "preco": {
+      "type": "number",
+      "default": 0
+    },
+    "duracao": {
+      "type": "number",
+      "default": 60
+    },
+    "ativo": {
+      "type": "boolean",
+      "default": true
+    },
+    "gera_manutencao": {
+      "type": "boolean",
+      "default": false
+    },
+    "manutencao_servico_id": {
+      "type": "string"
+    },
+    "intervalo_manutencao": {
+      "type": "number",
+      "default": 20
+    },
+    "demo": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "nome"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

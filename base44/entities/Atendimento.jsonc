@@ -1,0 +1,82 @@
+{
+  "name": "Atendimento",
+  "type": "object",
+  "properties": {
+    "cliente_id": {
+      "type": "string"
+    },
+    "cliente_nome": {
+      "type": "string"
+    },
+    "agendamento_id": {
+      "type": "string"
+    },
+    "servico_id": {
+      "type": "string"
+    },
+    "servico_nome": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string",
+      "format": "date"
+    },
+    "valor": {
+      "type": "number",
+      "default": 0
+    },
+    "forma_pagamento": {
+      "type": "string",
+      "enum": [
+        "pix",
+        "dinheiro",
+        "debito",
+        "credito",
+        "outro"
+      ],
+      "default": "pix"
+    },
+    "observacao": {
+      "type": "string"
+    },
+    "demo": {
+      "type": "boolean",
+      "default": false
+    },
+    "tipo_receita": {
+      "type": "string",
+      "enum": [
+        "servico",
+        "taxa"
+      ],
+      "default": "servico"
+    }
+  },
+  "required": [
+    "data",
+    "valor",
+    "forma_pagamento"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

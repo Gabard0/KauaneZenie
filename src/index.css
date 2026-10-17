@@ -1,0 +1,253 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* ── Letícia · Claro (padrão) ─────────────────────────── */
+  :root {
+    --background: 40 35% 98%;
+    --foreground: 34 18% 13%;
+    --card: 44 50% 99%;
+    --card-foreground: 34 18% 13%;
+    --popover: 44 50% 99%;
+    --popover-foreground: 34 18% 13%;
+    --primary: 35 42% 24%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 42 24% 91%;
+    --secondary-foreground: 33 20% 18%;
+    --muted: 42 26% 93%;
+    --muted-foreground: 36 10% 41%;
+    --accent: 44 58% 91%;
+    --accent-foreground: 33 24% 17%;
+    --destructive: 4 66% 46%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 40 22% 85%;
+    --input: 40 20% 81%;
+    --ring: 43 68% 45%;
+    --chart-1: 43 68% 45%;
+    --chart-2: 33 25% 30%;
+    --chart-3: 12 55% 52%;
+    --chart-4: 195 40% 50%;
+    --chart-5: 330 45% 58%;
+    --gold: 43 68% 44%;
+    --gold-dark: 38 72% 33%;
+    --radius: 1rem;
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sidebar-background: 40 25% 97%;
+    --sidebar-foreground: 40 12% 12%;
+    --sidebar-primary: 43 68% 44%;
+    --sidebar-primary-foreground: 40 10% 10%;
+    --sidebar-accent: 44 58% 91%;
+    --sidebar-accent-foreground: 33 24% 17%;
+    --sidebar-border: 40 22% 85%;
+    --sidebar-ring: 43 68% 45%;
+  }
+
+  /* ── Letícia · Escuro ─────────────────────────────────── */
+  html[data-tema="barbozza"][data-modo="escuro"] {
+    --background: 36 12% 7%;
+    --foreground: 43 30% 94%;
+    --card: 36 12% 11%;
+    --card-foreground: 43 30% 94%;
+    --popover: 36 12% 10%;
+    --popover-foreground: 43 30% 94%;
+    --primary: 40 12% 9%;
+    --primary-foreground: 43 30% 94%;
+    --secondary: 38 12% 17%;
+    --secondary-foreground: 43 22% 90%;
+    --muted: 38 12% 15%;
+    --muted-foreground: 42 10% 63%;
+    --accent: 44 38% 20%;
+    --accent-foreground: 43 30% 94%;
+    --destructive: 2 58% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 38 12% 21%;
+    --input: 38 12% 25%;
+    --ring: 45 72% 55%;
+    --chart-1: 45 72% 58%;
+    --chart-2: 43 50% 45%;
+    --chart-3: 2 58% 55%;
+    --chart-4: 180 45% 52%;
+    --chart-5: 330 50% 62%;
+    --gold: 45 72% 56%;
+    --gold-dark: 41 62% 40%;
+    --sidebar-background: 36 12% 8%;
+    --sidebar-foreground: 43 30% 94%;
+    --sidebar-primary: 45 72% 56%;
+    --sidebar-primary-foreground: 40 10% 10%;
+    --sidebar-accent: 44 38% 20%;
+    --sidebar-accent-foreground: 43 30% 94%;
+    --sidebar-border: 38 12% 21%;
+    --sidebar-ring: 45 72% 55%;
+  }
+
+  /* ── Rosé · Claro ──────────────────────────────────────── */
+  html[data-tema="rose"][data-modo="claro"] {
+    --background: 25 45% 96%;
+    --foreground: 350 25% 18%;
+    --card: 30 50% 99%;
+    --card-foreground: 350 25% 18%;
+    --popover: 30 50% 99%;
+    --popover-foreground: 350 25% 18%;
+    --primary: 348 30% 22%;
+    --primary-foreground: 30 50% 96%;
+    --secondary: 20 30% 90%;
+    --secondary-foreground: 350 25% 22%;
+    --muted: 25 35% 92%;
+    --muted-foreground: 350 12% 45%;
+    --accent: 345 45% 90%;
+    --accent-foreground: 350 30% 20%;
+    --destructive: 350 55% 45%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 25 30% 85%;
+    --input: 25 30% 82%;
+    --ring: 348 45% 55%;
+    --chart-1: 348 45% 52%;
+    --chart-2: 28 45% 60%;
+    --chart-3: 330 40% 55%;
+    --chart-4: 45 50% 55%;
+    --chart-5: 0 55% 50%;
+    --gold: 348 45% 52%;
+    --gold-dark: 348 35% 38%;
+    --sidebar-background: 25 45% 96%;
+    --sidebar-foreground: 350 25% 18%;
+    --sidebar-primary: 348 45% 52%;
+    --sidebar-primary-foreground: 30 50% 96%;
+    --sidebar-accent: 345 45% 90%;
+    --sidebar-accent-foreground: 350 30% 20%;
+    --sidebar-border: 25 30% 85%;
+    --sidebar-ring: 348 45% 55%;
+  }
+
+  /* ── Rosé · Escuro ─────────────────────────────────────── */
+  html[data-tema="rose"][data-modo="escuro"] {
+    --background: 345 25% 8%;
+    --foreground: 30 45% 94%;
+    --card: 345 20% 14%;
+    --card-foreground: 30 45% 94%;
+    --popover: 345 20% 12%;
+    --popover-foreground: 30 45% 94%;
+    --primary: 348 30% 17%;
+    --primary-foreground: 30 45% 95%;
+    --secondary: 345 20% 20%;
+    --secondary-foreground: 30 40% 90%;
+    --muted: 345 20% 18%;
+    --muted-foreground: 25 20% 70%;
+    --accent: 348 40% 26%;
+    --accent-foreground: 30 45% 95%;
+    --destructive: 350 55% 55%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 345 18% 26%;
+    --input: 345 18% 30%;
+    --ring: 348 55% 65%;
+    --chart-1: 348 60% 70%;
+    --chart-2: 30 55% 65%;
+    --chart-3: 330 45% 60%;
+    --chart-4: 45 50% 60%;
+    --chart-5: 0 55% 60%;
+    --gold: 348 60% 70%;
+    --gold-dark: 348 40% 48%;
+    --sidebar-background: 345 25% 9%;
+    --sidebar-foreground: 30 45% 94%;
+    --sidebar-primary: 348 60% 70%;
+    --sidebar-primary-foreground: 348 30% 15%;
+    --sidebar-accent: 348 40% 26%;
+    --sidebar-accent-foreground: 30 45% 95%;
+    --sidebar-border: 345 18% 26%;
+    --sidebar-ring: 348 55% 65%;
+  }
+
+  html {
+    background-color: hsl(var(--background));
+  }
+
+  /* iOS 16 · manchas suaves da marca atrás de toda a interface */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(55rem 42rem at 88% -12%, hsl(46 70% 52% / 0.16), transparent 68%),
+      radial-gradient(48rem 40rem at -12% 42%, hsl(43 60% 45% / 0.10), transparent 68%),
+      radial-gradient(60rem 44rem at 45% 112%, hsl(48 80% 58% / 0.08), transparent 70%);
+  }
+
+  html[data-tema="barbozza"][data-modo="escuro"] body::before {
+    background:
+      radial-gradient(55rem 42rem at 88% -12%, hsl(46 70% 52% / 0.20), transparent 68%),
+      radial-gradient(48rem 40rem at -12% 42%, hsl(43 60% 45% / 0.14), transparent 68%),
+      radial-gradient(60rem 44rem at 45% 112%, hsl(48 80% 58% / 0.10), transparent 70%);
+  }
+
+  html[data-tema="rose"][data-modo="claro"] body::before {
+    background:
+      radial-gradient(55rem 42rem at 88% -12%, hsl(345 70% 75% / 0.25), transparent 68%),
+      radial-gradient(48rem 40rem at -12% 42%, hsl(28 65% 70% / 0.16), transparent 68%),
+      radial-gradient(60rem 44rem at 45% 112%, hsl(30 60% 80% / 0.22), transparent 70%);
+  }
+
+  html[data-tema="rose"][data-modo="escuro"] body::before {
+    background:
+      radial-gradient(55rem 42rem at 88% -12%, hsl(348 65% 60% / 0.22), transparent 68%),
+      radial-gradient(48rem 40rem at -12% 42%, hsl(330 45% 50% / 0.14), transparent 68%),
+      radial-gradient(60rem 44rem at 45% 112%, hsl(30 55% 60% / 0.12), transparent 70%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible {
+    box-shadow: 0 0 12px hsl(var(--gold) / 0.25);
+  }
+
+  button:not(:disabled):active {
+    transform: scale(0.97);
+    transition: transform 0.15s ease;
+  }
+}
+
+/* iOS 16 · Glassmorphism — vidro real sobre os gradientes da marca */
+@layer utilities {
+  .bg-card {
+    background-color: hsl(var(--card) / 0.62);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    box-shadow: 0 8px 32px hsl(40 20% 20% / 0.08);
+  }
+
+  [data-modo="escuro"] .bg-card {
+    box-shadow: 0 8px 32px hsl(0 0% 0% / 0.35);
+  }
+
+  .glass-chrome {
+    background-color: hsl(var(--popover) / 0.7);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: blur(24px) saturate(180%);
+  }
+}
+
+/* Transparent PNG artwork keeps its native proportions. */
+.brand-logo { display: block; object-fit: contain; object-position: center; height: auto; }
+.brand-logo--icon { aspect-ratio: 1; }
+.brand-logo--vertical { aspect-ratio: 1194 / 1296; }
+.brand-logo--horizontal { aspect-ratio: 1792 / 887; }
+.mobile-main { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); }
+.mobile-bottom-nav { padding-bottom: env(safe-area-inset-bottom, 0px); }
+@media (max-width: 639px) {
+  input, select, textarea { min-width: 0; max-width: 100%; font-size: 16px !important; }
+  input[type="date"], input[type="time"] { width: 100%; }
+}

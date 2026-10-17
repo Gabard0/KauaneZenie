@@ -1,0 +1,100 @@
+{
+  "name": "ConfigApp",
+  "type": "object",
+  "properties": {
+    "usuario": {
+      "type": "string"
+    },
+    "senha_hash": {
+      "type": "string"
+    },
+    "senha_salt": {
+      "type": "string"
+    },
+    "deve_trocar_senha": {
+      "type": "boolean",
+      "default": true
+    },
+    "token_sessao": {
+      "type": "string"
+    },
+    "tema": {
+      "type": "string",
+      "enum": [
+        "barbozza",
+        "rose",
+        "feminino"
+      ],
+      "default": "barbozza"
+    },
+    "modo": {
+      "type": "string",
+      "enum": [
+        "claro",
+        "escuro"
+      ],
+      "default": "claro"
+    },
+    "whatsapp": {
+      "type": "string"
+    },
+    "mensagem_whatsapp": {
+      "type": "string"
+    },
+    "exigir_taxa": {
+      "type": "boolean",
+      "default": true
+    },
+    "taxa_agendamento": {
+      "type": "number",
+      "default": 30
+    },
+    "pix_qr_code_url": {
+      "type": "string"
+    },
+    "pix_copia_cola": {
+      "type": "string"
+    },
+    "whatsapp_comprovantes": {
+      "type": "string"
+    },
+    "tempo_reserva_minutos": {
+      "type": "number",
+      "default": 15
+    },
+    "sessao_expira_em": {
+      "type": "string"
+    },
+    "agenda_lock": {
+      "type": "string"
+    },
+    "agenda_lock_expira_em": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "usuario"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
