@@ -1,420 +1,67 @@
-import { POLITICA_RESERVA } from "@/lib/helpers";
-import React, { useEffect, useRef, useState } from "react";
-import QRCode from "qrcode";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Copy, ExternalLink, Download, Share2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { Copy, ExternalLink, Download, Share2, Save, Loader2, Upload } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
-import { studioPhone, studioMessage } from "@/lib/brand";
-import { Switch } from "@/components/ui/switch";
-import { digits, maskTelefone } from "@/lib/booking";
-import { base44 } from "@/api/base44Client";
-import { adminLerConfig, adminSalvarConfig } from "@/lib/adminAuth";
-import { VARS, VAR_LABELS, montarMensagem, DADOS_EXEMPLO } from "@/lib/mensagem";
+import ConfiguracoesDialog from "@/components/ConfiguracoesDialog";
+import { Carregando } from "@/lib/helpers";
 
-const ERROS = {
-  whatsapp_invalido: "Informe um WhatsApp válido com DDD (ex.: (41) 99999-9999)",
-  politica_invalida: "A mensagem de reembolso deve ter entre 5 e 1500 caracteres",
-  mensagem_invalida: "A mensagem deve ter entre 5 e 1500 caracteres",
-  sessao_invalida: "Sua sessão expirou. Entre novamente.",
-  nada_para_salvar: "Nada para salvar",
-};
-
-const btnAcao = "h-12";
+const ConfiguracoesAgendamento = lazy(() => import("@/components/ConfiguracoesAgendamento"));
 
 export default function AgendamentoOnline() {
   const { toast } = useToast();
-  const [link, setLink] = useState("");
   const [qr, setQr] = useState("");
-  const [carregado, setCarregado] = useState(false);
-  const [whatsapp, setWhatsapp] = useState("");
-  const [mensagem, setMensagem] = useState("");
-  const [salvando, setSalvando] = useState(false);
-  const [politica, setPolitica] = useState(POLITICA_RESERVA);
-  const [manutencaoAutomatica, setManutencaoAutomatica] = useState(true);
-  const [exigirTaxa, setExigirTaxa] = useState(true);
-  const [taxa, setTaxa] = useState("30");
-  const [pixQr, setPixQr] = useState("");
-  const [pixCopia, setPixCopia] = useState("");
-  const [waComprovantes, setWaComprovantes] = useState("");
-  const [tempoReserva, setTempoReserva] = useState("15");
-  const [subindoQr, setSubindoQr] = useState(false);
-  const areaRef = useRef(null);
-  const fileRef = useRef(null);
-
+  const [erroQr, setErroQr] = useState(false);
+  const [tentativa, setTentativa] = useState(0);
+  const link = window.location.origin + "/agendar";
   useEffect(() => {
-    const url = window.location.origin + "/agendar";
-    setLink(url);
-    QRCode.toDataURL(url, {
-      width: 640,
-      margin: 2,
-      errorCorrectionLevel: "M",
+    let ativo = true;
+    setErroQr(false);
+    import("qrcode").then(({ default: QRCode }) => QRCode.toDataURL(link, {
+      width: 480, margin: 2, errorCorrectionLevel: "M",
       color: { dark: "#560623", light: "#FFFFFF" },
-    })
-      .then(setQr)
-      .catch(() => setQr(""));
-    adminLerConfig()
-      .then((cfg) => {
-        if (!cfg?.ok) throw new Error("config_indisponivel");
-        setWhatsapp(maskTelefone(studioPhone(cfg.whatsapp)));
-        setMensagem(studioMessage(cfg.mensagem_whatsapp));
-        setPolitica(cfg.politica_reserva || POLITICA_RESERVA);
-        setManutencaoAutomatica(cfg.manutencao_automatica !== false);
-        setExigirTaxa(cfg.exigir_taxa !== false);
-        setTaxa(String(cfg.taxa_agendamento || 30));
-        setPixQr(cfg.pix_qr_code_url || "");
-        setPixCopia(cfg.pix_copia_cola || "");
-        setWaComprovantes(maskTelefone(studioPhone(cfg.whatsapp_comprovantes || cfg.whatsapp)));
-        setTempoReserva(String(cfg.tempo_reserva_minutos || 15));
-        setCarregado(true);
-      })
-      .catch(() => toast({ title: "Não foi possível carregar as configurações. Reabra esta página para tentar novamente.", variant: "destructive" }));
-  }, []);
+    })).then((url) => { if (ativo) setQr(url); }).catch(() => { if (ativo) setErroQr(true); });
+    return () => { ativo = false; };
+  }, [link, tentativa]);
 
   const copiar = async () => {
     try {
       await navigator.clipboard.writeText(link);
       toast({ title: "Link copiado!" });
-    } catch (e) {
-      const ta = document.createElement("textarea");
-      ta.value = link;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      toast({ title: "Link copiado!" });
-    }
-  };
-
-  const abrir = () => window.open(link, "_blank");
-
-  const baixar = () => {
-    const a = document.createElement("a");
-    a.href = qr;
-    a.download = "qrcode-agendamento-kauane-zenie.png";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  };
-
-  const compartilhar = () =>
-    window.open(
-      `https://wa.me/?text=${encodeURIComponent("Agende seu horário pelo nosso link ✨ " + link)}`,
-      "_blank"
-    );
-
-  const inserirVar = (rotulo) => {
-    const area = areaRef.current;
-    if (!area) {
-      setMensagem((m) => m + rotulo);
-      return;
-    }
-    const ini = area.selectionStart ?? mensagem.length;
-    const fim = area.selectionEnd ?? mensagem.length;
-    const novo = mensagem.slice(0, ini) + rotulo + mensagem.slice(fim);
-    setMensagem(novo);
-    requestAnimationFrame(() => {
-      area.focus();
-      area.selectionStart = area.selectionEnd = ini + rotulo.length;
-    });
-  };
-
-  const trocarQr = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setSubindoQr(true);
-    try {
-      const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
-      setPixQr(file_url);
-      toast({ title: "QR Code atualizado!" });
-    } catch (err) {
-      toast({ title: "Erro ao enviar imagem", variant: "destructive" });
-    } finally {
-      setSubindoQr(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  };
-
-  const salvarCfg = async () => {
-    setSalvando(true);
-    try {
-      const r = await adminSalvarConfig({
-        whatsapp: digits(whatsapp),
-        mensagem_whatsapp: mensagem,
-        politica_reserva: politica,
-        manutencao_automatica: manutencaoAutomatica,
-        exigir_taxa: exigirTaxa,
-        taxa_agendamento: Number(taxa) || 30,
-        pix_qr_code_url: pixQr,
-        pix_copia_cola: pixCopia,
-        whatsapp_comprovantes: digits(waComprovantes),
-        tempo_reserva_minutos: Number(tempoReserva) || 15,
-      });
-      if (!r?.ok) {
-        toast({ title: ERROS[r.error] || "Não foi possível salvar", variant: "destructive" });
-        return;
-      }
-      toast({
-        title: "Configurações salvas",
-        description: "As preferências foram atualizadas para os próximos agendamentos.",
-      });
     } catch {
-      toast({ title: "Erro de conexão. Tente novamente.", variant: "destructive" });
-    } finally {
-      setSalvando(false);
+      toast({ title: "Selecione e copie o link abaixo.", variant: "destructive" });
     }
   };
-
+  const compartilhar = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: "Agende com Kauane Zenie", url: link }); }
+      catch (e) { if (e.name !== "AbortError") await copiar(); }
+    } else window.open(`https://wa.me/?text=${encodeURIComponent("Agende seu horário ✨ " + link)}`, "_blank", "noopener,noreferrer");
+  };
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-heading font-semibold">Agendamento Online</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Compartilhe o link com suas clientes — os agendamentos entram direto na sua agenda.
-        </p>
+    <div className="space-y-5">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-heading font-semibold">Link de agendamento</h1>
+          <p className="text-sm text-muted-foreground">Compartilhe com suas clientes.</p>
+        </div>
+        <ConfiguracoesDialog titulo="Configurações do agendamento" descricao="WhatsApp, reserva, manutenção e pagamento Pix.">
+          <Suspense fallback={<Carregando />}><ConfiguracoesAgendamento /></Suspense>
+        </ConfiguracoesDialog>
       </div>
-
-      <div className="rounded-3xl bg-card border border-gold/40 p-6 space-y-5">
-        <div className="text-center space-y-2">
-          <BrandLogo className="w-56 max-w-full mx-auto" />
-          <p className="text-xs tracking-[0.2em] text-gold uppercase">Seu link de agendamento</p>
-          <p className="font-heading text-xl">Kauane Zenie · Studio de Beleza</p>
+      <section className="rounded-3xl border bg-card p-5 sm:p-6 space-y-4 text-center">
+        <BrandLogo className="w-48 mx-auto" />
+        <div className="mx-auto w-44 h-44 bg-white rounded-2xl p-2 flex items-center justify-center">
+          {qr ? <img src={qr} alt="QR Code para agendar com Kauane Zenie" width="160" height="160" /> : erroQr ? <Button variant="outline" onClick={() => setTentativa((v) => v + 1)}>Tentar QR novamente</Button> : <span className="text-sm text-gray-600">Gerando QR Code…</span>}
         </div>
-
-        <div className="flex justify-center">
-          <div className="p-4 bg-white rounded-2xl shadow-lg">
-            {qr ? (
-              <img src={qr} alt="QR Code do link de agendamento" className="w-44 h-44 sm:w-48 sm:h-48 block" />
-            ) : (
-              <div className="w-44 h-44 sm:w-48 sm:h-48 rounded-xl bg-muted animate-pulse" />
-            )}
-          </div>
+        <input aria-label="Link público de agendamento" readOnly value={link} onFocus={(e) => e.target.select()} className="w-full rounded-xl border bg-background px-3 h-11 text-center text-sm min-w-0" />
+        <div className="grid grid-cols-2 gap-2">
+          <Button className="h-12" onClick={copiar}><Copy /> Copiar link</Button>
+          <Button className="h-12" variant="outline" onClick={compartilhar}><Share2 /> Compartilhar</Button>
+          <Button variant="ghost" className="h-11" asChild><a href={link} target="_blank" rel="noreferrer"><ExternalLink /> Abrir página</a></Button>
+          <Button variant="ghost" className="h-11" disabled={!qr} asChild={!!qr}>{qr ? <a href={qr} download="qrcode-kauane-zenie.png"><Download /> Baixar QR</a> : <span>Gerando QR…</span>}</Button>
         </div>
-
-        <p className="text-center text-sm text-muted-foreground break-all px-2">{link}</p>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <Button variant="outline" className={btnAcao} onClick={copiar}>
-            <Copy /> Copiar link
-          </Button>
-          <Button variant="outline" className={btnAcao} onClick={abrir}>
-            <ExternalLink /> Abrir página
-          </Button>
-          <Button variant="outline" className={btnAcao} onClick={baixar} disabled={!qr}>
-            <Download /> Baixar QR Code
-          </Button>
-          <Button variant="outline" className={btnAcao} onClick={compartilhar}>
-            <Share2 /> Compartilhar
-          </Button>
-        </div>
-      </div>
-
-      <div className="rounded-3xl bg-card border p-5 sm:p-6 space-y-5">
-        <div>
-          <h2 className="text-lg font-heading font-semibold">Comunicação com a cliente</h2>
-          <p className="text-sm text-muted-foreground mt-1">WhatsApp, mensagem e pré-visualização.</p>
-        </div>
-        <div className="space-y-1.5">
-          <Label htmlFor="wa-numero">WhatsApp do estúdio</Label>
-          <Input
-            id="wa-numero"
-            inputMode="tel"
-            value={whatsapp}
-            onChange={(e) => setWhatsapp(maskTelefone(e.target.value))}
-            placeholder="(41) 99804-7493"
-            className="h-12 max-w-xs"
-          />
-          <p className="text-xs text-muted-foreground">
-            O botão de confirmação do agendamento online abrirá uma conversa com este número.
-          </p>
-        </div>
-
-        <div className="space-y-1.5">
-          <Label htmlFor="wa-mensagem">Mensagem do comprovante (enviada após o pagamento)</Label>
-          <Textarea
-            id="wa-mensagem"
-            ref={areaRef}
-            value={mensagem}
-            onChange={(e) => setMensagem(e.target.value)}
-            rows={9}
-            placeholder="Escreva a mensagem que a cliente enviará ao confirmar..."
-            disabled={!carregado}
-          />
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {VARS.map((v) => (
-              <button
-                key={v}
-                type="button"
-                onClick={() => inserirVar(VAR_LABELS[v])}
-                className="text-xs font-medium rounded-full border border-gold/40 text-gold px-3 py-1.5 hover:bg-gold/10 transition-colors"
-              >
-                {VAR_LABELS[v]}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <p className="text-sm font-semibold">Pré-visualização</p>
-          <div className="rounded-2xl bg-muted/40 border p-4 text-sm whitespace-pre-wrap leading-relaxed">
-            {montarMensagem(mensagem, DADOS_EXEMPLO)}
-          </div>
-        </div>
-
-        <Button className="w-full sm:w-auto h-12" onClick={salvarCfg} disabled={salvando || !carregado}>
-          {salvando ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Salvando...
-            </>
-          ) : (
-            <>
-              <Save /> Salvar configurações
-            </>
-          )}
-        </Button>
-      </div>
-
-      <div className="rounded-3xl bg-card border p-5 sm:p-6 space-y-5">
-        <h2 className="text-lg font-heading font-semibold">Reserva e manutenção</h2>
-        <div className="space-y-2">
-          <Label htmlFor="politica-reserva">Mensagem de cancelamento e reembolso</Label>
-          <Textarea id="politica-reserva" value={politica} onChange={(e) => setPolitica(e.target.value)} rows={5} maxLength={1500} disabled={!carregado || salvando} />
-          <p className="text-xs text-muted-foreground">Exibida na reserva, no pagamento e na confirmação. {politica.length}/1500 caracteres.</p>
-        </div>
-        <div className="flex items-center justify-between gap-4 rounded-xl border p-4">
-          <div>
-            <Label htmlFor="manutencao-automatica">Registrar manutenção automaticamente</Label>
-            <p className="text-xs text-muted-foreground mt-1">Vale para o link público e o painel, nos serviços configurados para gerar manutenção. Desativar mantém os registros existentes e interrompe a criação e o recálculo automáticos.</p>
-          </div>
-          <Switch id="manutencao-automatica" checked={manutencaoAutomatica} onCheckedChange={setManutencaoAutomatica} disabled={!carregado || salvando} />
-        </div>
-        <Button className="w-full sm:w-auto h-12" onClick={salvarCfg} disabled={salvando || !carregado}>
-          <Save /> {salvando ? "Salvando..." : "Salvar configurações"}
-        </Button>
-      </div>
-
-      <div className="rounded-3xl bg-card border border-gold/40 p-5 sm:p-6 space-y-5">
-        <div>
-          <h2 className="text-lg font-heading font-semibold">Pagamento da taxa de agendamento</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Exija uma taxa via Pix para reservar o horário online. O agendamento só fica confirmado
-            após você conferir o comprovante.
-          </p>
-
-        </div>
-
-        <div className="flex items-center justify-between rounded-xl border bg-muted/30 px-4 py-3">
-          <div className="pr-3">
-            <p className="text-sm font-medium">Exigir taxa para agendamento online</p>
-            <p className="text-xs text-muted-foreground">Quando ativo, a cliente paga a taxa via Pix antes de confirmar.</p>
-          </div>
-          <Switch checked={exigirTaxa} onCheckedChange={setExigirTaxa} />
-        </div>
-
-        {exigirTaxa && (
-          <div className="space-y-4 animate-in fade-in duration-200">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label>Valor da taxa (R$)</Label>
-                <Input
-                  type="number"
-                  inputMode="decimal"
-                  step="0.01"
-                  min="0"
-                  value={taxa}
-                  onChange={(e) => setTaxa(e.target.value)}
-                  className="h-12"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label>Tempo de reserva (min)</Label>
-                <Input
-                  type="number"
-                  inputMode="numeric"
-                  min="1"
-                  value={tempoReserva}
-                  onChange={(e) => setTempoReserva(e.target.value)}
-                  className="h-12"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label>QR Code Pix</Label>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div className="p-2 bg-white rounded-xl shrink-0">
-                  {pixQr ? (
-                    <img src={pixQr} alt="QR Code Pix" className="w-24 h-24 block" />
-                  ) : (
-                    <div className="w-24 h-24 rounded-lg bg-muted flex items-center justify-center text-xs text-muted-foreground text-center px-2">
-                      Sem QR Code
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <input ref={fileRef} type="file" accept="image/*" onChange={trocarQr} className="hidden" />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="h-11"
-                    onClick={() => fileRef.current?.click()}
-                    disabled={subindoQr}
-                  >
-                    {subindoQr ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                    Alterar QR Code
-                  </Button>
-                  <p className="text-xs text-muted-foreground">Envie a imagem do QR Code oficial do seu Pix.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <Label>Código Pix copia e cola</Label>
-              <Textarea
-                value={pixCopia}
-                onChange={(e) => setPixCopia(e.target.value)}
-                rows={3}
-                placeholder="00020126360014br.gov.bcb.pix..."
-                className="font-mono text-xs"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <Label>WhatsApp para comprovantes</Label>
-              <Input
-                inputMode="tel"
-                value={waComprovantes}
-                onChange={(e) => setWaComprovantes(maskTelefone(e.target.value))}
-                placeholder="(41) 99804-7493"
-                className="h-12 max-w-xs"
-              />
-              <p className="text-xs text-muted-foreground">A cliente envia o comprovante do Pix para este número.</p>
-            </div>
-          </div>
-        )}
-
-        <Button className="w-full sm:w-auto h-12" onClick={salvarCfg} disabled={salvando || !carregado}>
-          {salvando ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" /> Salvando...
-            </>
-          ) : (
-            <>
-              <Save /> Salvar configurações
-            </>
-          )}
-        </Button>
-      </div>
-
-      <p className="text-sm text-muted-foreground">
-        O QR Code aponta sempre para o seu link público — ele continua funcionando mesmo se você
-        alterar horários, procedimentos ou a agenda. Os agendamentos feitos pelo link entram na sua
-        agenda com o selo ONLINE.
-      </p>
+      </section>
     </div>
   );
 }
-

@@ -1,5 +1,6 @@
+import { Carregando } from "@/lib/helpers";
 import { base44 } from "@/api/base44Client";
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { NavLink, Outlet, Link } from "react-router-dom";
 import {
   Home,
@@ -106,7 +107,7 @@ export default function Layout() {
 
         <main className="mobile-main md:pb-6">
           <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <Outlet />
+            <Suspense fallback={<Carregando />}><Outlet /></Suspense>
           </div>
         </main>
       </div>

@@ -1,3 +1,5 @@
+import ConfiguracoesDialog from "@/components/ConfiguracoesDialog";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -23,6 +25,7 @@ const vazio = () => ORDEM.map((d) => ({ dia: d, ativo: false, periodos: [] }));
 
 export default function ConfigAgenda() {
   const { toast } = useToast();
+  const [configOpen, setConfigOpen] = useState(false);
   const [registro, setRegistro] = useState(null);
   const [horarios, setHorarios] = useState(null);
   const [excecoes, setExcecoes] = useState(null);
@@ -55,11 +58,15 @@ export default function ConfigAgenda() {
       const payload = { tipo: "funcionamento", horarios };
       if (registro) {
         await base44.entities.ConfigAgenda.update(registro.id, payload);
+        setRegistro({ ...registro, ...payload });
       } else {
         const r = await base44.entities.ConfigAgenda.create(payload);
         setRegistro(r);
       }
       toast({ title: "Horários de funcionamento salvos" });
+      setConfigOpen(false);
+    } catch {
+      toast({ title: "Não foi possível salvar os horários", variant: "destructive" });
     } finally {
       setSalvando(false);
     }
@@ -86,15 +93,13 @@ export default function ConfigAgenda() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-heading font-semibold">Horários da Agenda</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Configure os dias e horários de funcionamento — o link de agendamento online segue
-          exatamente estas regras, em tempo real.
-        </p>
-      </div>
-
-      <div className="space-y-3">
+      <div className="flex items-center justify-between gap-3">
+        <div><h1 className="text-2xl font-heading font-semibold">Horários da agenda</h1>
+          <p className="text-sm text-muted-foreground">Resumo do funcionamento do estúdio.</p></div>
+        <ConfiguracoesDialog titulo="Configurar horários" descricao="Funcionamento semanal, folgas e feriados." open={configOpen} onOpenChange={(v) => { if (salvando) return; if (v) setHorarios(registro?.horarios || vazio()); setConfigOpen(v); }}>
+          <Tabs defaultValue="semana">
+            <TabsList className="grid grid-cols-2 w-full mb-4"><TabsTrigger value="semana">Semana</TabsTrigger><TabsTrigger value="excecoes">Folgas e feriados</TabsTrigger></TabsList>
+            <TabsContent value="semana">      <div className="space-y-3">
         {horarios.map((d) => (
           <DiaFuncionamento key={d.dia} label={LABELS[d.dia]} dia={d} onChange={(v) => mudarDia(d, v)} />
         ))}
@@ -104,7 +109,8 @@ export default function ConfigAgenda() {
         <Save /> {salvando ? "Salvando..." : "Salvar horários"}
       </Button>
 
-      <div className="space-y-3 pt-4 border-t">
+</TabsContent>
+            <TabsContent value="excecoes">      <div className="space-y-3 pt-4 border-t">
         <div className="flex items-center gap-2">
           <CalendarOff className="w-5 h-5 text-gold" />
           <h2 className="text-lg font-semibold">Exceções de agenda</h2>
@@ -146,6 +152,19 @@ export default function ConfigAgenda() {
           </div>
         )}
       </div>
+</TabsContent>
+          </Tabs>
+        </ConfiguracoesDialog>
+      </div>
+      <div className="rounded-2xl border bg-card divide-y">
+        {(registro?.horarios || horarios).map((d) => (
+          <div key={d.dia} className="flex items-center justify-between gap-3 p-4 text-sm">
+            <span className="font-medium">{LABELS[d.dia]}</span>
+            <span className="text-right text-muted-foreground">{d.ativo && d.periodos?.length ? d.periodos.map((p) => `${p.inicio}–${p.fim}`).join(" / ") : "Fechado"}</span>
+          </div>
+        ))}
+      </div>
+      {excecoes.length > 0 && <section className="space-y-2"><h2 className="font-semibold">Folgas e feriados</h2>{excecoes.map((e) => <ExcecaoItem key={e.id} excecao={e} onRemover={removerExcecao} />)}</section>}
     </div>
   );
 }

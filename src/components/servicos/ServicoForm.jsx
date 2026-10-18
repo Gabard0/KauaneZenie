@@ -40,6 +40,7 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
     setSalvando(true);
     try {
       const dados = {
+        demo: false,
         nome: nome.trim(),
         preco: Number(preco) || 0,
         duracao: Number(duracao) || 0,
@@ -91,7 +92,8 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gold/30 bg-gold/5 p-4 space-y-3">
+          <details className="rounded-2xl border border-gold/30 bg-gold/5 p-4 space-y-3" open={geraManut || undefined}>
+            <summary className="cursor-pointer text-sm font-medium">Configuração de manutenção</summary>
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-sm font-semibold">Agendar manutenção automaticamente?</p>
@@ -146,7 +148,7 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
                 </div>
               </div>
             )}
-          </div>
+          </details>
 
           {erro && <p className="text-sm text-destructive">{erro}</p>}
           <div className="flex gap-2 pt-1">

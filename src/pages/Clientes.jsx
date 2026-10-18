@@ -8,15 +8,22 @@ import { diasAteAniversario, formatData, Carregando } from "@/lib/helpers";
 import { Search, UserPlus, Cake } from "lucide-react";
 
 export default function Clientes() {
+  const [limite, setLimite] = useState(30);
   const [clientes, setClientes] = useState(null);
+  const [erroCarga, setErroCarga] = useState(false);
   const [busca, setBusca] = useState("");
   const [abrirForm, setAbrirForm] = useState(false);
 
-  const carregar = async () => setClientes(await base44.entities.Cliente.list());
+  const carregar = async () => {
+    setErroCarga(false);
+    try { setClientes(await base44.entities.Cliente.list()); }
+    catch { setErroCarga(true); }
+  };
   useEffect(() => {
     carregar();
   }, []);
 
+  if (erroCarga) return <div className="space-y-3"><p>Não foi possível carregar os dados.</p><Button onClick={carregar}>Tentar novamente</Button></div>;
   if (clientes === null) return <Carregando />;
 
   const b = busca.trim().toLowerCase();
@@ -46,7 +53,7 @@ export default function Clientes() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
           value={busca}
-          onChange={(e) => setBusca(e.target.value)}
+          onChange={(e) => { setBusca(e.target.value); setLimite(30); }}
           placeholder="Buscar por nome ou telefone"
           className="h-12 pl-9"
         />
@@ -58,7 +65,7 @@ export default function Clientes() {
         </div>
       ) : (
         <div className="space-y-2">
-          {lista.map((c) => {
+          {lista.slice(0, limite).map((c) => {
             const dias = c.data_nascimento ? diasAteAniversario(c.data_nascimento) : null;
             const anivPerto = dias !== null && dias <= 15;
             return (
@@ -85,6 +92,8 @@ export default function Clientes() {
           })}
         </div>
       )}
+
+      {lista.length > limite && <Button variant="outline" className="w-full h-11" onClick={() => setLimite((n) => n + 30)}>Mostrar mais ({lista.length - limite})</Button>}
 
       <ClienteForm open={abrirForm} onClose={() => setAbrirForm(false)} onSaved={carregar} />
     </div>

@@ -1,3 +1,4 @@
+import ConfiguracoesDialog from "@/components/ConfiguracoesDialog";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
@@ -17,7 +18,7 @@ const GRUPOS = [
     { to: "/relatorios", label: "Relatórios", desc: "Resumo mensal e clientes", icon: BarChart3 },
   ] },
   { titulo: "Identidade visual", descricao: "Personalize a experiência do seu espaço.", links: [
-    { to: "/aparencia", label: "Aparência", desc: "Tema, modo claro e modo escuro", icon: Palette },
+    { to: "/aparencia", label: "Aparência", desc: "Modo claro ou escuro", icon: Palette },
   ] },
   { titulo: "Conta", descricao: "Gerencie o acesso ao sistema.", links: [
     { to: "/conta", label: "Trocar senha", desc: "Defina sua própria senha de acesso", icon: KeyRound },
@@ -25,10 +26,12 @@ const GRUPOS = [
 ];
 
 export default function Mais() {
+  const [dadosOpen, setDadosOpen] = useState(false);
   const [temDemo, setTemDemo] = useState(undefined); // undefined = verificando
   const [removendo, setRemovendo] = useState(false);
 
   useEffect(() => {
+    if (!dadosOpen) return;
     const verificar = async () => {
       const [a, t, c, s] = await Promise.all([
         base44.entities.Agendamento.filter({ demo: true }),
@@ -38,8 +41,8 @@ export default function Mais() {
       ]);
       setTemDemo(a.length + t.length + c.length + s.length > 0);
     };
-    verificar();
-  }, []);
+    verificar().catch(() => setTemDemo(null));
+  }, [dadosOpen]);
 
   const removerDemo = async () => {
     if (!window.confirm("Remover todos os dados de demonstração? Esta ação não pode ser desfeita.")) return;
@@ -57,10 +60,30 @@ export default function Mais() {
 
   return (
     <div className="space-y-6">
+      <div className="flex items-start justify-between gap-3">
       <div>
         <p className="text-xs uppercase tracking-[0.2em] text-gold mb-2">Seu espaço, do seu jeito</p>
         <h1 className="text-2xl font-heading font-semibold">Configurações</h1>
         <p className="text-sm text-muted-foreground mt-1">Tudo o que você precisa para organizar os atendimentos.</p>
+      </div>
+      <ConfiguracoesDialog titulo="Dados de demonstração" descricao="Gerencie os exemplos usados para conhecer o sistema." open={dadosOpen} onOpenChange={setDadosOpen}>
+      {temDemo === undefined ? (
+        <Carregando />
+      ) : temDemo === null ? <p className="text-sm text-destructive">Não foi possível carregar os dados. Feche e tente novamente.</p> : temDemo ? (
+        <div className="rounded-2xl bg-gold/10 border border-gold/30 p-5 space-y-3">
+          <p className="text-sm text-foreground/80">
+            Existem dados de demonstração no sistema. Após conhecer o sistema, remova-os para começar
+            a usar com seus dados reais.
+          </p>
+          <Button variant="destructive" className="h-12" onClick={removerDemo} disabled={removendo}>
+            <Trash2 className="w-4 h-4 mr-1" />
+            {removendo ? "Removendo..." : "Remover dados de demonstração"}
+          </Button>
+        </div>
+      ) : (
+        <p className="text-sm text-muted-foreground">Nenhum dado de demonstração no sistema.</p>
+      )}
+      </ConfiguracoesDialog>
       </div>
 
       {GRUPOS.map((grupo) => (
@@ -85,27 +108,7 @@ export default function Mais() {
         </section>
       ))}
       <Button variant="outline" onClick={() => { const token=localStorage.getItem("barbozza_token"); base44.functions.invoke("adminAuth",{acao:"sair",token}).catch(()=>{}); localStorage.removeItem("barbozza_token"); window.location.href="/login"; }}>Sair da conta</Button>
-      <div className="border-t border-border pt-5">
-        <h2 className="font-heading text-lg font-semibold">Dados de demonstração</h2>
-        <p className="text-sm text-muted-foreground mt-1">Gerencie os exemplos usados para conhecer o sistema.</p>
-      </div>
 
-      {temDemo === undefined ? (
-        <Carregando />
-      ) : temDemo ? (
-        <div className="rounded-2xl bg-gold/10 border border-gold/30 p-5 space-y-3">
-          <p className="text-sm text-foreground/80">
-            Existem dados de demonstração no sistema. Após conhecer o sistema, remova-os para começar
-            a usar com seus dados reais.
-          </p>
-          <Button variant="destructive" className="h-12" onClick={removerDemo} disabled={removendo}>
-            <Trash2 className="w-4 h-4 mr-1" />
-            {removendo ? "Removendo..." : "Remover dados de demonstração"}
-          </Button>
-        </div>
-      ) : (
-        <p className="text-sm text-muted-foreground">Nenhum dado de demonstração no sistema.</p>
-      )}
 
     </div>
   );
