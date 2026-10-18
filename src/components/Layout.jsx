@@ -100,7 +100,7 @@ export default function Layout() {
 
         <header className="md:hidden sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 flex items-center justify-center">
           <Link to="/" aria-label="Kauane Zenie · Studio de Beleza">
-            <BrandLogo className="w-40" src="https://media.base44.com/images/public/6ad40530247ea2c3380711f2/dc3698b71_Logo_elegante_KauaneZenie_em_marfim-1.png" />
+            <BrandLogo className="w-36" />
           </Link>
         </header>
 

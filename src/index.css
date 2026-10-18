@@ -130,12 +130,11 @@
   }
 }
 
-.brand-logo { display: block; position: relative; overflow: hidden; flex-shrink: 0; background: #560623; border-radius: .75rem; }
-.brand-logo img { display: block; width: 100%; height: auto; }
+.brand-logo { display: block; position: relative; overflow: hidden; flex-shrink: 0; max-width: 100%; background: #560623; border-radius: .75rem; }
+.brand-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .brand-logo--icon { aspect-ratio: 1; border-radius: 26%; }
 .brand-logo--vertical { aspect-ratio: 3 / 2; }
-.brand-logo--horizontal { aspect-ratio: 3.6; }
-.brand-logo--horizontal img { position: absolute; width: 185%; max-width: none; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.brand-logo--horizontal { aspect-ratio: 2048 / 758; }
 .brand-panel { background: #560623; color: #FFF8F5; position: relative; overflow: hidden; }
 .brand-panel::after { content: ""; position: absolute; width: 24rem; height: 24rem; border: 1px solid #C16F8440; border-radius: 50%; right: -15rem; bottom: -15rem; pointer-events: none; }
 .brand-panel .brand-logo { border-radius: 0; }

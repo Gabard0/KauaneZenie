@@ -1,4 +1,4 @@
-export const LOGO_URL = "/brand/kauane-signature.jpg";
+export const LOGO_URL = "/brand/kauane-horizontal.png";
 
 export const POLITICA_RESERVA = "A taxa de reserva não é reembolsável em caso de cancelamento ou não comparecimento. O valor do procedimento é pago no dia do atendimento.";
 

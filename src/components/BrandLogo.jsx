@@ -1,7 +1,7 @@
 import React from "react";
 
 const LOGOS = {
-  horizontal: "/brand/kauane-signature.jpg",
+  horizontal: "/brand/kauane-horizontal.png",
   vertical: "/brand/kauane-vertical.png",
   icon: "/brand/kauane-icon.png",
 };
