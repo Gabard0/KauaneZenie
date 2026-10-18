@@ -13,39 +13,39 @@ import {
   CalendarPlus,
   QrCode,
   Clock,
-  Palette,
-} from "lucide-react";
+  Palette } from
+"lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
 
 const navPrincipal = [
-  { to: "/", label: "Início", icon: Home, end: true },
-  { to: "/agenda", label: "Agenda", icon: CalendarDays },
-  { to: "/clientes", label: "Clientes", icon: Users },
-  { to: "/financeiro", label: "Financeiro", icon: Wallet },
-  { to: "/mais", label: "Mais", icon: MoreHorizontal },
-];
+{ to: "/", label: "Início", icon: Home, end: true },
+{ to: "/agenda", label: "Agenda", icon: CalendarDays },
+{ to: "/clientes", label: "Clientes", icon: Users },
+{ to: "/financeiro", label: "Financeiro", icon: Wallet },
+{ to: "/mais", label: "Mais", icon: MoreHorizontal }];
+
 
 const navExtra = [
-  { to: "/agendamento-online", label: "Agendamento Online", icon: QrCode },
-  { to: "/config-agenda", label: "Horários da Agenda", icon: Clock },
-  { to: "/aniversarios", label: "Aniversários", icon: Cake },
-  { to: "/servicos", label: "Serviços", icon: Scissors },
-  { to: "/relatorios", label: "Relatórios", icon: BarChart3 },
-  { to: "/aparencia", label: "Aparência", icon: Palette },
-];
+{ to: "/agendamento-online", label: "Agendamento Online", icon: QrCode },
+{ to: "/config-agenda", label: "Horários da Agenda", icon: Clock },
+{ to: "/aniversarios", label: "Aniversários", icon: Cake },
+{ to: "/servicos", label: "Serviços", icon: Scissors },
+{ to: "/relatorios", label: "Relatórios", icon: BarChart3 },
+{ to: "/aparencia", label: "Aparência", icon: Palette }];
+
 
 const itemCls = (ativo) =>
-  `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-    ativo ? "bg-[#F8EFEB] text-[#560623] shadow-sm" : "text-[#F8EFEB]/75 hover:bg-white/10 hover:text-white"
-  }`;
+`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+ativo ? "bg-[#F8EFEB] text-[#560623] shadow-sm" : "text-[#F8EFEB]/75 hover:bg-white/10 hover:text-white"}`;
+
 
 export default function Layout() {
   const sair = () => {
     const token = localStorage.getItem("barbozza_token");
-    base44.functions.invoke("adminAuth", {acao:"sair",token}).catch(()=>{});
+    base44.functions.invoke("adminAuth", { acao: "sair", token }).catch(() => {});
     localStorage.removeItem("barbozza_token");
-    window.location.href="/login";
+    window.location.href = "/login";
   };
   useEffect(() => {
     aplicarTema(temaSalvo(), modoSalvo());
@@ -54,7 +54,7 @@ export default function Layout() {
   const dataHoje = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
     day: "numeric",
-    month: "long",
+    month: "long"
   });
 
   return (
@@ -64,26 +64,26 @@ export default function Layout() {
           <BrandLogo className="w-full" />
           
         </Link>
-        {navPrincipal.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) => itemCls(isActive)}
-          >
+        {navPrincipal.map((item) =>
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.end}
+          className={({ isActive }) => itemCls(isActive)}>
+          
             <item.icon className="w-5 h-5" />
             {item.label}
           </NavLink>
-        ))}
+        )}
         <div className="mt-3 px-3 text-[11px] font-semibold uppercase tracking-widest text-[#DCA6B4]">
           Gestão e preferências
         </div>
-        {navExtra.map((item) => (
-          <NavLink key={item.to} to={item.to} className={({ isActive }) => itemCls(isActive)}>
+        {navExtra.map((item) =>
+        <NavLink key={item.to} to={item.to} className={({ isActive }) => itemCls(isActive)}>
             <item.icon className="w-5 h-5" />
             {item.label}
           </NavLink>
-        ))}
+        )}
         <button type="button" onClick={sair} className="mt-auto px-3 py-3 text-left text-sm text-[#F8EFEB]/65 hover:text-white">Sair da conta</button>
       </aside>
 
@@ -92,15 +92,15 @@ export default function Layout() {
           <span className="min-w-0 text-sm text-muted-foreground capitalize">Kauane Zenie · Studio de Beleza · {dataHoje}</span>
           <Link
             to="/agenda"
-            className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gold text-gold px-4 h-10 text-sm font-medium hover:bg-gold/10 transition-colors"
-          >
+            className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gold text-gold px-4 h-10 text-sm font-medium hover:bg-gold/10 transition-colors">
+            
             <CalendarPlus className="w-4 h-4" /> Novo agendamento
           </Link>
         </header>
 
         <header className="md:hidden sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 flex items-center justify-center">
           <Link to="/" aria-label="Kauane Zenie · Studio de Beleza">
-            <BrandLogo className="w-40" />
+            <BrandLogo className="w-40" src="https://media.base44.com/images/public/6ad40530247ea2c3380711f2/dc3698b71_Logo_elegante_KauaneZenie_em_marfim-1.png" />
           </Link>
         </header>
 
@@ -112,23 +112,22 @@ export default function Layout() {
       </div>
 
       <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 glass-chrome border-t border-gold/30 flex mobile-bottom-nav">
-        {navPrincipal.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) =>
-              `min-w-0 flex-1 flex flex-col items-center justify-center gap-1 min-h-14 py-2 text-[11px] font-medium ${
-                isActive ? "text-gold" : "text-muted-foreground"
-              }`
-            }
-          >
+        {navPrincipal.map((item) =>
+        <NavLink
+          key={item.to}
+          to={item.to}
+          end={item.end}
+          className={({ isActive }) =>
+          `min-w-0 flex-1 flex flex-col items-center justify-center gap-1 min-h-14 py-2 text-[11px] font-medium ${
+          isActive ? "text-gold" : "text-muted-foreground"}`
+
+          }>
+          
             <item.icon className="w-5 h-5" />
             {item.label}
           </NavLink>
-        ))}
+        )}
       </nav>
-    </div>
-  );
-}
+    </div>);
 
+}
