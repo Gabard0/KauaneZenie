@@ -67,7 +67,7 @@ export default function Clientes() {
                 to={`/clientes/${c.id}`}
                 className="flex items-center gap-3 rounded-xl border bg-card p-3.5 hover:shadow-sm transition-shadow"
               >
-                <div className="w-10 h-10 rounded-full bg-primary text-gold font-semibold flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center shrink-0">
                   {(c.nome || "?").charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">

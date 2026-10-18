@@ -53,7 +53,7 @@ export default function AgendamentoRow({ agendamento, onClick }) {
         </div>
       </div>
       {agendamento.origem === "online" && !bloqueio && (
-        <span className="text-[10px] font-bold tracking-wider bg-gold text-primary px-1.5 py-1 rounded shrink-0">
+        <span className="text-[10px] font-bold tracking-wider bg-primary text-primary-foreground px-1.5 py-1 rounded shrink-0">
           ONLINE
         </span>
       )}

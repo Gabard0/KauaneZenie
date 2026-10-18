@@ -95,7 +95,7 @@ export default function CalendarioGlass({ config, duracao = 60, selecionado, onS
               onClick={() => onSelect(iso)}
               className={`aspect-square rounded-xl sm:rounded-2xl text-sm font-medium transition-all duration-200 ${
                 on
-                  ? "bg-gold text-primary font-semibold border border-gold-dark/40 shadow-lg scale-105"
+                  ? "bg-primary text-primary-foreground font-semibold border border-gold-dark/40 shadow-lg scale-105"
                   : livre
                     ? `bg-card border hover:border-gold/60 hover:bg-gold/10 ${hoje ? "text-gold" : ""}`
                     : "text-muted-foreground/35 cursor-not-allowed"

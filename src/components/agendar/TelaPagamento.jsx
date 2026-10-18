@@ -72,7 +72,7 @@ export default function TelaPagamento({ pagamento, resumo, onEnviado, enviando }
           O pagamento do Pix é necessário para reservar seu horário. <strong>Taxa não reembolsável.</strong> {POLITICA_RESERVA}
         </p>
         <p className="text-sm text-amber-800/90 dark:text-amber-200/80">
-          Depois de realizar o pagamento, envie o comprovante pelo WhatsApp da Leticia.
+          Depois de realizar o pagamento, envie o comprovante pelo WhatsApp da Kauane.
         </p>
         <p className="text-sm text-amber-800/90 dark:text-amber-200/80">
           Seu horário só será confirmado após a conferência do comprovante.
@@ -110,3 +110,4 @@ export default function TelaPagamento({ pagamento, resumo, onEnviado, enviando }
     </div>
   );
 }
+

@@ -1,4 +1,6 @@
-export const MENSAGEM_PADRAO = `Oi, Leticia! 💕 Acabei de realizar o pagamento da taxa de agendamento.
+import { studioMessage } from "@/lib/brand";
+
+export const MENSAGEM_PADRAO = `Oi, Kauane! 💕 Acabei de realizar o pagamento da taxa de agendamento.
 
 👤 Nome: {nome}
 📱 WhatsApp: {whatsapp}
@@ -11,14 +13,14 @@ Estou enviando o comprovante para confirmar meu horário. ✨`;
 
 export const MENSAGEM_ADMIN = `Olá, {nome}! ✨
 
-Confirmando seu agendamento no Letícia Barboza · Nail Designer:
+Confirmando seu agendamento no Kauane Zenie · Studio de Beleza:
 
 📅 {data}
 ⏰ {horario}
-💅 {procedimentos}
+✨ {procedimentos}
 💰 {valor}
 
-Até lá! 💅`;
+Até lá! ✨`;
 
 export const VARS = [
   "nome",
@@ -45,7 +47,7 @@ export const VAR_LABELS = {
 };
 
 export function montarMensagem(template, dados) {
-  let m = String(template || MENSAGEM_PADRAO);
+  let m = studioMessage(template || MENSAGEM_PADRAO);
   for (const v of VARS) {
     const rotulo = VAR_LABELS[v];
     const valor = dados[v] != null ? String(dados[v]) : rotulo;
@@ -72,3 +74,4 @@ export const DADOS_EXEMPLO = {
   data_manutencao: "05/10/2026",
   horario_manutencao: "14:00",
 };
+

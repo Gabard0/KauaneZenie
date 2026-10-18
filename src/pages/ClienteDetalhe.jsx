@@ -79,7 +79,7 @@ export default function ClienteDetalhe() {
     );
 
   const anos = idade(cliente.data_nascimento);
-  const msgOla = `Oi, ${cliente.nome}! Tudo bem? 💅`;
+  const msgOla = `Oi, ${cliente.nome}! Tudo bem? ✨`;
   const totalGasto = hist.reduce((s, a) => s + (Number(a.valor) || 0), 0);
   const agsById = {};
   for (const a of ags) agsById[a.id] = a;

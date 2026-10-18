@@ -53,7 +53,7 @@ export default function Aniversarios() {
             onClick={() => setOpcao(o.id)}
             className={`rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
               opcao === o.id
-                ? "bg-primary text-gold border-gold"
+                ? "bg-primary text-primary-foreground border-gold"
                 : "bg-card hover:bg-muted"
             }`}
           >

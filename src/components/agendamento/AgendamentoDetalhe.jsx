@@ -81,8 +81,8 @@ export default function AgendamentoDetalhe({ agendamentoId, onClose, onChanged }
   const manutAguardando = ehManut && ag.manutencao_status === "aguardando_horario";
   const temManutVinculada = !!ag.manutencao_vinculada_id && manutVinculada;
   const aguardandoPagamento = ag.status_pagamento === "aguardando_comprovante";
-  const msgConfirmar = `Olá, ${ag.cliente_nome}! Confirmando seu horário no dia ${formatData(ag.data)} às ${ag.horario}. Nos vemos! 💅`;
-  const msgLembrar = `Oi, ${ag.cliente_nome}! Passando para lembrar do seu horário no dia ${formatData(ag.data)} às ${ag.horario}. 💅`;
+  const msgConfirmar = `Olá, ${ag.cliente_nome}! Confirmando seu horário no dia ${formatData(ag.data)} às ${ag.horario}. Nos vemos! ✨`;
+  const msgLembrar = `Oi, ${ag.cliente_nome}! Passando para lembrar do seu horário no dia ${formatData(ag.data)} às ${ag.horario}. ✨`;
 
   const mudarStatus = async (status) => {
     await base44.entities.Agendamento.update(agendamentoId, { status });

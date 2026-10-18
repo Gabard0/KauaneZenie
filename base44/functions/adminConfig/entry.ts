@@ -28,13 +28,13 @@ export default async function (req) {
         ok: true,
         tema: temaNormalizado(cfg.tema),
         modo: modoNormalizado(cfg.modo),
-        whatsapp: cfg.whatsapp || "4185250785",
+        whatsapp: cfg.whatsapp || "41998047493",
         mensagem_whatsapp: cfg.mensagem_whatsapp || MENSAGEM_PADRAO,
         exigir_taxa: cfg.exigir_taxa !== false,
         taxa_agendamento: cfg.taxa_agendamento > 0 ? cfg.taxa_agendamento : 30,
         pix_qr_code_url: cfg.pix_qr_code_url || "",
         pix_copia_cola: cfg.pix_copia_cola || "",
-        whatsapp_comprovantes: cfg.whatsapp_comprovantes || "41985250785",
+        whatsapp_comprovantes: cfg.whatsapp_comprovantes || "41998047493",
         tempo_reserva_minutos: cfg.tempo_reserva_minutos > 0 ? cfg.tempo_reserva_minutos : 15,
       });
     }
@@ -80,3 +80,4 @@ export default async function (req) {
     return Response.json({ ok: false, error: error.message === "sessao_invalida" ? "sessao_invalida" : "erro_interno" }, { status: error.message === "sessao_invalida" ? 401 : 500 });
   }
 }
+

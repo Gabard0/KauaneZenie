@@ -65,7 +65,7 @@ export default function Aparencia() {
                     {t.emoji} {t.nome}
                   </p>
                   {ativo && (
-                    <span className="w-6 h-6 rounded-full bg-gold text-primary flex items-center justify-center">
+                    <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
                       <Check className="w-4 h-4" />
                     </span>
                   )}
@@ -96,7 +96,7 @@ export default function Aparencia() {
               onClick={() => escolher(tema, chave)}
               className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
                 modo === chave
-                  ? "bg-gold text-primary font-semibold shadow"
+                  ? "bg-primary text-primary-foreground font-semibold shadow"
                   : "text-muted-foreground hover:bg-muted/50"
               }`}
             >

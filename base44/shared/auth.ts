@@ -1,5 +1,5 @@
 export const MENSAGEM_PADRAO =
-  "Oi, Leticia! 💕 Acabei de realizar o pagamento da taxa de agendamento.\n\n" +
+  "Oi, Kauane! 💕 Acabei de realizar o pagamento da taxa de agendamento.\n\n" +
   "👤 Nome: {nome}\n" +
   "📱 WhatsApp: {whatsapp}\n" +
   "✨ Procedimento: {procedimentos}\n" +
@@ -54,7 +54,7 @@ export async function carregarConfig(svc) {
     senha_hash: await hashSenha("admin", salt),
     deve_trocar_senha: true,
     tema: "barbozza",
-    whatsapp: "4185250785",
+    whatsapp: "41998047493",
     mensagem_whatsapp: MENSAGEM_PADRAO,
     token_sessao: "",
   });

@@ -19,7 +19,7 @@ export default function TelaConfirmacao({ resultado, whatsappUrl, onNovo, onReen
           {ag?.taxa_reserva > 0 ? <>Sua taxa de {formatBRL(ag.taxa_reserva)} aguarda conferência do comprovante.</> : "Seu horário foi reservado sem taxa."}
         </p>
         <p className="text-sm text-muted-foreground">
-          {ag?.taxa_reserva > 0 ? "Envie o comprovante pelo WhatsApp para a Letícia. Abrir a conversa não confirma o pagamento." : "Fale com a Letícia pelo WhatsApp para combinar os detalhes."}
+          {ag?.taxa_reserva > 0 ? "Envie o comprovante pelo WhatsApp para a Kauane. Abrir a conversa não confirma o pagamento." : "Fale com a Kauane pelo WhatsApp para combinar os detalhes."}
         </p>
       </div>
 
@@ -59,7 +59,7 @@ export default function TelaConfirmacao({ resultado, whatsappUrl, onNovo, onReen
               <Clock className="w-4 h-4 mt-0.5 shrink-0" />
               <span>
                 Sua manutenção ficou para <strong className="capitalize">{dataLonga(manut.data)}</strong>, mas o
-                horário exato ainda será confirmado. A Leticia vai falar com você pelo WhatsApp.
+                horário exato ainda será confirmado. A Kauane vai falar com você pelo WhatsApp.
               </span>
             </p>
           )}
@@ -87,3 +87,4 @@ export default function TelaConfirmacao({ resultado, whatsappUrl, onNovo, onReen
     </div>
   );
 }
+

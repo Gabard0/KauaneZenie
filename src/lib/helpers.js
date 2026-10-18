@@ -1,8 +1,8 @@
-export const LOGO_URL = "/brand/leticia-horizontal.png";
+export const LOGO_URL = "/brand/kauane-signature.jpg";
 
 export const POLITICA_RESERVA = "A taxa de reserva não é reembolsável em caso de cancelamento ou não comparecimento. O valor do procedimento é pago no dia do atendimento.";
 
-export const WHATSAPP_STUDIO = "4185250785";
+export const WHATSAPP_STUDIO = "41998047493";
 
 export const toISO = (d) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -62,7 +62,7 @@ export const diasAteAniversario = (iso) => {
 export const STATUS = {
   agendado: { label: "Agendado", cls: "bg-foreground/10 text-foreground/80" },
   confirmado: { label: "Confirmado", cls: "bg-gold/20 text-gold" },
-  concluido: { label: "Concluído", cls: "bg-primary text-gold border border-gold/40" },
+  concluido: { label: "Concluído", cls: "bg-primary text-primary-foreground border border-gold/40" },
   cancelado: { label: "Cancelado", cls: "bg-foreground/5 text-muted-foreground" },
   nao_compareceu: { label: "Não compareceu", cls: "bg-destructive/15 text-destructive" },
 };
@@ -93,3 +93,4 @@ export const Carregando = () =>
       className: "w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin",
     })
   );
+

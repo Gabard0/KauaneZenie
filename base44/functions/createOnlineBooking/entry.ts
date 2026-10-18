@@ -190,7 +190,7 @@ export default async function (req) {
           pix_qr_code_url: (cfg && cfg.pix_qr_code_url) || "",
           pix_copia_cola: (cfg && cfg.pix_copia_cola) || "",
           whatsapp_comprovantes:
-            (cfg && cfg.whatsapp_comprovantes) || (cfg && cfg.whatsapp) || "41985250785",
+            (cfg && cfg.whatsapp_comprovantes) || (cfg && cfg.whatsapp) || "41998047493",
         }
       : null;
 
@@ -215,3 +215,4 @@ export default async function (req) {
     return Response.json({ ok: false, error: error.message === "agenda_ocupada" ? "horario_ocupado" : "erro_interno" }, { status: error.message === "agenda_ocupada" ? 409 : 500 });
   }
 }
+

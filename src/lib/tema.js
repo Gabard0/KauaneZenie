@@ -1,15 +1,17 @@
+// A chave interna barbozza mantém compatibilidade com as preferências já salvas.
+// Sua apresentação agora é inteiramente da Kauane Zenie.
 export const TEMAS = {
   barbozza: {
-    nome: "Letícia · Pérola e Ouro",
-    emoji: "🦋",
-    desc: "Pérola, champagne e dourado",
-    cores: ["#F7F2E6", "#C9A227", "#7A5C1B", "#2E2418"],
+    nome: "Kauane · Assinatura",
+    emoji: "✦",
+    desc: "Vinho profundo, marfim e rosé",
+    cores: ["#560623", "#C16F84", "#F8EFEB", "#321522"],
   },
   rose: {
-    nome: "Rosé",
-    emoji: "🌹",
-    desc: "Rosé, rosa suave, nude e champagne",
-    cores: ["#B76E79", "#E8CFC4", "#F7E7CE", "#D4AF37"],
+    nome: "Kauane · Rosé",
+    emoji: "✧",
+    desc: "Rosa suave com detalhes em vinho",
+    cores: ["#AE546E", "#DCA6B4", "#FFF8F5", "#560623"],
   },
 };
 
@@ -23,18 +25,16 @@ export function aplicarTema(tema, modo) {
   const m = MODOS[modo] ? modo : "claro";
   document.documentElement.dataset.tema = t;
   document.documentElement.dataset.modo = m;
-  localStorage.setItem("barbozza_tema", t);
-  localStorage.setItem("barbozza_modo", m);
+  document.documentElement.classList.toggle("dark", m === "escuro");
+  localStorage.setItem("kauane_tema", t);
+  localStorage.setItem("kauane_modo", m);
   return { tema: t, modo: m };
 }
 
 export const temaSalvo = () => {
-  const t = localStorage.getItem("barbozza_tema");
-  if (t === "rose" || t === "feminino") return "rose";
-  return "barbozza";
+  const t = localStorage.getItem("kauane_tema") || localStorage.getItem("barbozza_tema");
+  return t === "rose" || t === "feminino" ? "rose" : "barbozza";
 };
-
 export const modoSalvo = () =>
-  localStorage.getItem("barbozza_modo") === "escuro" ? "escuro" : "claro";
-
+  (localStorage.getItem("kauane_modo") || localStorage.getItem("barbozza_modo")) === "escuro" ? "escuro" : "claro";
 export const preferenciaSalva = () => ({ tema: temaSalvo(), modo: modoSalvo() });

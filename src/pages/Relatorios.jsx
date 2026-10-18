@@ -117,7 +117,7 @@ export default function Relatorios() {
               type="button"
               onClick={() => setPeriodo(p.id)}
               className={`flex-1 h-10 min-w-[110px] rounded-lg text-sm font-medium transition-colors ${
-                periodo === p.id ? "bg-primary text-gold" : "text-muted-foreground hover:bg-muted/50"
+                periodo === p.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted/50"
               }`}
             >
               {p.label}
@@ -278,3 +278,4 @@ export default function Relatorios() {
     </div>
   );
 }
+

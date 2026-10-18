@@ -100,15 +100,22 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10 relative">
-      <div className="w-full max-w-sm space-y-8 relative">
+    <div className="min-h-screen grid lg:grid-cols-[1.05fr_1fr]">
+      <aside className="hidden lg:flex brand-panel flex-col items-center justify-center p-12 text-center">
+        <BrandLogo className="w-full max-w-md" />
+        <div className="h-px w-16 bg-[#C16F84] my-8" />
+        <p className="font-display text-5xl leading-tight max-w-sm">Seu olhar,<br /><span className="italic text-[#E7B5C3]">sua essência.</span></p>
+        <p className="mt-6 text-[11px] uppercase tracking-[.25em] text-[#F8EFEB]/65">Cílios · Sobrancelhas · Beleza</p>
+        <p className="mt-16 text-xs text-[#F8EFEB]/55">Ipanema · Pontal do Paraná</p>
+      </aside>
+      <main className="flex items-center justify-center px-5 py-10 sm:px-10">
+      <div className="w-full max-w-sm space-y-7 relative">
         <div className="flex flex-col items-center gap-4">
-          <BrandLogo variant="vertical" className="w-40 sm:w-48 max-w-full" />
+          <BrandLogo variant="icon" className="w-20 h-20" />
           {etapa === "login" ? (
             <h1 className="font-display text-2xl text-gold text-center leading-snug">
-              Bem-vinda ao
-              <br />
-              Letícia Barboza · Nail Designer
+              Bem-vinda, Kauane
+              <span className="block mt-2 font-body text-xs tracking-normal text-muted-foreground">Seu studio, organizado em um só lugar.</span>
             </h1>
           ) : (
             <div className="text-center space-y-1">
@@ -120,7 +127,7 @@ export default function Login() {
           )}
         </div>
 
-        <div className="rounded-3xl bg-card border border-border/60 p-6 sm:p-7 shadow-2xl space-y-4">
+        <div className="rounded-3xl bg-card border border-border/60 p-6 sm:p-7 shadow-sm space-y-4">
           {error && (
             <div className="p-3 rounded-lg bg-destructive/15 border border-destructive/40 text-destructive text-sm">
               {error}
@@ -272,6 +279,7 @@ export default function Login() {
           Esqueceu sua senha? Entre em contato com o suporte.
         </p>
       </div>
+      </main>
     </div>
   );
 }

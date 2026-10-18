@@ -30,9 +30,9 @@ const AuthenticatedApp = () => {
 
   if (isLoadingPublicSettings) {
     return (
-      <div className="fixed inset-0 bg-primary flex flex-col items-center justify-center gap-5">
+      <div className="fixed inset-0 bg-[#560623] flex flex-col items-center justify-center gap-5">
         <BrandLogo variant="icon" className="w-24 h-24" />
-        <div className="w-8 h-8 border-2 border-gold/20 border-t-gold rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-2 border-[#F8EFEB]/20 border-t-[#F8EFEB] rounded-full animate-spin"></div>
       </div>
     );
   }

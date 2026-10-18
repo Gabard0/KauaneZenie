@@ -53,7 +53,7 @@ export default async function (req) {
       funcionamento: funcionamentos[0] || null,
       excecoes: excecoesRecs.map((e) => ({ data: e.data, motivo: e.motivo || "" })),
       ocupados,
-      whatsapp_profissional: (cfg && cfg.whatsapp) || "4185250785",
+      whatsapp_profissional: (cfg && cfg.whatsapp) || "41998047493",
       mensagem_whatsapp: (cfg && cfg.mensagem_whatsapp) || MENSAGEM_PADRAO,
       pagamento: exigirTaxa
         ? {
@@ -61,7 +61,7 @@ export default async function (req) {
             taxa,
             pix_qr_code_url: (cfg && cfg.pix_qr_code_url) || "",
             pix_copia_cola: (cfg && cfg.pix_copia_cola) || "",
-            whatsapp_comprovantes: (cfg && cfg.whatsapp_comprovantes) || (cfg && cfg.whatsapp) || "41985250785",
+            whatsapp_comprovantes: (cfg && cfg.whatsapp_comprovantes) || (cfg && cfg.whatsapp) || "41998047493",
             tempo_reserva_minutos: (cfg && cfg.tempo_reserva_minutos > 0 ? cfg.tempo_reserva_minutos : 15),
           }
         : { exigir_taxa: false, taxa, pix_qr_code_url: "", pix_copia_cola: "", whatsapp_comprovantes: "", tempo_reserva_minutos: 15 },
@@ -70,3 +70,4 @@ export default async function (req) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
+

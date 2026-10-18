@@ -1,11 +1,16 @@
 import React from "react";
 
 const LOGOS = {
-  horizontal: "/brand/leticia-horizontal.png",
-  vertical: "/brand/leticia-vertical.png",
-  icon: "/brand/leticia-icon.png",
+  horizontal: "/brand/kauane-signature.jpg",
+  vertical: "/brand/kauane-vertical.png",
+  icon: "/brand/kauane-icon.png",
 };
 
 export default function BrandLogo({ variant = "horizontal", className = "w-44", ...props }) {
-  return <img src={LOGOS[variant] || LOGOS.horizontal} alt="Letícia Barboza · Nail Designer" className={`brand-logo brand-logo--${variant} shrink-0 ${className}`} {...props} />;
+  const type = LOGOS[variant] ? variant : "horizontal";
+  return (
+    <span className={`brand-logo brand-logo--${type} shrink-0 ${className}`}>
+      <img src={LOGOS[type]} alt="Kauane Zenie · Studio de Beleza" decoding="async" {...props} />
+    </span>
+  );
 }

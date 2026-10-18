@@ -92,7 +92,7 @@ export default function Inicio() {
         <div className="flex items-center gap-3">
           <BrandLogo variant="icon" className="w-12 h-12 sm:w-16 sm:h-16" />
           <div>
-            <h1 className="font-display text-3xl font-semibold">Bem-vinda</h1>
+            <h1 className="font-display text-3xl font-semibold">Olá, Kauane</h1>
             <p className="text-sm text-muted-foreground capitalize">{dataHoje}</p>
           </div>
         </div>
@@ -146,7 +146,7 @@ export default function Inicio() {
             className="w-full text-left rounded-2xl border border-gold/60 bg-gold/10 p-5 flex items-center gap-4 transition-shadow hover:shadow-md"
             onClick={() => setSelecionado(proximo.id)}
           >
-            <div className="rounded-xl bg-primary text-gold px-3.5 py-2.5 text-center shrink-0">
+            <div className="rounded-xl bg-primary text-primary-foreground px-3.5 py-2.5 text-center shrink-0">
               <p className="text-lg font-bold leading-none">{proximo.horario}</p>
               <p className="text-[10px] uppercase tracking-wide mt-1 opacity-80">
                 {proximo.duracao || 60}min
@@ -158,7 +158,7 @@ export default function Inicio() {
                   Próximo agendamento
                 </p>
                 {proximo.origem === "online" && (
-                  <span className="text-[10px] font-bold tracking-wider bg-gold text-primary px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-bold tracking-wider bg-primary text-primary-foreground px-1.5 py-0.5 rounded">
                     ONLINE
                   </span>
                 )}
@@ -276,3 +276,4 @@ export default function Inicio() {
     </div>
   );
 }
+

@@ -37,7 +37,7 @@ const navExtra = [
 
 const itemCls = (ativo) =>
   `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-    ativo ? "bg-gold/15 text-gold" : "text-foreground/70 hover:bg-white/5 hover:text-foreground"
+    ativo ? "bg-[#F8EFEB] text-[#560623] shadow-sm" : "text-[#F8EFEB]/75 hover:bg-white/10 hover:text-white"
   }`;
 
 export default function Layout() {
@@ -59,8 +59,8 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen">
-      <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col glass-chrome border-r border-gold/25 p-4 gap-1 z-30 overflow-y-auto">
-        <Link to="/" className="block px-1 py-3 mb-2">
+      <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col kauane-sidebar border-r border-white/10 p-4 gap-1 z-30 overflow-y-auto">
+        <Link to="/" className="block px-1 py-5 mb-5">
           <BrandLogo className="w-full" />
           
         </Link>
@@ -75,7 +75,7 @@ export default function Layout() {
             {item.label}
           </NavLink>
         ))}
-        <div className="mt-3 px-3 text-[11px] font-semibold uppercase tracking-widest text-gold/60">
+        <div className="mt-3 px-3 text-[11px] font-semibold uppercase tracking-widest text-[#DCA6B4]">
           Gestão e preferências
         </div>
         {navExtra.map((item) => (
@@ -84,12 +84,12 @@ export default function Layout() {
             {item.label}
           </NavLink>
         ))}
-        <button type="button" onClick={sair} className="mt-auto px-3 py-3 text-left text-sm text-muted-foreground">Sair da conta</button>
+        <button type="button" onClick={sair} className="mt-auto px-3 py-3 text-left text-sm text-[#F8EFEB]/65 hover:text-white">Sair da conta</button>
       </aside>
 
       <div className="md:pl-60 relative z-10">
         <header className="hidden md:flex sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 items-center justify-between gap-4 px-4 lg:px-8">
-          <span className="min-w-0 text-sm text-muted-foreground capitalize">Letícia Barboza · Nail Designer · {dataHoje}</span>
+          <span className="min-w-0 text-sm text-muted-foreground capitalize">Kauane Zenie · Studio de Beleza · {dataHoje}</span>
           <Link
             to="/agenda"
             className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gold text-gold px-4 h-10 text-sm font-medium hover:bg-gold/10 transition-colors"
@@ -99,8 +99,8 @@ export default function Layout() {
         </header>
 
         <header className="md:hidden sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 flex items-center justify-center">
-          <Link to="/" aria-label="Letícia Barboza · Nail Designer">
-            <BrandLogo className="w-28" />
+          <Link to="/" aria-label="Kauane Zenie · Studio de Beleza">
+            <BrandLogo className="w-40" />
           </Link>
         </header>
 
@@ -131,3 +131,4 @@ export default function Layout() {
     </div>
   );
 }
+

@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Copy, ExternalLink, Download, Share2, Save, Loader2, Upload } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import { studioPhone, studioMessage } from "@/lib/brand";
 import { Switch } from "@/components/ui/switch";
 import { digits, maskTelefone } from "@/lib/booking";
 import { base44 } from "@/api/base44Client";
@@ -48,22 +49,22 @@ export default function AgendamentoOnline() {
       width: 640,
       margin: 2,
       errorCorrectionLevel: "M",
-      color: { dark: "#000000", light: "#FFFFFF" },
+      color: { dark: "#560623", light: "#FFFFFF" },
     })
       .then(setQr)
       .catch(() => setQr(""));
     adminLerConfig()
       .then((cfg) => {
-        setWhatsapp(maskTelefone(cfg.whatsapp || "4185250785"));
-        setMensagem(cfg.mensagem_whatsapp || "");
+        setWhatsapp(maskTelefone(studioPhone(cfg.whatsapp)));
+        setMensagem(studioMessage(cfg.mensagem_whatsapp));
         setExigirTaxa(cfg.exigir_taxa !== false);
         setTaxa(String(cfg.taxa_agendamento || 30));
         setPixQr(cfg.pix_qr_code_url || "");
         setPixCopia(cfg.pix_copia_cola || "");
-        setWaComprovantes(maskTelefone(cfg.whatsapp_comprovantes || "41985250785"));
+        setWaComprovantes(maskTelefone(studioPhone(cfg.whatsapp_comprovantes || cfg.whatsapp)));
         setTempoReserva(String(cfg.tempo_reserva_minutos || 15));
       })
-      .catch(() => setWhatsapp(maskTelefone("4185250785")))
+      .catch(() => setWhatsapp(maskTelefone("41998047493")))
       .finally(() => setCarregado(true));
   }, []);
 
@@ -87,7 +88,7 @@ export default function AgendamentoOnline() {
   const baixar = () => {
     const a = document.createElement("a");
     a.href = qr;
-    a.download = "qrcode-agendamento-barbozza.png";
+    a.download = "qrcode-agendamento-kauane-zenie.png";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -95,7 +96,7 @@ export default function AgendamentoOnline() {
 
   const compartilhar = () =>
     window.open(
-      `https://wa.me/?text=${encodeURIComponent("Agende seu horário pelo nosso link 💅 " + link)}`,
+      `https://wa.me/?text=${encodeURIComponent("Agende seu horário pelo nosso link ✨ " + link)}`,
       "_blank"
     );
 
@@ -172,7 +173,7 @@ export default function AgendamentoOnline() {
         <div className="text-center space-y-2">
           <BrandLogo className="w-56 max-w-full mx-auto" />
           <p className="text-xs tracking-[0.2em] text-gold uppercase">Seu link de agendamento</p>
-          <p className="font-heading text-xl">Letícia Barboza · Nail Designer</p>
+          <p className="font-heading text-xl">Kauane Zenie · Studio de Beleza</p>
         </div>
 
         <div className="flex justify-center">
@@ -215,7 +216,7 @@ export default function AgendamentoOnline() {
             inputMode="tel"
             value={whatsapp}
             onChange={(e) => setWhatsapp(maskTelefone(e.target.value))}
-            placeholder="(41) 8525-0785"
+            placeholder="(41) 99804-7493"
             className="h-12 max-w-xs"
           />
           <p className="text-xs text-muted-foreground">
@@ -362,7 +363,7 @@ export default function AgendamentoOnline() {
                 inputMode="tel"
                 value={waComprovantes}
                 onChange={(e) => setWaComprovantes(maskTelefone(e.target.value))}
-                placeholder="(41) 98525-0785"
+                placeholder="(41) 99804-7493"
                 className="h-12 max-w-xs"
               />
               <p className="text-xs text-muted-foreground">A cliente envia o comprovante do Pix para este número.</p>
@@ -391,3 +392,4 @@ export default function AgendamentoOnline() {
     </div>
   );
 }
+

@@ -49,7 +49,7 @@ export default function HorariosGlass({ horarios, selecionado, onSelect }) {
               onClick={() => onSelect(hora)}
               className={`h-12 rounded-xl border font-medium transition-all duration-200 ${
                 on
-                  ? "bg-gold text-primary border-gold-dark/40 font-semibold shadow-lg scale-[1.03]"
+                  ? "bg-primary text-primary-foreground border-gold-dark/40 font-semibold shadow-lg scale-[1.03]"
                   : "bg-card hover:border-gold/60 hover:bg-gold/10"
               }`}
             >

@@ -24,7 +24,7 @@ export default function ServicosLista({ servicos, selecionados, onToggle }) {
             </div>
             <div
               className={`w-6 h-6 rounded-full flex items-center justify-center border shrink-0 ml-3 ${
-                on ? "bg-gold border-gold text-primary" : "border-border"
+                on ? "bg-primary border-primary text-primary-foreground" : "border-border"
               }`}
             >
               {on && <Check className="w-4 h-4" />}

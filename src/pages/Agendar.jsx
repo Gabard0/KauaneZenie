@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import BrandLogo from "@/components/BrandLogo";
+import { STUDIO, studioPhone, studioMessage } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import { POLITICA_RESERVA, todayISO, formatData, formatBRL, dataLonga, waLink } from "@/lib/helpers";
 import { digits, maskTelefone, horariosDoDia, hojeLocalMin } from "@/lib/booking";
@@ -38,8 +39,13 @@ export default function Agendar() {
 
   const carregar = async () => {
     const r = await base44.functions.invoke("getBookingConfig", {});
-    setConfig(r.data);
-    return r.data;
+    const data = {
+      ...r.data,
+      whatsapp_profissional: studioPhone(r.data.whatsapp_profissional),
+      mensagem_whatsapp: studioMessage(r.data.mensagem_whatsapp),
+    };
+    setConfig(data);
+    return data;
   };
   useEffect(() => {
     carregar().catch(() => setFalha(true));
@@ -186,7 +192,7 @@ export default function Agendar() {
         taxa: formatBRL(pag.taxa || 30),
       });
       const destino = pag.whatsapp_comprovantes || config.whatsapp_profissional;
-      const url = waLink(destino, msg);
+      const url = waLink(studioPhone(destino), msg);
       setWaUrl(url);
       window.open(url, "_blank");
       setEtapa("final");
@@ -213,11 +219,13 @@ export default function Agendar() {
   return (
     <div className="min-h-screen">
       <div className="max-w-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-5">
-        <div className="flex flex-col items-center gap-2 text-center pt-2">
-          <BrandLogo className="w-60 max-w-full" />
-          <h1 className="font-heading text-2xl">Letícia Barboza · Nail Designer</h1>
-          <p className="text-muted-foreground text-sm">Agende seu horário em poucos toques</p>
-        </div>
+        <header className="brand-panel rounded-[1.75rem] px-5 py-8 sm:py-10 flex flex-col items-center text-center">
+          <BrandLogo className="w-72 max-w-full" />
+          <div className="w-10 h-px bg-[#C16F84] my-6" />
+          <p className="text-[10px] uppercase tracking-[.2em] text-[#E7B5C3]">Cílios & sobrancelhas</p>
+          <h1 className="font-heading booking-heading mt-3">Seu olhar,<br /><span className="italic text-[#E7B5C3]">sua essência.</span></h1>
+          <p className="text-[#F8EFEB]/75 text-xs mt-5">Escolha seu procedimento e reserve seu momento.</p>
+        </header>
 
         {etapa === "pagamento" && resultado ? (
           <div className={secaoCls + " animate-in fade-in slide-in-from-bottom-2 duration-300"}>
@@ -319,7 +327,7 @@ export default function Agendar() {
                     </p>
                     <p className="text-muted-foreground">
                       💕 Se precisar mudar a data ou o horário depois, não tem problema! É só falar com a
-                      Leticia pelo WhatsApp.
+                      Kauane pelo WhatsApp.
                     </p>
                   </div>
                 )}
@@ -378,10 +386,16 @@ export default function Agendar() {
           </>
         )}
 
-        <p className="text-center text-xs text-muted-foreground/70">
-          Letícia Barboza · Nail Designer · Agendamento Online
-        </p>
+        <footer className="text-center text-xs text-muted-foreground space-y-3 py-5">
+          <p className="font-heading text-xl text-foreground">Kauane Zenie · Studio de Beleza</p>
+          <p>{STUDIO.address}<br />{STUDIO.city}</p>
+          <div className="flex items-center justify-center gap-5">
+            <a className="text-gold underline underline-offset-4" href={STUDIO.instagram} target="_blank" rel="noreferrer">Instagram</a>
+            <a className="text-gold underline underline-offset-4" href={STUDIO.whatsappLink} target="_blank" rel="noreferrer">Fale com o studio</a>
+          </div>
+        </footer>
       </div>
     </div>
   );
 }
+

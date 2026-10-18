@@ -35,7 +35,7 @@ export default function MovimentacaoLista({ registros, onChanged }) {
           <div className="min-w-0">
             <p className="font-medium truncate flex items-center gap-2">
               {r.tipo_receita === "taxa" && (
-                <span className="text-[10px] font-bold tracking-wider bg-gold text-primary px-1.5 py-0.5 rounded shrink-0">
+                <span className="text-[10px] font-bold tracking-wider bg-primary text-primary-foreground px-1.5 py-0.5 rounded shrink-0">
                   TAXA
                 </span>
               )}

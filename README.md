@@ -1,4 +1,17 @@
-# Base44 Project
+# Kauane Zenie · Studio de Beleza
+
+Sistema de agenda e gestão da Kauane Zenie, em Ipanema, Pontal do Paraná.
+
+## Identidade visual
+
+- Vinho profundo `#560623`, rosé `#C16F84` e marfim `#F8EFEB`.
+- Logos originais em `public/brand/kauane-*`; componente compartilhado `src/components/BrandLogo.jsx`.
+- Nome, endereço e links públicos em `src/lib/brand.js` (referências: Instagram enviado e https://linktr.ee/kauanezeniestudio).
+- Dois temas, Assinatura e Rosé, com modos claro/escuro. A chave interna `barbozza` permanece por compatibilidade com o banco; o nome exibido e as cores são da Kauane.
+- Mensagens e números herdados do clone são normalizados na interface. Contatos personalizados diferentes dos antigos são preservados.
+- Serviços, valores, dados de clientes e Pix continuam sendo configurados no painel. O trabalho de identidade não altera esses cadastros.
+
+## Desenvolvimento e publicação
 
 Use this repository to run and edit the app locally, then publish changes back through Base44.
 
@@ -60,3 +73,4 @@ GitHub integration: [https://docs.base44.com/developers/app-code/local-developme
 Local development: [https://docs.base44.com/developers/backend/overview/local-dev/local-development-overview](https://docs.base44.com/developers/backend/overview/local-dev/local-development-overview)
 
 Support: [https://app.base44.com/support](https://app.base44.com/support)
+

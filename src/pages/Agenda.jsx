@@ -88,7 +88,7 @@ export default function Agenda() {
             type="button"
             onClick={() => setVista(v)}
             className={`flex-1 h-10 rounded-lg text-sm font-medium transition-colors ${
-              vista === v ? "bg-primary text-gold" : "text-muted-foreground"
+              vista === v ? "bg-primary text-primary-foreground" : "text-muted-foreground"
             }`}
           >
             {v === "dia" ? "Dia" : v === "semana" ? "Semana" : "Mês"}
