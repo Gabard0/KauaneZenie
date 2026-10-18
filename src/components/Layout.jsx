@@ -89,7 +89,7 @@ export default function Layout() {
 
       <div className="md:pl-60 relative z-10">
         <header className="hidden md:flex sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 items-center justify-between gap-4 px-4 lg:px-8">
-          <span className="min-w-0 text-sm text-muted-foreground capitalize">Kauane Zenie · Studio de Beleza · {dataHoje}</span>
+          <span className="min-w-0 text-sm capitalize text-[#ff005e]">Kauane Zenie · Studio de Beleza · {dataHoje}</span>
           <Link
             to="/agenda"
             className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gold text-gold px-4 h-10 text-sm font-medium hover:bg-gold/10 transition-colors">
