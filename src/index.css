@@ -82,27 +82,6 @@
     --sidebar-ring: 343 48% 74%;
   }
 
-  html[data-tema="rose"][data-modo="claro"] {
-    --background: 340 42% 97%;
-    --primary: 342 49% 34%;
-    --gold: 342 49% 34%;
-    --gold-dark: 338 70% 24%;
-    --accent: 342 42% 89%;
-    --secondary: 342 35% 92%;
-    --ring: 342 49% 42%;
-    --sidebar-primary: 342 49% 34%;
-    --sidebar-accent: 342 42% 89%;
-  }
-  html[data-tema="rose"][data-modo="escuro"] {
-    --background: 340 28% 10%;
-    --card: 340 28% 16%;
-    --popover: 340 28% 15%;
-    --primary: 343 55% 80%;
-    --gold: 343 55% 80%;
-    --gold-dark: 343 45% 60%;
-    --sidebar-primary: 343 55% 80%;
-  }
-
   * { @apply border-border outline-ring/50; }
   html { background-color: hsl(var(--background)); }
   body { @apply bg-background text-foreground font-body; }
@@ -130,16 +109,21 @@
   }
 }
 
-.brand-logo { display: block; position: relative; overflow: hidden; flex-shrink: 0; max-width: 100%; background: #560623; border-radius: .75rem; }
+.brand-logo { display: block; position: relative; flex-shrink: 0; max-width: 100%; background: transparent; }
 .brand-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.brand-logo--icon { aspect-ratio: 1; border-radius: 26%; }
+.brand-logo--icon { aspect-ratio: 1; }
+.brand-logo--icon img { object-fit: cover; }
 .brand-logo--vertical { aspect-ratio: 3 / 2; }
 .brand-logo--horizontal { aspect-ratio: 2048 / 758; }
 .brand-panel { background: #560623; color: #FFF8F5; position: relative; overflow: hidden; }
 .brand-panel::after { content: ""; position: absolute; width: 24rem; height: 24rem; border: 1px solid #C16F8440; border-radius: 50%; right: -15rem; bottom: -15rem; pointer-events: none; }
 .brand-panel .brand-logo { border-radius: 0; }
 .kauane-sidebar { background: linear-gradient(170deg, #560623 0%, #350617 100%); color: #FFF8F5; }
-.kauane-sidebar .brand-logo { background: #560623; }
+/* Transparent PNGs: wine lettering on light surfaces, ivory on dark panels. */
+.brand-logo img { filter: brightness(0) saturate(100%) invert(10%) sepia(62%) saturate(2500%) hue-rotate(309deg) brightness(85%) contrast(105%); }
+html[data-modo="escuro"] .brand-logo img,
+.brand-panel .brand-logo img,
+.kauane-sidebar .brand-logo img { filter: none; }
 .booking-heading { font-size: clamp(2.25rem, 7vw, 3.25rem); line-height: 1.05; font-weight: 500; }
 .mobile-main { padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px)); }
 .mobile-bottom-nav { padding-bottom: env(safe-area-inset-bottom, 0px); }

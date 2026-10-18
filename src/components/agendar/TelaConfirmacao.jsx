@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, MessageCircle, Heart, Clock } from "lucide-react";
 import { dataLonga, POLITICA_RESERVA, formatBRL } from "@/lib/helpers";
 
-export default function TelaConfirmacao({ resultado, whatsappUrl, onNovo, onReenviar, reenviando }) {
+export default function TelaConfirmacao({ politica = POLITICA_RESERVA, resultado, whatsappUrl, onNovo, onReenviar, reenviando }) {
   const ag = resultado?.agendamento || resultado;
   const manut = resultado?.manutencao;
   return (
@@ -71,7 +71,7 @@ export default function TelaConfirmacao({ resultado, whatsappUrl, onNovo, onReen
 
       <p className="text-sm text-muted-foreground">
         {ag?.taxa_reserva > 0 ? "Seu horário será confirmado após a conferência. Reservas pendentes podem expirar conforme o prazo do estúdio." : "Seu agendamento está confirmado."}
-        {ag?.taxa_reserva > 0 && <span className="block mt-2 text-xs">{POLITICA_RESERVA}</span>}
+        {ag?.taxa_reserva > 0 && <span className="block mt-2 text-xs whitespace-pre-wrap">{politica}</span>}
       </p>
 
       {whatsappUrl && (

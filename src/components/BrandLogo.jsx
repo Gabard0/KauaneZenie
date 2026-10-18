@@ -3,7 +3,7 @@ import React from "react";
 const LOGOS = {
   horizontal: "/brand/kauane-horizontal.png",
   vertical: "/brand/kauane-vertical.png",
-  icon: "/brand/kauane-icon.png",
+  icon: "/brand/kauane-monogram-light.png",
 };
 
 export default function BrandLogo({ variant = "horizontal", className = "w-44", ...props }) {

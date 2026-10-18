@@ -1,3 +1,4 @@
+const POLITICA_RESERVA = "A taxa de reserva não é reembolsável em caso de cancelamento ou não comparecimento. O valor do procedimento é pago no dia do atendimento.";
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.44";
 import { hojeSP, expirarReservasAguardando } from "../../shared/agenda.ts";
 import { MENSAGEM_PADRAO, comTravaAgenda } from "../../shared/auth.ts";
@@ -39,6 +40,8 @@ export default async function (req) {
     const taxa = cfg && cfg.taxa_agendamento > 0 ? cfg.taxa_agendamento : 30;
 
     return Response.json({
+      politica_reserva: cfg?.politica_reserva || POLITICA_RESERVA,
+      manutencao_automatica: cfg?.manutencao_automatica !== false,
       servicos: servicos
         .filter((s) => s.ativo !== false)
         .map((s) => ({
@@ -46,7 +49,7 @@ export default async function (req) {
           nome: s.nome,
           preco: s.preco || 0,
           duracao: s.duracao > 0 ? s.duracao : 60,
-          gera_manutencao: s.gera_manutencao === true,
+          gera_manutencao: cfg?.manutencao_automatica !== false && s.gera_manutencao === true,
           manutencao_servico_id: s.manutencao_servico_id || "",
           intervalo_manutencao: s.intervalo_manutencao > 0 ? s.intervalo_manutencao : 20,
         })),

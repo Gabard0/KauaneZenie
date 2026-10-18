@@ -17,6 +17,7 @@ import { VARS, VAR_LABELS, montarMensagem, DADOS_EXEMPLO } from "@/lib/mensagem"
 
 const ERROS = {
   whatsapp_invalido: "Informe um WhatsApp válido com DDD (ex.: (41) 99999-9999)",
+  politica_invalida: "A mensagem de reembolso deve ter entre 5 e 1500 caracteres",
   mensagem_invalida: "A mensagem deve ter entre 5 e 1500 caracteres",
   sessao_invalida: "Sua sessão expirou. Entre novamente.",
   nada_para_salvar: "Nada para salvar",
@@ -32,6 +33,8 @@ export default function AgendamentoOnline() {
   const [whatsapp, setWhatsapp] = useState("");
   const [mensagem, setMensagem] = useState("");
   const [salvando, setSalvando] = useState(false);
+  const [politica, setPolitica] = useState(POLITICA_RESERVA);
+  const [manutencaoAutomatica, setManutencaoAutomatica] = useState(true);
   const [exigirTaxa, setExigirTaxa] = useState(true);
   const [taxa, setTaxa] = useState("30");
   const [pixQr, setPixQr] = useState("");
@@ -55,17 +58,20 @@ export default function AgendamentoOnline() {
       .catch(() => setQr(""));
     adminLerConfig()
       .then((cfg) => {
+        if (!cfg?.ok) throw new Error("config_indisponivel");
         setWhatsapp(maskTelefone(studioPhone(cfg.whatsapp)));
         setMensagem(studioMessage(cfg.mensagem_whatsapp));
+        setPolitica(cfg.politica_reserva || POLITICA_RESERVA);
+        setManutencaoAutomatica(cfg.manutencao_automatica !== false);
         setExigirTaxa(cfg.exigir_taxa !== false);
         setTaxa(String(cfg.taxa_agendamento || 30));
         setPixQr(cfg.pix_qr_code_url || "");
         setPixCopia(cfg.pix_copia_cola || "");
         setWaComprovantes(maskTelefone(studioPhone(cfg.whatsapp_comprovantes || cfg.whatsapp)));
         setTempoReserva(String(cfg.tempo_reserva_minutos || 15));
+        setCarregado(true);
       })
-      .catch(() => setWhatsapp(maskTelefone("41998047493")))
-      .finally(() => setCarregado(true));
+      .catch(() => toast({ title: "Não foi possível carregar as configurações. Reabra esta página para tentar novamente.", variant: "destructive" }));
   }, []);
 
   const copiar = async () => {
@@ -138,6 +144,8 @@ export default function AgendamentoOnline() {
       const r = await adminSalvarConfig({
         whatsapp: digits(whatsapp),
         mensagem_whatsapp: mensagem,
+        politica_reserva: politica,
+        manutencao_automatica: manutencaoAutomatica,
         exigir_taxa: exigirTaxa,
         taxa_agendamento: Number(taxa) || 30,
         pix_qr_code_url: pixQr,
@@ -151,7 +159,7 @@ export default function AgendamentoOnline() {
       }
       toast({
         title: "Configurações salvas",
-        description: "Os novos agendamentos já usarão esta mensagem.",
+        description: "As preferências foram atualizadas para os próximos agendamentos.",
       });
     } catch {
       toast({ title: "Erro de conexão. Tente novamente.", variant: "destructive" });
@@ -269,6 +277,25 @@ export default function AgendamentoOnline() {
         </Button>
       </div>
 
+      <div className="rounded-3xl bg-card border p-5 sm:p-6 space-y-5">
+        <h2 className="text-lg font-heading font-semibold">Reserva e manutenção</h2>
+        <div className="space-y-2">
+          <Label htmlFor="politica-reserva">Mensagem de cancelamento e reembolso</Label>
+          <Textarea id="politica-reserva" value={politica} onChange={(e) => setPolitica(e.target.value)} rows={5} maxLength={1500} disabled={!carregado || salvando} />
+          <p className="text-xs text-muted-foreground">Exibida na reserva, no pagamento e na confirmação. {politica.length}/1500 caracteres.</p>
+        </div>
+        <div className="flex items-center justify-between gap-4 rounded-xl border p-4">
+          <div>
+            <Label htmlFor="manutencao-automatica">Registrar manutenção automaticamente</Label>
+            <p className="text-xs text-muted-foreground mt-1">Vale para o link público e o painel, nos serviços configurados para gerar manutenção. Desativar mantém os registros existentes e interrompe a criação e o recálculo automáticos.</p>
+          </div>
+          <Switch id="manutencao-automatica" checked={manutencaoAutomatica} onCheckedChange={setManutencaoAutomatica} disabled={!carregado || salvando} />
+        </div>
+        <Button className="w-full sm:w-auto h-12" onClick={salvarCfg} disabled={salvando || !carregado}>
+          <Save /> {salvando ? "Salvando..." : "Salvar configurações"}
+        </Button>
+      </div>
+
       <div className="rounded-3xl bg-card border border-gold/40 p-5 sm:p-6 space-y-5">
         <div>
           <h2 className="text-lg font-heading font-semibold">Pagamento da taxa de agendamento</h2>
@@ -276,9 +303,7 @@ export default function AgendamentoOnline() {
             Exija uma taxa via Pix para reservar o horário online. O agendamento só fica confirmado
             após você conferir o comprovante.
           </p>
-          <p className="mt-3 rounded-xl border border-gold/30 bg-gold/5 p-3 text-sm">
-            <strong>Política de reserva: </strong>{POLITICA_RESERVA}
-          </p>
+
         </div>
 
         <div className="flex items-center justify-between rounded-xl border bg-muted/30 px-4 py-3">

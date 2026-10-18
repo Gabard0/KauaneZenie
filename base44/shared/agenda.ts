@@ -152,6 +152,8 @@ export async function expirarReservasAguardando(svc) {
 // Retorna { data, horario, servico_nome, status } ou null quando o procedimento
 // não gera manutenção.
 export async function criarManutencaoPara({ svc, principal, servicos, funcionamento, excecoes, hoje }) {
+  const configs = await svc.entities.ConfigApp.list();
+  if (configs[0]?.manutencao_automatica === false) return null;
   const svcConfig = servicos.find((s) => s.id === principal.servico_id);
   if (!svcConfig || !svcConfig.gera_manutencao || !svcConfig.manutencao_servico_id) return null;
   const svcManut = servicos.find((s) => s.id === svcConfig.manutencao_servico_id);

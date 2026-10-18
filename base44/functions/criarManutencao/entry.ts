@@ -13,7 +13,8 @@ export default async function (req) {
     } catch (e) {
       payload = {};
     }
-    await exigirAdmin(svc, payload.token);
+    const cfg = await exigirAdmin(svc, payload.token);
+    if (cfg.manutencao_automatica === false) return Response.json({ ok: true, manutencao: null, desativada: true });
     return await comTravaAgenda(svc, async () => {
     const principalId = String(payload.agendamento_principal_id || "");
     if (!principalId) return Response.json({ ok: false, error: "dados_invalidos" });

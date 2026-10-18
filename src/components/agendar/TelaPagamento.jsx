@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { POLITICA_RESERVA, formatBRL, dataLonga } from "@/lib/helpers";
 import { Copy, MessageCircle, AlertTriangle, Loader2, Check } from "lucide-react";
 
-export default function TelaPagamento({ pagamento, resumo, onEnviado, enviando }) {
+export default function TelaPagamento({ politica = POLITICA_RESERVA, pagamento, resumo, onEnviado, enviando }) {
   const [copiado, setCopiado] = useState(false);
   const taxa = formatBRL(pagamento?.taxa || 30);
 
@@ -69,7 +69,7 @@ export default function TelaPagamento({ pagamento, resumo, onEnviado, enviando }
           <AlertTriangle className="w-4 h-4" /> Importante
         </p>
         <p className="text-sm text-amber-800/90 dark:text-amber-200/80">
-          O pagamento do Pix é necessário para reservar seu horário. <strong>Taxa não reembolsável.</strong> {POLITICA_RESERVA}
+          O pagamento do Pix é necessário para reservar seu horário. <span className="whitespace-pre-wrap">{politica}</span>
         </p>
         <p className="text-sm text-amber-800/90 dark:text-amber-200/80">
           Depois de realizar o pagamento, envie o comprovante pelo WhatsApp da Kauane.

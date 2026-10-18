@@ -59,7 +59,7 @@ export default async function (req) {
         ok: true,
         usuario: cfg.usuario,
         deve_trocar: cfg.deve_trocar_senha === true,
-        tema: cfg.tema === "rose" || cfg.tema === "feminino" ? "rose" : "barbozza",
+        tema: "barbozza",
         modo: cfg.modo === "escuro" ? "escuro" : "claro",
       });
     }

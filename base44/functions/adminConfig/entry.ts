@@ -1,3 +1,4 @@
+const POLITICA_RESERVA = "A taxa de reserva não é reembolsável em caso de cancelamento ou não comparecimento. O valor do procedimento é pago no dia do atendimento.";
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.44";
 import { MENSAGEM_PADRAO, carregarConfig, exigirAdmin } from "../../shared/auth.ts";
 
@@ -5,7 +6,7 @@ function erro(msg) {
   return Response.json({ ok: false, error: msg });
 }
 
-const temaNormalizado = (t) => (t === "rose" || t === "feminino" ? "rose" : "barbozza");
+const temaNormalizado = () => "barbozza";
 const modoNormalizado = (m) => (m === "escuro" ? "escuro" : "claro");
 
 export default async function (req) {
@@ -30,6 +31,8 @@ export default async function (req) {
         modo: modoNormalizado(cfg.modo),
         whatsapp: cfg.whatsapp || "41998047493",
         mensagem_whatsapp: cfg.mensagem_whatsapp || MENSAGEM_PADRAO,
+        politica_reserva: cfg.politica_reserva || POLITICA_RESERVA,
+        manutencao_automatica: cfg.manutencao_automatica !== false,
         exigir_taxa: cfg.exigir_taxa !== false,
         taxa_agendamento: cfg.taxa_agendamento > 0 ? cfg.taxa_agendamento : 30,
         pix_qr_code_url: cfg.pix_qr_code_url || "",
@@ -52,6 +55,14 @@ export default async function (req) {
         if (payload.mensagem_whatsapp.trim().length < 5) return erro("mensagem_invalida");
         if (payload.mensagem_whatsapp.length > 1500) return erro("mensagem_invalida");
         dados.mensagem_whatsapp = payload.mensagem_whatsapp;
+      }
+      if (payload.manutencao_automatica !== undefined) {
+        if (typeof payload.manutencao_automatica !== "boolean") return erro("manutencao_invalida");
+        dados.manutencao_automatica = payload.manutencao_automatica;
+      }
+      if (payload.politica_reserva !== undefined) {
+        if (typeof payload.politica_reserva !== "string" || payload.politica_reserva.trim().length < 5 || payload.politica_reserva.length > 1500) return erro("politica_invalida");
+        dados.politica_reserva = payload.politica_reserva.trim();
       }
       if (payload.exigir_taxa !== undefined) dados.exigir_taxa = payload.exigir_taxa === true;
       if (payload.taxa_agendamento !== undefined) {

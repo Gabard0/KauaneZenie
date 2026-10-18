@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Check } from "lucide-react";
-import { TEMAS, MODOS, aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
+import { MODOS, aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
 import { adminSalvarConfig } from "@/lib/adminAuth";
 
 export default function Aparencia() {
   const { toast } = useToast();
-  const [tema, setTema] = useState(temaSalvo());
+  const tema = temaSalvo();
   const [modo, setModo] = useState(modoSalvo());
   const [salvando, setSalvando] = useState(false);
 
   const escolher = async (novoTema, novoModo) => {
-    setTema(novoTema);
     setModo(novoModo);
     aplicarTema(novoTema, novoModo);
     setSalvando(true);
@@ -24,7 +22,7 @@ export default function Aparencia() {
         });
       } else {
         toast({
-          title: `Tema ${TEMAS[novoTema].nome} · ${MODOS[novoModo].nome} ativado`,
+          title: `Modo ${MODOS[novoModo].nome} ativado`,
         });
       }
     } catch {
@@ -42,48 +40,8 @@ export default function Aparencia() {
       <div>
         <h1 className="text-2xl font-heading font-semibold">Aparência</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Escolha o tema e o modo — a mudança é imediata e fica salva para o próximo login.
+          A identidade Kauane Zenie nos modos claro e escuro. Escolha como prefere visualizar o sistema.
         </p>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-semibold">Tema</p>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {Object.entries(TEMAS).map(([chave, t]) => {
-            const ativo = tema === chave;
-            return (
-              <button
-                key={chave}
-                type="button"
-                onClick={() => escolher(chave, modo)}
-                className={`text-left rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${
-                  ativo ? "border-gold ring-2 ring-gold/40 bg-gold/5" : "bg-card"
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold">
-                    {t.emoji} {t.nome}
-                  </p>
-                  {ativo && (
-                    <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
-                      <Check className="w-4 h-4" />
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-muted-foreground mt-1">{t.desc}</p>
-                <div className="flex gap-2 mt-4">
-                  {t.cores.map((c) => (
-                    <span
-                      key={c}
-                      className="w-8 h-8 rounded-full border border-border shadow-inner"
-                      style={{ backgroundColor: c }}
-                    />
-                  ))}
-                </div>
-              </button>
-            );
-          })}
-        </div>
       </div>
 
       <div className="space-y-2">
@@ -94,6 +52,8 @@ export default function Aparencia() {
               key={chave}
               type="button"
               onClick={() => escolher(tema, chave)}
+              disabled={salvando}
+              aria-pressed={modo === chave}
               className={`h-12 rounded-xl text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
                 modo === chave
                   ? "bg-primary text-primary-foreground font-semibold shadow"

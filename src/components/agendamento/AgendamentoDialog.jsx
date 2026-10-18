@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { base44 } from "@/api/base44Client";
+import { adminLerConfig } from "@/lib/adminAuth";
 import { todayISO, formatBRL } from "@/lib/helpers";
 import { horariosDoDia, hojeLocalMin, maskTelefone } from "@/lib/booking";
 import { normalizarNome, encontrarPorTelefone, encontrarNomesParecidos } from "@/lib/clientesMatch";
@@ -44,6 +45,7 @@ export default function AgendamentoDialog({
   const [avisoNova, setAvisoNova] = useState("");
   const [parecidas, setParecidas] = useState(null);
   const [pendentes, setPendentes] = useState(null);
+  const [manutencaoAutomatica, setManutencaoAutomatica] = useState(false);
   const [recalcManut, setRecalcManut] = useState(true);
 
   useEffect(() => {
@@ -64,13 +66,15 @@ export default function AgendamentoDialog({
     setPendentes(null);
     setRecalcManut(true);
     const carregar = async () => {
-      const [cls, svcs, funcs, excs, lista] = await Promise.all([
+      const [cls, svcs, funcs, excs, lista, config] = await Promise.all([
         base44.entities.Cliente.list(),
         base44.entities.Servico.list(),
         base44.entities.ConfigAgenda.filter({ tipo: "funcionamento" }),
         base44.entities.ConfigAgenda.filter({ tipo: "excecao" }),
         base44.entities.Agendamento.list(),
+        adminLerConfig(),
       ]);
+      setManutencaoAutomatica(config.manutencao_automatica !== false);
       setClientes(cls);
       setServicos(svcs.filter((s) => s.ativo !== false));
       setAgendaCfg({
@@ -242,7 +246,7 @@ export default function AgendamentoDialog({
         }
         await base44.entities.Agendamento.update(agendamento.id, updateData);
         // Recalcula a manutenção vinculada quando o principal é reagendado
-        if (recalcManut && agendamento.manutencao_vinculada_id) {
+        if (manutencaoAutomatica && recalcManut && agendamento.manutencao_vinculada_id) {
           try {
             await base44.functions.invoke("criarManutencao", { agendamento_principal_id: agendamento.id });
           } catch (e) {}
@@ -270,7 +274,7 @@ export default function AgendamentoDialog({
           observacao,
         });
         // Cria manutenção automática quando o procedimento gera
-        if (escolhidos[0]?.gera_manutencao) {
+        if (manutencaoAutomatica && escolhidos[0]?.gera_manutencao) {
           try {
             await base44.functions.invoke("criarManutencao", { agendamento_principal_id: criado.id });
           } catch (e) {}
@@ -413,7 +417,7 @@ export default function AgendamentoDialog({
                   placeholder="Ex.: usar esmalte da própria cliente"
                 />
               </div>
-              {reagendar && agendamento?.manutencao_vinculada_id && (
+              {manutencaoAutomatica && reagendar && agendamento?.manutencao_vinculada_id && (
                 <label className="flex items-center gap-2.5 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3 cursor-pointer">
                   <input
                     type="checkbox"

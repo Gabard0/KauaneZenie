@@ -59,6 +59,7 @@ export default function Agendar() {
   const valorTotal = useMemo(() => servicosSel.reduce((t, s) => t + s.preco, 0), [servicosSel]);
   const duracaoBase = duracaoTotal;
   const temManutencao = useMemo(() => servicosSel.some((s) => s.gera_manutencao), [servicosSel]);
+  const politica = config?.politica_reserva || POLITICA_RESERVA;
   const exigirTaxa = config?.pagamento?.exigir_taxa === true;
 
   const horarios = useMemo(() => {
@@ -230,6 +231,7 @@ export default function Agendar() {
         {etapa === "pagamento" && resultado ? (
           <div className={secaoCls + " animate-in fade-in slide-in-from-bottom-2 duration-300"}>
             <TelaPagamento
+              politica={politica}
               pagamento={resultado.pagamento}
               resumo={{ data: resultado.agendamento.data, horario: resultado.agendamento.horario, procedimento: resultado.agendamento.servico_nome }}
               onEnviado={enviarComprovante}
@@ -239,6 +241,7 @@ export default function Agendar() {
         ) : etapa === "final" && resultado ? (
           <div className={secaoCls}>
             <TelaConfirmacao
+              politica={politica}
               resultado={resultado}
               whatsappUrl={waUrl}
               onNovo={reset}
@@ -358,7 +361,7 @@ export default function Agendar() {
                 {exigirTaxa && (
                   <div className="rounded-2xl border border-amber-400/40 bg-amber-400/10 p-3 text-xs text-amber-800/90 dark:text-amber-200/80">
                     💳 Você pagará uma taxa de <strong>{formatBRL(config.pagamento.taxa)}</strong> via Pix para
-                    reservar o horário. <strong>Taxa não reembolsável.</strong> {POLITICA_RESERVA}
+                    reservar o horário. <span className="whitespace-pre-wrap">{politica}</span>
                   </div>
                 )}
                 {erro && <p className="text-sm text-destructive">{erro}</p>}

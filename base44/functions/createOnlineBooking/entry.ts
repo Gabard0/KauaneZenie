@@ -171,7 +171,7 @@ export default async function (req) {
     // Manutenção automática vinculada (quando o procedimento principal gera)
     let manutencao = null;
     try {
-      manutencao = await criarManutencaoPara({
+      if (cfg?.manutencao_automatica !== false) manutencao = await criarManutencaoPara({
         svc,
         principal: agCriado,
         servicos,

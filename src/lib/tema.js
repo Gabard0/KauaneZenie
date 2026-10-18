@@ -7,12 +7,6 @@ export const TEMAS = {
     desc: "Vinho profundo, marfim e rosé",
     cores: ["#560623", "#C16F84", "#F8EFEB", "#321522"],
   },
-  rose: {
-    nome: "Kauane · Rosé",
-    emoji: "✧",
-    desc: "Rosa suave com detalhes em vinho",
-    cores: ["#AE546E", "#DCA6B4", "#FFF8F5", "#560623"],
-  },
 };
 
 export const MODOS = {
@@ -31,10 +25,7 @@ export function aplicarTema(tema, modo) {
   return { tema: t, modo: m };
 }
 
-export const temaSalvo = () => {
-  const t = localStorage.getItem("kauane_tema") || localStorage.getItem("barbozza_tema");
-  return t === "rose" || t === "feminino" ? "rose" : "barbozza";
-};
+export const temaSalvo = () => "barbozza";
 export const modoSalvo = () =>
   (localStorage.getItem("kauane_modo") || localStorage.getItem("barbozza_modo")) === "escuro" ? "escuro" : "claro";
 export const preferenciaSalva = () => ({ tema: temaSalvo(), modo: modoSalvo() });
