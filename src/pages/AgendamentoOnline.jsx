@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Copy, ExternalLink, Download, Share2 } from "lucide-react";
+import { Copy, ExternalLink, Download, Share2, QrCode } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import BrandLogo from "@/components/BrandLogo";
 import ConfiguracoesDialog from "@/components/ConfiguracoesDialog";
@@ -10,6 +10,8 @@ const ConfiguracoesAgendamento = lazy(() => import("@/components/ConfiguracoesAg
 
 export default function AgendamentoOnline() {
   const { toast } = useToast();
+  const [configOpen, setConfigOpen] = useState(false);
+  const [abaConfig, setAbaConfig] = useState("comunicacao");
   const [qr, setQr] = useState("");
   const [erroQr, setErroQr] = useState(false);
   const [tentativa, setTentativa] = useState(0);
@@ -45,8 +47,8 @@ export default function AgendamentoOnline() {
           <h1 className="text-2xl font-heading font-semibold">Link de agendamento</h1>
           <p className="text-sm text-muted-foreground">Compartilhe com suas clientes.</p>
         </div>
-        <ConfiguracoesDialog titulo="Configurações do agendamento" descricao="WhatsApp, reserva, manutenção e pagamento Pix.">
-          <Suspense fallback={<Carregando />}><ConfiguracoesAgendamento /></Suspense>
+        <ConfiguracoesDialog open={configOpen} onOpenChange={(v) => { setConfigOpen(v); if (!v) setAbaConfig("comunicacao"); }} titulo="Configurações do agendamento" descricao="WhatsApp, reserva, manutenção e pagamento Pix.">
+          <Suspense fallback={<Carregando />}><ConfiguracoesAgendamento abaInicial={abaConfig} /></Suspense>
         </ConfiguracoesDialog>
       </div>
       <section className="rounded-3xl border bg-card p-5 sm:p-6 space-y-4 text-center">
@@ -62,6 +64,7 @@ export default function AgendamentoOnline() {
           <Button variant="ghost" className="h-11" disabled={!qr} asChild={!!qr}>{qr ? <a href={qr} download="qrcode-kauane-zenie.png"><Download /> Baixar QR</a> : <span>Gerando QR…</span>}</Button>
         </div>
       </section>
+      <Button variant="outline" className="w-full h-12" onClick={() => { setAbaConfig("pix"); setConfigOpen(true); }}><QrCode /> Configurar Pix e QR Code</Button>
     </div>
   );
 }

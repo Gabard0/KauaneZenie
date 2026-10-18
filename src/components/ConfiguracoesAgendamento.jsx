@@ -1,3 +1,4 @@
+import RecortarQrPix from "@/components/RecortarQrPix";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { POLITICA_RESERVA } from "@/lib/helpers";
 import React, { useEffect, useRef, useState } from "react";
@@ -22,7 +23,7 @@ const ERROS = {
   nada_para_salvar: "Nada para salvar",
 };
 
-export default function ConfiguracoesAgendamento() {
+export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" }) {
   const { toast } = useToast();
   const [carregado, setCarregado] = useState(false);
   const [whatsapp, setWhatsapp] = useState("");
@@ -32,6 +33,7 @@ export default function ConfiguracoesAgendamento() {
   const [manutencaoAutomatica, setManutencaoAutomatica] = useState(true);
   const [exigirTaxa, setExigirTaxa] = useState(true);
   const [taxa, setTaxa] = useState("30");
+  const [arquivoQr, setArquivoQr] = useState(null);
   const [pixQr, setPixQr] = useState("");
   const [pixCopia, setPixCopia] = useState("");
   const [waComprovantes, setWaComprovantes] = useState("");
@@ -75,20 +77,26 @@ export default function ConfiguracoesAgendamento() {
     });
   };
 
-  const trocarQr = async (e) => {
+  const trocarQr = (e) => {
     const file = e.target.files?.[0];
+    e.target.value = "";
     if (!file) return;
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 20 * 1024 * 1024) {
+      toast({ title: "Escolha uma imagem PNG, JPG ou WebP de até 20 MB", variant: "destructive" });
+      return;
+    }
+    setArquivoQr(file);
+  };
+
+  const enviarQr = async (file) => {
     setSubindoQr(true);
     try {
       const { file_url } = await base44.integrations.Core.UploadPublicFile({ file });
+      if (!file_url) throw new Error("upload_invalido");
       setPixQr(file_url);
-      toast({ title: "QR Code atualizado!" });
-    } catch (err) {
-      toast({ title: "Erro ao enviar imagem", variant: "destructive" });
-    } finally {
-      setSubindoQr(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
+      setArquivoQr(null);
+      toast({ title: "Recorte aplicado", description: "Clique em Salvar configurações para usar este QR Code nas reservas." });
+    } finally { setSubindoQr(false); }
   };
 
   const salvarCfg = async () => {
@@ -123,7 +131,7 @@ export default function ConfiguracoesAgendamento() {
 
   return (
     <div className="min-w-0">
-      <Tabs defaultValue="comunicacao">
+      <Tabs defaultValue={abaInicial}>
         <TabsList className="grid grid-cols-3 w-full h-11 mb-4">
           <TabsTrigger className="px-1 text-xs sm:text-sm" value="comunicacao">WhatsApp</TabsTrigger>
           <TabsTrigger className="px-1 text-xs sm:text-sm" value="reserva">Reserva</TabsTrigger>
@@ -224,8 +232,7 @@ export default function ConfiguracoesAgendamento() {
           <Switch checked={exigirTaxa} onCheckedChange={setExigirTaxa} />
         </div>
 
-        {exigirTaxa && (
-          <div className="space-y-4 animate-in fade-in duration-200">
+        <div className="space-y-4 animate-in fade-in duration-200">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label>Valor da taxa (R$)</Label>
@@ -253,7 +260,7 @@ export default function ConfiguracoesAgendamento() {
             </div>
 
             <div className="space-y-1.5">
-              <Label>QR Code Pix</Label>
+              <Label>QR Code para receber o Pix</Label>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="p-2 bg-white rounded-xl shrink-0">
                   {pixQr ? (
@@ -265,32 +272,38 @@ export default function ConfiguracoesAgendamento() {
                   )}
                 </div>
                 <div className="space-y-2">
-                  <input ref={fileRef} type="file" accept="image/*" onChange={trocarQr} className="hidden" />
+                  <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" onChange={trocarQr} className="hidden" />
                   <Button
                     type="button"
                     variant="outline"
                     className="h-11"
                     onClick={() => fileRef.current?.click()}
-                    disabled={subindoQr}
+                    disabled={subindoQr || !carregado || salvando}
                   >
                     {subindoQr ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                    Alterar QR Code
+                    {pixQr ? "Trocar imagem do QR" : "Anexar QR Code Pix"}
                   </Button>
-                  <p className="text-xs text-muted-foreground">Envie a imagem do QR Code oficial do seu Pix.</p>
+                  <p className="text-xs text-muted-foreground">Anexe a imagem do seu banco. Você poderá recortar antes de usar.</p>
                 </div>
               </div>
             </div>
 
+            {arquivoQr && <RecortarQrPix arquivo={arquivoQr} onConfirmar={enviarQr} onCancelar={() => setArquivoQr(null)} enviando={subindoQr} />}
+
             <div className="space-y-1.5">
-              <Label>Código Pix copia e cola</Label>
+              <Label htmlFor="pix-copia-cola">Pix copia e cola para receber</Label>
               <Textarea
+                id="pix-copia-cola"
                 value={pixCopia}
-                onChange={(e) => setPixCopia(e.target.value)}
+                onChange={(e) => setPixCopia(e.target.value.trim())}
                 rows={3}
-                placeholder="00020126360014br.gov.bcb.pix..."
-                className="font-mono text-xs"
+                placeholder="Cole aqui o código Pix completo gerado pelo seu banco (começa com 000201…)"
+                className="font-mono text-xs break-all"
               />
             </div>
+
+            <p className="text-xs text-muted-foreground">Cole o código completo correspondente ao QR anexado, e não somente sua chave Pix. A cliente poderá copiar esse código na tela de pagamento.</p>
+            {!exigirTaxa && <p className="text-xs text-muted-foreground">Você pode salvar o Pix agora. Ele aparecerá para a cliente quando a cobrança de taxa estiver ativada.</p>}
 
             <div className="space-y-1.5">
               <Label>WhatsApp para comprovantes</Label>
@@ -304,15 +317,13 @@ export default function ConfiguracoesAgendamento() {
               <p className="text-xs text-muted-foreground">A cliente envia o comprovante do Pix para este número.</p>
             </div>
           </div>
-        )}
-
 
       </div>
 
         </TabsContent>
       </Tabs>
       <div className="sticky bottom-0 bg-background border-t pt-3 pb-1 mt-4">
-        <Button className="w-full h-12" onClick={salvarCfg} disabled={salvando || !carregado || subindoQr}>
+        <Button className="w-full h-12" onClick={salvarCfg} disabled={salvando || !carregado || subindoQr || !!arquivoQr}>
           {salvando ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save />}
           {salvando ? "Salvando..." : "Salvar configurações"}
         </Button>
