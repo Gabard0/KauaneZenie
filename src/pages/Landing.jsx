@@ -203,7 +203,7 @@ export default function Landing() {
             <Link to="/agendar">Agendamento</Link>
             <Link to="/login">Área administrativa</Link>
           </nav>
-          <small>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza</small>
+          <small>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza · Fotografias ilustrativas</small>
         </footer>
       </div>
     </div>
