@@ -1,0 +1,372 @@
+/* Home pública editorial Kauane Zenie — escopo isolado do painel Base44.
+   Referência estrutural: Sage. Identidade cromática: vinho, rosé e marfim originais. */
+.kz-site {
+  --kz-wine: #560623;
+  --kz-wine-deep: #321522;
+  --kz-rose: #C16F84;
+  --kz-rose-light: #E7B5C3;
+  --kz-ivory: #F8EFEB;
+  --kz-surface: #F4EEEA;
+  --kz-paper: #ECE2DE;
+  --kz-muted: #79636B;
+  --kz-display: "Cormorant Garamond", Georgia, serif;
+  --kz-text: "Plus Jakarta Sans", sans-serif;
+  background: #DCD2D0;
+  color: var(--kz-wine-deep);
+  min-height: 100vh;
+  padding: clamp(0px, 3vw, 36px);
+  font-family: var(--kz-text);
+  overflow-x: clip;
+}
+.kz-site *, .kz-site *::before, .kz-site *::after { box-sizing: border-box; }
+.kz-site a { text-decoration: none; }
+.kz-site a:focus-visible, .kz-site button:focus-visible {
+  outline: 3px solid var(--kz-rose);
+  outline-offset: 4px;
+}
+.kz-shell {
+  max-width: 1480px;
+  margin-inline: auto;
+  background: var(--kz-surface);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 28px 60px rgba(50,21,34,.13);
+}
+.kz-section { padding-inline: clamp(24px, 7vw, 110px); }
+.kz-kicker {
+  color: var(--kz-rose);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  line-height: 1.5;
+}
+.kz-site h2 {
+  font-family: var(--kz-text);
+  font-size: clamp(31px, 4.35vw, 67px);
+  font-weight: 500;
+  letter-spacing: -.065em;
+  line-height: 1.06;
+}
+.kz-site h2 em {
+  font-family: var(--kz-display);
+  font-size: 1.16em;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+.kz-pill {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 19px;
+  min-height: 46px;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  padding: 12px 23px;
+  width: fit-content;
+  max-width: 100%;
+  font-size: 12px;
+  font-weight: 600;
+  transition: transform .2s ease, background .2s ease, color .2s ease;
+}
+.kz-pill:hover { transform: translateY(-2px); }
+.kz-pill--solid { color: var(--kz-ivory); background: var(--kz-wine); }
+.kz-pill--solid:hover { color: white; background: #77203D; }
+.kz-photo-fallback {
+  min-height: 200px;
+  width: 100%;
+  background: linear-gradient(125deg, #7D4457, #CAA0A5 64%, #EBD9D3);
+  display: grid;
+  place-items: center;
+}
+.kz-photo-fallback > span {
+  font: 400 clamp(58px, 11vw, 120px)/1 var(--kz-display);
+  color: rgba(255,255,255,.75);
+}
+.kz-photo-fallback__point { color: var(--kz-wine); }
+
+/* Hero fotográfico com tipografia editorial gigante, como a referência */
+.kz-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  color: #fff8f5;
+  min-height: min(850px, 91svh);
+  background: #623C47;
+  overflow: hidden;
+}
+.kz-hero__photo,
+.kz-hero__shade {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+}
+.kz-hero__photo {
+  object-fit: cover;
+  object-position: center 43%;
+  z-index: -2;
+  filter: saturate(.72) sepia(.15);
+}
+.kz-hero__shade {
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(36,11,20,.68) 0%, rgba(45,14,27,.32) 52%, rgba(45,14,27,.2) 100%),
+              linear-gradient(0deg, rgba(32,8,15,.52), transparent 38%);
+}
+.kz-header {
+  position: relative;
+  z-index: 10;
+  margin: 28px clamp(20px, 6vw, 90px) 0;
+  min-height: 74px;
+  padding: 10px 23px;
+  border: 1px solid rgba(255,255,255,.36);
+  border-radius: 20px;
+  background: rgba(255,242,240,.16);
+  -webkit-backdrop-filter: blur(17px);
+  backdrop-filter: blur(17px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+.kz-header__brand { width: clamp(138px, 16vw, 208px); flex-shrink: 0; display: block; }
+.kz-header__brand .brand-logo img { filter: none; }
+.kz-header__nav { display: flex; align-items: center; gap: clamp(16px, 2.6vw, 42px); }
+.kz-header__nav a, .kz-header__cta {
+  font-size: 12px;
+  line-height: 1.2;
+  color: #FFF8F5;
+  transition: opacity .18s ease;
+}
+.kz-header__nav a:hover, .kz-header__cta:hover { opacity: .7; }
+.kz-header__cta { display: inline-flex; align-items: center; gap: 9px; white-space: nowrap; font-weight: 600; }
+.kz-header__menu { display: none; background: transparent; border: 0; color: #fff; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; cursor: pointer; }
+.kz-mobile-menu { display: none; }
+.kz-hero__eyebrow {
+  position: relative;
+  z-index: 1;
+  margin: clamp(60px, 10vh, 140px) clamp(28px, 8vw, 116px) 0;
+  color: #FFF8F5;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .25em;
+}
+.kz-hero__eyebrow span { margin-inline: 8px; color: var(--kz-rose-light); }
+.kz-hero__content {
+  position: relative;
+  z-index: 2;
+  width: min(460px, 83%);
+  margin: 22px 0 190px clamp(28px, 8vw, 116px);
+}
+.kz-hero__content h1 {
+  font-size: clamp(33px, 4.2vw, 64px);
+  max-width: 520px;
+  line-height: 1.07;
+  font-weight: 500;
+  letter-spacing: -.06em;
+}
+.kz-hero__content p {
+  max-width: 300px;
+  margin-top: 23px;
+  color: rgba(255,248,245,.85);
+  font-size: 13px;
+  line-height: 1.75;
+}
+.kz-hero__button { margin-top: 30px; background: var(--kz-ivory); color: var(--kz-wine); }
+.kz-hero__button:hover { background: white; color: var(--kz-wine); }
+.kz-hero__display {
+  position: absolute;
+  z-index: 1;
+  bottom: -6.3%;
+  left: 3%;
+  right: 0;
+  width: max-content;
+  max-width: none;
+  font-family: var(--kz-display);
+  font-size: clamp(185px, 29.5vw, 438px);
+  font-weight: 400;
+  letter-spacing: -.095em;
+  line-height: .8;
+  color: rgba(255,248,245,.95);
+  pointer-events: none;
+  user-select: none;
+}
+.kz-hero__scroll {
+  position: absolute;
+  z-index: 3;
+  bottom: 38px;
+  right: clamp(22px, 6vw, 90px);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.6);
+  border-radius: 50%;
+  color: white;
+}
+.kz-hero__index { position: absolute; z-index: 2; bottom: 29px; left: clamp(24px, 7vw, 100px); font-size: 10px; color: #fff8f5b0; letter-spacing: .18em; }
+
+/* Filosofia: texto grande + fotografia de serviço */
+.kz-concept {
+  min-height: 580px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 6vw, 105px);
+  align-items: center;
+  padding-block: clamp(76px, 10vw, 145px);
+}
+.kz-concept__copy h2 { max-width: 565px; margin-top: 23px; }
+.kz-concept__copy .kz-copy-lead { font-size: 16px; font-weight: 600; margin-top: 28px; color: var(--kz-wine); }
+.kz-concept__copy > p:not(.kz-kicker):not(.kz-copy-lead) { max-width: 380px; font-size: 13px; line-height: 1.85; margin-top: 12px; color: var(--kz-muted); }
+.kz-concept__copy .kz-pill { margin-top: 35px; }
+.kz-concept__photo { align-self: center; position: relative; }
+.kz-concept__photo > img, .kz-concept__photo > .kz-photo-fallback { display: block; width: 100%; height: clamp(330px, 41vw, 570px); object-fit: cover; object-position: center; }
+.kz-image-caption { position: absolute; right: 0; bottom: -26px; color: var(--kz-muted); font-size: 9px; letter-spacing: .13em; }
+
+/* Galeria assimétrica do tipo Sage */
+.kz-gallery {
+  padding-block: 38px clamp(80px, 11vw, 165px);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: clamp(12px, 1.5vw, 22px);
+  align-items: start;
+}
+.kz-gallery__item { height: clamp(290px, 36vw, 520px); }
+.kz-gallery__item--offset { margin-top: 55px; }
+.kz-gallery__item > img, .kz-gallery__item > .kz-photo-fallback,
+.kz-gallery__small > img, .kz-gallery__small > .kz-photo-fallback { width: 100%; height: 100%; object-fit: cover; display: block; }
+.kz-gallery__copy { padding: clamp(0px, 2.8vw, 42px) 0 0 clamp(2px, 1.4vw, 18px); }
+.kz-gallery__copy h2 { font-size: clamp(28px, 3.3vw, 50px); margin-top: 20px; }
+.kz-gallery__copy > p:not(.kz-kicker) { max-width: 330px; margin-top: 19px; font-size: 12px; line-height: 1.85; color: var(--kz-muted); }
+.kz-text-link { display: inline-flex; align-items: center; gap: 12px; margin-top: 28px; color: var(--kz-wine); font-size: 12px; font-weight: 700; border-bottom: 1px solid var(--kz-wine); padding-bottom: 5px; }
+.kz-gallery__small { margin-top: 55px; height: clamp(180px, 19vw, 280px); overflow: hidden; }
+
+/* Procedimentos reais da agenda */
+.kz-services {
+  background: #EDE2DF;
+  padding-block: clamp(80px, 9vw, 140px);
+  display: grid;
+  grid-template-columns: minmax(240px, .83fr) minmax(0, 1.17fr);
+  gap: clamp(35px, 8vw, 120px);
+}
+.kz-services__intro h2 { margin-top: 22px; max-width: 500px; }
+.kz-services__intro > p:not(.kz-kicker) { max-width: 380px; color: var(--kz-muted); margin-top: 24px; font-size: 13px; line-height: 1.9; }
+.kz-services__list { align-self: center; }
+.kz-service { color: var(--kz-wine-deep); min-height: 89px; display: flex; align-items: center; gap: 18px; border-bottom: 1px solid rgba(86,6,35,.25); transition: padding .2s ease, color .2s ease; }
+.kz-service:first-child { border-top: 1px solid rgba(86,6,35,.25); }
+.kz-service:hover { padding-left: 9px; color: var(--kz-rose); }
+.kz-service__number { font-size: 11px; letter-spacing: .04em; color: var(--kz-rose); min-width: 23px; }
+.kz-service__name { flex: 1; font-family: var(--kz-display); font-size: clamp(23px, 2.4vw, 36px); font-weight: 500; line-height: 1.1; }
+.kz-service__meta { text-align: right; flex-shrink: 0; color: var(--kz-muted); font-size: 10px; line-height: 1.5; }
+.kz-services__feedback { border-block: 1px solid #A88F99; padding-block: 27px; font-size: 13px; color: var(--kz-muted); line-height: 1.8; }
+.kz-services__action { margin-top: 30px; }
+
+/* Palavra decorativa e composição editorial da última seção */
+.kz-statement { position: relative; min-height: 740px; padding-block: 140px 120px; overflow: hidden; }
+.kz-statement__display { position: absolute; top: -75px; left: 3.5%; color: rgba(193,111,132,.19); font: 400 clamp(180px, 29vw, 405px)/.85 var(--kz-display); letter-spacing: -.095em; white-space: nowrap; pointer-events: none; user-select: none; }
+.kz-statement__top { position: relative; z-index: 1; max-width: 500px; }
+.kz-statement__top h2 { margin-top: 18px; }
+.kz-statement__visual { position: absolute; z-index: 0; top: 190px; left: 43%; width: 40%; height: 430px; }
+.kz-statement__visual > img, .kz-statement__visual > .kz-photo-fallback { display: block; width: 100%; height: 100%; object-fit: cover; }
+.kz-statement__bottom { position: relative; z-index: 1; width: 35%; max-width: 350px; margin-top: 250px; }
+.kz-statement__bottom > p { color: var(--kz-muted); font-size: 13px; line-height: 1.9; }
+.kz-statement__bottom .kz-pill { margin-top: 22px; }
+
+/* Contato, localização e footer */
+.kz-contact { background: var(--kz-wine); color: var(--kz-ivory); padding-block: 100px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 40px; }
+.kz-contact .kz-kicker { color: var(--kz-rose-light); }
+.kz-contact h2 { max-width: 620px; margin-top: 20px; }
+.kz-contact > div > p:not(.kz-kicker) { color: #F8EFEBB8; margin-top: 21px; font-size: 13px; line-height: 1.8; }
+.kz-contact__info { display: flex; flex-direction: column; align-items: flex-start; gap: 25px; align-self: end; }
+.kz-contact__address { display: flex; align-items: start; gap: 14px; color: #F8EFEBDB; font-size: 13px; line-height: 1.85; }
+.kz-contact__address svg { flex-shrink: 0; margin-top: 3px; }
+.kz-contact .kz-pill { background: var(--kz-ivory); color: var(--kz-wine); }
+.kz-contact .kz-pill:hover { background: white; }
+.kz-contact__socials { display: flex; flex-wrap: wrap; gap: 24px; }
+.kz-contact__socials a { display: inline-flex; align-items: center; gap: 8px; color: #F8EFEBCA; font-size: 12px; }
+.kz-contact__socials a:hover { color: white; }
+.kz-footer { background: #330B1C; color: #F8EFEBB0; padding: 50px clamp(24px, 7vw, 110px) 25px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+.kz-footer__brand { width: 160px; flex-shrink: 0; }
+.kz-footer .brand-logo img { filter: none; }
+.kz-footer p { color: #F8EFEBBB; font: italic 25px var(--kz-display); }
+.kz-footer nav { display: flex; gap: 22px; flex-wrap: wrap; margin-left: auto; }
+.kz-footer nav a { color: #F8EFEBBF; font-size: 11px; }
+.kz-footer nav a:hover { color: white; }
+.kz-footer small { width: 100%; border-top: 1px solid #FFFFFF26; padding-top: 22px; font-size: 10px; letter-spacing: .02em; }
+
+@media (max-width: 1000px) {
+  .kz-header__nav { gap: 15px; }
+  .kz-header__nav a { font-size: 11px; }
+  .kz-hero__display { font-size: 31vw; }
+  .kz-gallery__copy h2 { font-size: 31px; }
+}
+@media (max-width: 760px) {
+  .kz-site { padding: 0; }
+  .kz-shell { border-radius: 0; }
+  .kz-hero { min-height: 740px; min-height: min(800px, 100svh); }
+  .kz-header { margin: 15px 15px 0; min-height: 65px; padding: 8px 14px 8px 18px; border-radius: 17px; }
+  .kz-header__brand { width: 150px; }
+  .kz-header__nav, .kz-header__cta { display: none; }
+  .kz-header__menu { display: flex; }
+  .kz-mobile-menu {
+    position: absolute; top: 90px; left: 15px; right: 15px; z-index: 9;
+    display: flex; flex-direction: column; gap: 0;
+    padding: 15px 24px; background: #F8EFEF;
+    border: 1px solid #FFFFFF9A; border-radius: 17px;
+    box-shadow: 0 14px 30px #25091644;
+  }
+  .kz-mobile-menu a { min-height: 47px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #5606231C; font-size: 14px; color: var(--kz-wine); }
+  .kz-mobile-menu a:last-child { border-bottom: 0; font-weight: 700; }
+  .kz-hero__eyebrow { margin: 100px 26px 0; font-size: 9px; }
+  .kz-hero__content { margin: 22px 0 160px 26px; width: min(420px, 87%); }
+  .kz-hero__content h1 { font-size: clamp(37px, 9vw, 62px); }
+  .kz-hero__display { bottom: 48px; left: 3%; font-size: 29vw; letter-spacing: -.085em; }
+  .kz-hero__scroll { bottom: 21px; right: 21px; }
+  .kz-hero__index { bottom: 30px; }
+  .kz-hero__photo { object-position: 53% center; }
+  .kz-concept { grid-template-columns: 1fr; gap: 45px; padding-block: 78px; }
+  .kz-concept__photo > img, .kz-concept__photo > .kz-photo-fallback { height: 400px; }
+  .kz-gallery { grid-template-columns: 1fr 1fr; padding-block: 25px 80px; gap: 12px; }
+  .kz-gallery__item { height: 350px; }
+  .kz-gallery__item--offset { margin-top: 30px; }
+  .kz-gallery__copy { grid-column: 1 / -1; padding: 35px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 26px; }
+  .kz-gallery__copy .kz-kicker, .kz-gallery__copy h2, .kz-gallery__copy > p:not(.kz-kicker), .kz-gallery__copy .kz-text-link { grid-column: 1; }
+  .kz-gallery__copy h2 { font-size: clamp(33px, 6vw, 48px); margin-top: 6px; }
+  .kz-gallery__small { grid-column: 2; grid-row: 1 / span 4; margin: 0; height: 275px; }
+  .kz-services { grid-template-columns: 1fr; padding-block: 80px; gap: 35px; }
+  .kz-statement { min-height: auto; padding-block: 135px 80px; }
+  .kz-statement__display { font-size: 30vw; top: 6px; }
+  .kz-statement__visual { position: relative; inset: auto; width: 79%; height: 420px; margin: 30px 0 0 auto; }
+  .kz-statement__bottom { width: min(400px, 88%); margin-top: -30px; padding: 25px; background: var(--kz-surface); }
+  .kz-contact { grid-template-columns: 1fr; gap: 48px; padding-block: 80px; }
+}
+@media (max-width: 480px) {
+  .kz-section { padding-inline: 24px; }
+  .kz-hero { min-height: 680px; min-height: 91svh; }
+  .kz-hero__eyebrow { margin-top: 110px; font-size: 8px; letter-spacing: .18em; }
+  .kz-hero__content { margin-top: 22px; }
+  .kz-hero__content h1 { font-size: 40px; }
+  .kz-hero__content p { max-width: 250px; }
+  .kz-hero__display { bottom: 62px; font-size: 29.3vw; }
+  .kz-concept { padding-block: 68px; }
+  .kz-concept__photo > img, .kz-concept__photo > .kz-photo-fallback { height: 340px; }
+  .kz-gallery { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .kz-gallery__item { height: 260px; }
+  .kz-gallery__item--offset { margin-top: 23px; }
+  .kz-gallery__copy { display: block; padding-top: 35px; }
+  .kz-gallery__copy h2 { font-size: 39px; }
+  .kz-gallery__small { margin-top: 27px; height: 235px; width: 70%; margin-left: auto; }
+  .kz-service { gap: 9px; min-height: 82px; }
+  .kz-service__number { font-size: 9px; min-width: 18px; }
+  .kz-service__name { font-size: 23px; }
+  .kz-service__meta { font-size: 9px; max-width: 95px; }
+  .kz-service > svg { width: 16px; flex-shrink: 0; }
+  .kz-statement__visual { width: 90%; height: 340px; }
+  .kz-contact h2 { font-size: 39px; }
+  .kz-footer { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .kz-footer nav { margin-left: 0; gap: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kz-site *, .kz-site *::before, .kz-site *::after { transition: none !important; scroll-behavior: auto !important; }
+}
