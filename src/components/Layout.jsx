@@ -20,7 +20,7 @@ import BrandLogo from "@/components/BrandLogo";
 import { aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
 
 const navPrincipal = [
-{ to: "/", label: "Início", icon: Home, end: true },
+{ to: "/painel", label: "Início", icon: Home, end: true },
 { to: "/agenda", label: "Agenda", icon: CalendarDays },
 { to: "/clientes", label: "Clientes", icon: Users },
 { to: "/financeiro", label: "Financeiro", icon: Wallet },
@@ -61,7 +61,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen">
       <aside className="hidden md:flex fixed inset-y-0 left-0 w-60 flex-col kauane-sidebar border-r border-white/10 p-4 gap-1 z-30 overflow-y-auto">
-        <Link to="/" className="block px-1 py-5 mb-5">
+        <Link to="/painel" className="block px-1 py-5 mb-5">
           <BrandLogo className="w-full" />
           
         </Link>
@@ -100,7 +100,7 @@ export default function Layout() {
         </header>
 
         <header className="md:hidden sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 flex items-center justify-center">
-          <Link to="/" aria-label="Kauane Zenie · Studio de Beleza">
+          <Link to="/painel" aria-label="Kauane Zenie · Studio de Beleza">
             <BrandLogo className="w-36" />
           </Link>
         </header>
