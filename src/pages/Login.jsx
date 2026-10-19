@@ -47,7 +47,7 @@ export default function Login() {
         return;
       }
       setToken(r.token);
-      window.location.href = "/";
+      window.location.href = "/painel";
     } catch (err) {
       setError(mensagemErro(err));
     } finally {
