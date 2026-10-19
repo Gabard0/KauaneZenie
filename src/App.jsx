@@ -12,6 +12,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 const Login = lazy(() => import("@/pages/Login"));
 import Layout from '@/components/Layout';
 const Inicio = lazy(() => import("@/pages/Inicio"));
+const Landing = lazy(() => import("@/pages/Landing"));
 const Agenda = lazy(() => import("@/pages/Agenda"));
 const Clientes = lazy(() => import("@/pages/Clientes"));
 const ClienteDetalhe = lazy(() => import("@/pages/ClienteDetalhe"));
@@ -41,11 +42,12 @@ const AuthenticatedApp = () => {
 
   return (
     <Suspense fallback={<Carregando />}><Routes>
+      <Route path="/" element={<Landing />} />
       <Route path="/agendar" element={<Agendar />} />
       <Route path="/login" element={<Login />} />
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Inicio />} />
+        <Route path="painel" element={<Inicio />} />
         <Route path="agenda" element={<Agenda />} />
         <Route path="clientes" element={<Clientes />} />
         <Route path="clientes/:id" element={<ClienteDetalhe />} />
