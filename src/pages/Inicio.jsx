@@ -94,6 +94,7 @@ export default function Inicio() {
           <div>
             <h1 className="font-display text-3xl font-semibold">Olá, Kauane</h1>
             <p className="text-sm text-muted-foreground capitalize">{dataHoje}</p>
+            <Link to="/" className="inline-block mt-1 text-xs font-medium text-gold hover:underline">Visualizar site público ↗</Link>
           </div>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
