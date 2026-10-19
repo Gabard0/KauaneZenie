@@ -33,10 +33,14 @@ function Foto({ src, alt, className = "", loading = "lazy" }) {
       <span>kz<span className="kz-photo-fallback__point">.</span></span>
     </div>
   ) : (
-    <motion.img className={className} src={src} alt={alt} loading={loading} decoding="async" onError={() => setFalhou(true)}
-      initial={loading === "eager" && !reduzirMovimento ? { opacity: 0.65, scale: 1.075 } : false}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }} />
+    loading === "eager" ? (
+      <motion.img className={className} src={src} alt={alt} loading="eager" decoding="async" onError={() => setFalhou(true)}
+        initial={reduzirMovimento ? false : { opacity: 0.65, scale: 1.075 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }} />
+    ) : (
+      <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />
+    )
   );
 }
 
