@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, ArrowRight, Instagram, MapPin, Menu, MessageCircle, X } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { STUDIO } from "@/lib/brand";
@@ -104,12 +104,18 @@ export default function Landing() {
             </button>
           </header>
 
-          {menuAberto && (
-            <nav className="kz-mobile-menu" id="kz-mobile-menu" aria-label="Navegação mobile">
-              {nav.map((item) => <a key={item.href} href={item.href} onClick={fecharMenu}>{item.label}</a>)}
-              <Link to="/agendar" onClick={fecharMenu}>Agendar horário <ArrowRight size={17} /></Link>
-            </nav>
-          )}
+          <AnimatePresence initial={false}>
+            {menuAberto && (
+              <motion.nav className="kz-mobile-menu" id="kz-mobile-menu" aria-label="Navegação mobile"
+                initial={reduzirMovimento ? false : { opacity: 0, y: -12, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={reduzirMovimento ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
+                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}>
+                {nav.map((item) => <a key={item.href} href={item.href} onClick={fecharMenu}>{item.label}</a>)}
+                <Link to="/agendar" onClick={fecharMenu}>Agendar horário <ArrowRight size={17} /></Link>
+              </motion.nav>
+            )}
+          </AnimatePresence>
 
           <div className="kz-hero__eyebrow">KAUANE ZENIE <span>·</span> LASH & BROW STUDIO</div>
           <motion.div className="kz-hero__content"
@@ -125,7 +131,6 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.1, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>olhar</motion.span>
           <a className="kz-hero__scroll" href="#conceito" aria-label="Conheça o estúdio"><ArrowDown size={18} /></a>
-          <span className="kz-hero__index" aria-hidden="true">01 / 04</span>
         </section>
 
         <main>
