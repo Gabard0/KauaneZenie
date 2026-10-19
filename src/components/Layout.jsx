@@ -14,7 +14,8 @@ import {
   CalendarPlus,
   QrCode,
   Clock,
-  Palette } from
+  Palette,
+  ExternalLink } from
 "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
@@ -85,12 +86,13 @@ export default function Layout() {
             {item.label}
           </NavLink>
         )}
+        <Link to="/" className="mt-4 px-3 py-2.5 rounded-lg flex items-center gap-3 text-sm text-[#F8EFEB]/85 hover:bg-white/10 hover:text-white"><ExternalLink className="w-5 h-5" /> Ver site público</Link>
         <button type="button" onClick={sair} className="mt-auto px-3 py-3 text-left text-sm text-[#F8EFEB]/65 hover:text-white">Sair da conta</button>
       </aside>
 
       <div className="md:pl-60 relative z-10">
         <header className="hidden md:flex sticky top-0 z-20 h-16 glass-chrome border-b border-gold/25 items-center justify-between gap-4 px-4 lg:px-8">
-          <span className="min-w-0 text-sm capitalize text-[#ff005e]">Kauane Zenie · Studio de Beleza · {dataHoje}</span>
+          <span className="min-w-0 text-sm capitalize text-foreground">Kauane Zenie · Studio de Beleza · {dataHoje}</span>
           <Link
             to="/agenda"
             className="shrink-0 inline-flex items-center gap-2 rounded-full border border-gold text-gold px-4 h-10 text-sm font-medium hover:bg-gold/10 transition-colors">
