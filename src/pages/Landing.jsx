@@ -82,7 +82,8 @@ export default function Landing() {
   const reduzirMovimento = useReducedMotion();
   const [menuAberto, setMenuAberto] = useState(false);
   const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
-  const [servicos, setServicos] = useState([]);\n  const [carouselPausado, setCarouselPausado] = useState(false);
+  const [servicos, setServicos] = useState([]);
+  const [carouselPausado, setCarouselPausado] = useState(false);
   const [servicosCarregando, setServicosCarregando] = useState(true);
 
   useEffect(() => {
