@@ -11,7 +11,6 @@ import "./Landing.css";
 
 // Fotografias retiradas do catálogo público oficial da Kauane (Keepo).
 const FOTOS = {
-  hero: "/brand/real/keepo-3.jpg",
   detalhe: "/brand/real/keepo-4.jpg",
   aplicacao: "/brand/real/keepo-3.jpg",
   tecnica: "/brand/real/keepo-5.jpg",
@@ -32,7 +31,7 @@ const FEEDBACKS = [
   { frase: "Você é maravilhosa no que você faz.", tipo: "Carinho das clientes" },
 ];
 const nav = [
-  { href: "#conceito", label: "Sobre" },
+  { href: "#sobre", label: "Sobre" },
   { href: "#procedimentos", label: "Procedimentos" },
   { href: "#feedbacks", label: "Feedbacks" },
   { href: "#contato", label: "Contato" },
@@ -101,9 +100,32 @@ export default function Landing() {
   return (
     <div className="kz-site" id="topo">
       <div className="kz-shell">
-        <section className="kz-hero" aria-labelledby="kz-hero-title">
-          <Foto src={FOTOS.hero} alt="Detalhe do olhar durante um atendimento de beleza" className="kz-hero__photo" loading="eager" />
-          <div className="kz-hero__shade" />
+        <section className="kz-hero" aria-labelledby="kz-hero-title"
+          onPointerMove={(event) => {
+            if (reduzirMovimento || event.pointerType !== "mouse") return;
+            const rect = event.currentTarget.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - .5;
+            const y = (event.clientY - rect.top) / rect.height - .5;
+            event.currentTarget.style.setProperty("--kz-pointer-x", String(x));
+            event.currentTarget.style.setProperty("--kz-pointer-y", String(y));
+          }}
+          onPointerLeave={(event) => {
+            event.currentTarget.style.setProperty("--kz-pointer-x", "0");
+            event.currentTarget.style.setProperty("--kz-pointer-y", "0");
+          }}>
+          <div className="kz-hero__art" aria-hidden="true">
+            <span className="kz-hero__halo kz-hero__halo--one" />
+            <span className="kz-hero__halo kz-hero__halo--two" />
+            <span className="kz-hero__glass kz-hero__glass--rear" />
+            <span className="kz-hero__glass kz-hero__glass--left" />
+            <span className="kz-hero__glass kz-hero__glass--front" />
+          </div>
+          <motion.div className="kz-hero__portrait" aria-hidden="true"
+            initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
+            <img src="/brand/real/kauane-recorte.png" alt="" loading="eager" decoding="async" fetchPriority="high" />
+          </motion.div>
 
           <header className="kz-header">
             <Link to="/" className="kz-header__brand" aria-label="Kauane Zenie — início" onClick={fecharMenu}>
@@ -136,18 +158,23 @@ export default function Landing() {
             initial={reduzirMovimento ? false : { opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.88, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}>
-            <h1 id="kz-hero-title">Seu olhar, <em>sua essência.</em></h1>
-            <p>Cílios & sobrancelhas · Ipanema, Pontal do Paraná.</p>
+            <h1 id="kz-hero-title">Realçando a beleza <em>do seu olhar!</em></h1>
+            <p>Cuidar de você é investimento.</p>
             <BotaoAgendar className="kz-hero__button">Agendar horário</BotaoAgendar>
           </motion.div>
-          <motion.span className="kz-hero__display" aria-hidden="true"
-            initial={reduzirMovimento ? false : { opacity: 0, y: 34 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>Kauane</motion.span>
-          <a className="kz-hero__scroll" href="#conceito" aria-label="Conheça o estúdio"><ArrowDown size={18} /></a>
+          <span className="kz-hero__bottom-copy">Agende o seu horário e eleve a sua autoestima.</span>
+          <a className="kz-hero__scroll" href="#sobre" aria-label="Conheça o estúdio"><ArrowDown size={18} /></a>
         </section>
 
         <main>
+          <section className="kz-brand-note kz-section" id="sobre">
+            <Reveal className="kz-brand-note__inner">
+              <span>KAUANE ZENIE · STUDIO DE BELEZA</span>
+              <h2>Cuidar de você é <em>investimento.</em></h2>
+              <p>Realçando a beleza do seu olhar!</p>
+              <BotaoAgendar>Agendar horário</BotaoAgendar>
+            </Reveal>
+          </section>
           <section className="kz-catalog kz-section" id="procedimentos" aria-labelledby="kz-catalog-title">
             <Reveal>
               <p className="kz-kicker">CÍLIOS & SOBRANCELHAS</p>
@@ -171,7 +198,7 @@ export default function Landing() {
             <Reveal className="kz-services__intro">
               <p className="kz-kicker">AGENDE SEU HORÁRIO</p>
               <h2 id="kz-services-title">Procedimentos disponíveis</h2>
-              <p>Escolha o procedimento e confira os horários disponíveis.</p>
+              <p>Agende o seu horário e eleve a sua autoestima.</p>
             </Reveal>
             <Reveal className="kz-services__list">
               {servicosCarregando ? (
@@ -214,8 +241,8 @@ export default function Landing() {
           <section className="kz-contact kz-section" id="contato" aria-labelledby="kz-contact-title">
             <Reveal>
               <p className="kz-kicker">IPANEMA · PONTAL DO PARANÁ</p>
-              <h2 id="kz-contact-title">Seu olhar, <em>sua essência.</em></h2>
-              <p>Agende seu horário no Studio de Beleza Kauane Zenie.</p>
+              <h2 id="kz-contact-title">Realçando a beleza <em>do seu olhar!</em></h2>
+              <p>Agende o seu horário e eleve a sua autoestima.</p>
             </Reveal>
             <Reveal className="kz-contact__info" delay={0.1}>
               <div className="kz-contact__address"><MapPin size={20} aria-hidden="true" /><span>{STUDIO.address}<br />{STUDIO.city}</span></div>
@@ -230,7 +257,7 @@ export default function Landing() {
 
         <footer className="kz-footer">
           <div className="kz-footer__brand"><BrandLogo variant="horizontal" className="w-full" /></div>
-          <p>Seu olhar, sua essência.</p>
+          <p>Cuidar de você é investimento.</p>
           <nav aria-label="Links do rodapé">
             <a href="#topo">Voltar ao topo</a>
             <Link to="/agendar">Agendamento</Link>
