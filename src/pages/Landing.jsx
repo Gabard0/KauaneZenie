@@ -14,46 +14,46 @@ const FOTOS = {
   detalhe: "/brand/real/keepo-4.jpg",
   aplicacao: "/brand/real/keepo-3.jpg",
   tecnica: "/brand/real/keepo-5.jpg",
-  cuidado: "/brand/real/keepo-4.jpg",
+  cuidado: "/brand/real/keepo-4.jpg"
 };
 const CATALOGO = [
-  { nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
-  { nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
-  { nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" },
-];
+{ nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
+{ nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
+{ nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" }];
+
 // Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
 const FEEDBACKS = [
-  { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
-  { frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado" },
-  { frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios" },
-  { frase: "Tá literalmente inteiro.", tipo: "Durabilidade" },
-  { frase: "Amei meus cílios, ficou perfeito.", tipo: "Resultado" },
-  { frase: "Você é maravilhosa no que você faz.", tipo: "Carinho das clientes" },
-];
+{ frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
+{ frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado" },
+{ frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios" },
+{ frase: "Tá literalmente inteiro.", tipo: "Durabilidade" },
+{ frase: "Amei meus cílios, ficou perfeito.", tipo: "Resultado" },
+{ frase: "Você é maravilhosa no que você faz.", tipo: "Carinho das clientes" }];
+
 const nav = [
-  { href: "#sobre", label: "Sobre" },
-  { href: "#procedimentos", label: "Procedimentos" },
-  { href: "#feedbacks", label: "Feedbacks" },
-  { href: "#contato", label: "Contato" },
-];
+{ href: "#sobre", label: "Sobre" },
+{ href: "#procedimentos", label: "Procedimentos" },
+{ href: "#feedbacks", label: "Feedbacks" },
+{ href: "#contato", label: "Contato" }];
+
 
 function Foto({ src, alt, className = "", loading = "lazy" }) {
   const [falhou, setFalhou] = useState(false);
   const reduzirMovimento = useReducedMotion();
-  return falhou ? (
-    <div className={`kz-photo-fallback ${className}`} role="img" aria-label={alt}>
+  return falhou ?
+  <div className={`kz-photo-fallback ${className}`} role="img" aria-label={alt}>
       <span>kz<span className="kz-photo-fallback__point">.</span></span>
-    </div>
-  ) : (
-    loading === "eager" ? (
-      <motion.img className={className} src={src} alt={alt} loading="eager" decoding="async" onError={() => setFalhou(true)}
-        initial={reduzirMovimento ? false : { opacity: 0.65, scale: 1.075 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }} />
-    ) : (
-      <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />
-    )
-  );
+    </div> :
+
+  loading === "eager" ?
+  <motion.img className={className} src={src} alt={alt} loading="eager" decoding="async" onError={() => setFalhou(true)}
+  initial={reduzirMovimento ? false : { opacity: 0.65, scale: 1.075 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }} /> :
+
+  <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />;
+
+
 }
 
 // Reveals once and respects reduced-motion preferences.
@@ -61,20 +61,20 @@ function Reveal({ children, className = "", delay = 0 }) {
   const reduzirMovimento = useReducedMotion();
   return (
     <motion.div className={className}
-      initial={reduzirMovimento ? false : { opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.12, margin: "0px 0px -40px 0px" }}
-      transition={{ duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] }}>
+    initial={reduzirMovimento ? false : { opacity: 0, y: 28 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, amount: 0.12, margin: "0px 0px -40px 0px" }}
+    transition={{ duration: 0.72, delay, ease: [0.22, 1, 0.36, 1] }}>
       {children}
-    </motion.div>
-  );
+    </motion.div>);
+
 }
 function BotaoAgendar({ className = "", children = "Agendar horário" }) {
   return (
     <Link to="/agendar" className={`kz-pill kz-pill--solid ${className}`}>
       {children} <ArrowRight size={16} aria-hidden="true" />
-    </Link>
-  );
+    </Link>);
+
 }
 
 export default function Landing() {
@@ -86,13 +86,13 @@ export default function Landing() {
 
   useEffect(() => {
     let ativo = true;
-    base44.functions.invoke("getBookingConfig", {})
-      .then((r) => {
-        if (ativo) setServicos(Array.isArray(r?.data?.servicos) ? r.data.servicos : []);
-      })
-      .catch(() => { if (ativo) setServicos([]); })
-      .finally(() => { if (ativo) setServicosCarregando(false); });
-    return () => { ativo = false; };
+    base44.functions.invoke("getBookingConfig", {}).
+    then((r) => {
+      if (ativo) setServicos(Array.isArray(r?.data?.servicos) ? r.data.servicos : []);
+    }).
+    catch(() => {if (ativo) setServicos([]);}).
+    finally(() => {if (ativo) setServicosCarregando(false);});
+    return () => {ativo = false;};
   }, []);
 
   const fecharMenu = () => setMenuAberto(false);
@@ -101,18 +101,18 @@ export default function Landing() {
     <div className="kz-site" id="topo">
       <div className="kz-shell">
         <section className="kz-hero" aria-labelledby="kz-hero-title"
-          onPointerMove={(event) => {
-            if (reduzirMovimento || event.pointerType !== "mouse") return;
-            const rect = event.currentTarget.getBoundingClientRect();
-            const x = (event.clientX - rect.left) / rect.width - .5;
-            const y = (event.clientY - rect.top) / rect.height - .5;
-            event.currentTarget.style.setProperty("--kz-pointer-x", String(x));
-            event.currentTarget.style.setProperty("--kz-pointer-y", String(y));
-          }}
-          onPointerLeave={(event) => {
-            event.currentTarget.style.setProperty("--kz-pointer-x", "0");
-            event.currentTarget.style.setProperty("--kz-pointer-y", "0");
-          }}>
+        onPointerMove={(event) => {
+          if (reduzirMovimento || event.pointerType !== "mouse") return;
+          const rect = event.currentTarget.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - .5;
+          const y = (event.clientY - rect.top) / rect.height - .5;
+          event.currentTarget.style.setProperty("--kz-pointer-x", String(x));
+          event.currentTarget.style.setProperty("--kz-pointer-y", String(y));
+        }}
+        onPointerLeave={(event) => {
+          event.currentTarget.style.setProperty("--kz-pointer-x", "0");
+          event.currentTarget.style.setProperty("--kz-pointer-y", "0");
+        }}>
           <div className="kz-hero__art" aria-hidden="true">
             <span className="kz-hero__halo kz-hero__halo--one" />
             <span className="kz-hero__halo kz-hero__halo--two" />
@@ -121,9 +121,9 @@ export default function Landing() {
             <span className="kz-hero__glass kz-hero__glass--front" />
           </div>
           <motion.div className="kz-hero__portrait" aria-hidden="true"
-            initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
+          initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
             <img src="/brand/real/kauane-recorte.png" alt="" loading="eager" decoding="async" fetchPriority="high" />
           </motion.div>
 
@@ -141,25 +141,25 @@ export default function Landing() {
           </header>
 
           <AnimatePresence initial={false}>
-            {menuAberto && (
-              <motion.nav className="kz-mobile-menu" id="kz-mobile-menu" aria-label="Navegação mobile"
-                initial={reduzirMovimento ? false : { opacity: 0, y: -12, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={reduzirMovimento ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
-                transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}>
+            {menuAberto &&
+            <motion.nav className="kz-mobile-menu" id="kz-mobile-menu" aria-label="Navegação mobile"
+            initial={reduzirMovimento ? false : { opacity: 0, y: -12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduzirMovimento ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
+            transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}>
                 {nav.map((item) => <a key={item.href} href={item.href} onClick={fecharMenu}>{item.label}</a>)}
                 <Link to="/agendar" onClick={fecharMenu}>Agendar horário <ArrowRight size={17} /></Link>
               </motion.nav>
-            )}
+            }
           </AnimatePresence>
 
           <div className="kz-hero__eyebrow">KAUANE ZENIE <span>·</span> CÍLIOS & SOBRANCELHAS</div>
           <motion.div className="kz-hero__content"
-            initial={reduzirMovimento ? false : { opacity: 0, y: 25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.88, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}>
+          initial={reduzirMovimento ? false : { opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.88, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}>
             <h1 id="kz-hero-title">Realçando a beleza <em>do seu olhar!</em></h1>
-            <p>Cuidar de você é investimento.</p>
+            <p className="hidden">Cuidar de você é investimento.</p>
             <BotaoAgendar className="kz-hero__button">Agendar horário</BotaoAgendar>
           </motion.div>
           <span className="kz-hero__bottom-copy">Agende o seu horário e eleve a sua autoestima.</span>
@@ -181,16 +181,16 @@ export default function Landing() {
               <h2 id="kz-catalog-title">Catálogo</h2>
             </Reveal>
             <div className="kz-catalog__grid">
-              {CATALOGO.map((item, i) => (
-                <Reveal className="kz-catalog__card" delay={i * .08} key={item.nome}>
+              {CATALOGO.map((item, i) =>
+              <Reveal className="kz-catalog__card" delay={i * .08} key={item.nome}>
                   <div className="kz-catalog__image"><Foto src={item.foto} alt={item.nome + " — foto do catálogo da Kauane Zenie"} /></div>
                   <div className="kz-catalog__details">
                     <h3>{item.nome}</h3>
                     <p>{item.desc}</p>
-                    <Link to="/agendar">Agendar <ArrowRight size={16}/></Link>
+                    <Link to="/agendar">Agendar <ArrowRight size={16} /></Link>
                   </div>
                 </Reveal>
-              ))}
+              )}
             </div>
             <div className="kz-catalog__book"><BotaoAgendar>Ver horários e valores</BotaoAgendar></div>
           </section>
@@ -201,16 +201,16 @@ export default function Landing() {
               <p>Agende o seu horário e eleve a sua autoestima.</p>
             </Reveal>
             <Reveal className="kz-services__list">
-              {servicosCarregando ? (
-                <p className="kz-services__feedback" role="status">Carregando procedimentos…</p>
-              ) : servicos.length ? servicos.slice(0,6).map((servico,i) => (
-                <Link to="/agendar" className="kz-service" key={servico.id}>
-                  <span className="kz-service__number">{String(i+1).padStart(2,"0")}</span>
+              {servicosCarregando ?
+              <p className="kz-services__feedback" role="status">Carregando procedimentos…</p> :
+              servicos.length ? servicos.slice(0, 6).map((servico, i) =>
+              <Link to="/agendar" className="kz-service" key={servico.id}>
+                  <span className="kz-service__number">{String(i + 1).padStart(2, "0")}</span>
                   <span className="kz-service__name">{servico.nome}</span>
                   <span className="kz-service__meta">{servico.preco > 0 ? formatBRL(servico.preco) : "Consultar"}</span>
-                  <ArrowRight size={19}/>
+                  <ArrowRight size={19} />
                 </Link>
-              )) : <p className="kz-services__feedback">Confira os procedimentos e valores na agenda.</p>}
+              ) : <p className="kz-services__feedback">Confira os procedimentos e valores na agenda.</p>}
               <BotaoAgendar className="kz-services__action">Agendar horário</BotaoAgendar>
             </Reveal>
           </section>
@@ -221,19 +221,19 @@ export default function Landing() {
                 <h2 id="kz-testimonials-title">Feedbacks <em>reais.</em></h2>
               </div>
               <div className="kz-testimonials__arrows">
-                <button type="button" aria-label="Avaliação anterior" onClick={() => carouselApi?.scrollPrev()}><ChevronLeft size={20}/></button>
-                <button type="button" aria-label="Próxima avaliação" onClick={() => carouselApi?.scrollNext()}><ChevronRight size={20}/></button>
+                <button type="button" aria-label="Avaliação anterior" onClick={() => carouselApi?.scrollPrev()}><ChevronLeft size={20} /></button>
+                <button type="button" aria-label="Próxima avaliação" onClick={() => carouselApi?.scrollNext()}><ChevronRight size={20} /></button>
               </div>
             </Reveal>
             <div className="kz-testimonials__viewport" ref={carouselRef}>
               <div className="kz-testimonials__track">
-                {FEEDBACKS.map((item,i) => (
-                  <article className="kz-testimonial" key={i}>
+                {FEEDBACKS.map((item, i) =>
+                <article className="kz-testimonial" key={i}>
                     <span className="kz-testimonial__quote" aria-hidden="true">“</span>
                     <p>“{item.frase}”</p>
                     <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Depoimento recebido</span></div>
                   </article>
-                ))}
+                )}
               </div>
             </div>
             <p className="kz-testimonials__note">Trechos de mensagens enviadas pelas clientes, sem identificação pessoal.</p>
@@ -266,6 +266,6 @@ export default function Landing() {
           <small>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza · Fotografias do catálogo da Kauane</small>
         </footer>
       </div>
-    </div>
-  );
+    </div>);
+
 }
