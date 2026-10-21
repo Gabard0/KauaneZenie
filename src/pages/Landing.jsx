@@ -159,7 +159,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.88, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}>
             <h1 id="kz-hero-title">Realçando a beleza <em>do seu olhar!</em></h1>
-            <p className="hidden">Cuidar de você é investimento.</p>
+            
             <BotaoAgendar className="kz-hero__button">Agendar horário</BotaoAgendar>
           </motion.div>
           <span className="kz-hero__bottom-copy">Agende o seu horário e eleve a sua autoestima.</span>
