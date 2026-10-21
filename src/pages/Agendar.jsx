@@ -225,7 +225,7 @@ export default function Agendar() {
           <div className="w-10 h-px bg-[#C16F84] my-6" />
           <p className="text-[10px] uppercase tracking-[.2em] text-[#E7B5C3]">Cílios & sobrancelhas</p>
           <h1 className="font-heading booking-heading mt-3">Seu olhar,<br /><span className="italic text-[#E7B5C3]">sua essência.</span></h1>
-          <p className="text-[#F8EFEB]/75 text-xs mt-5">Escolha seu procedimento e reserve seu momento.</p>
+          <p className="text-[#F8EFEB]/75 text-xs mt-5">Escolha o procedimento, a data e o horário.</p>
         </header>
 
         {etapa === "pagamento" && resultado ? (

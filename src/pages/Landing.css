@@ -528,3 +528,51 @@
     scroll-behavior: auto !important;
   }
 }
+/* Identidade real Kauane Zenie: catálogo e depoimentos */
+.kz-site { background:#f7f3f1; }
+.kz-hero { min-height:clamp(560px,78svh,760px); }
+.kz-hero__photo { object-fit:cover; object-position:center; filter:saturate(.95); }
+.kz-hero__display { font-size:clamp(88px,17vw,225px); opacity:.67; }
+.kz-catalog { padding-block:clamp(70px,8vw,110px); background:#f8f1f0; }
+.kz-catalog h2 { margin:12px 0 34px; font-family:var(--kz-display); font-size:clamp(44px,6vw,76px); font-weight:400; }
+.kz-catalog__grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+.kz-catalog__card { min-width:0; display:flex; flex-direction:column; background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 8px 28px rgba(86,6,35,.07); }
+.kz-catalog__image { height:clamp(205px,25vw,320px); overflow:hidden; background:#e4d1d5; }
+.kz-catalog__image img,.kz-catalog__image .kz-photo-fallback { width:100%; height:100%; object-fit:cover; transition:transform .55s ease; }
+.kz-catalog__card:hover img { transform:scale(1.035); }
+.kz-catalog__details { display:flex; flex-direction:column; flex:1; padding:24px; gap:12px; }
+.kz-catalog__details h3 { font-size:19px; font-weight:600; color:#560623; letter-spacing:-.035em; }
+.kz-catalog__details p { font-size:13px; line-height:1.6; color:#78636b; min-height:42px; }
+.kz-catalog__details a { display:flex; align-items:center; width:fit-content; margin-top:auto; gap:8px; color:#560623; font-size:13px; font-weight:600; padding-top:10px; }
+.kz-catalog__details a svg { transition:transform .2s ease; }
+.kz-catalog__details a:hover svg { transform:translateX(4px); }
+.kz-catalog__book { margin-top:32px; }
+.kz-testimonials { background:#f8f1f0; padding-block:clamp(75px,10vw,130px); overflow:hidden; }
+.kz-testimonials__header { display:flex; align-items:end; justify-content:space-between; gap:25px; margin-bottom:30px; }
+.kz-testimonials h2 { margin-top:12px; }
+.kz-testimonials__arrows { display:flex; gap:10px; flex-shrink:0; }
+.kz-testimonials__arrows button { border:1px solid #560623; width:46px; height:46px; display:grid; place-items:center; border-radius:50%; background:transparent; color:#560623; cursor:pointer; transition:background .2s,color .2s; }
+.kz-testimonials__arrows button:hover { background:#560623; color:#fff; }
+.kz-testimonials__viewport { overflow:hidden; touch-action:pan-y pinch-zoom; }
+.kz-testimonials__track { display:flex; gap:15px; align-items:stretch; }
+.kz-testimonial { flex:0 0 clamp(255px,32%,410px); min-width:0; min-height:270px; border-radius:20px; padding:30px; background:white; box-shadow:inset 0 0 0 1px rgba(86,6,35,.07); display:flex; flex-direction:column; }
+.kz-testimonial__quote { font:400 72px/.6 var(--kz-display); color:#c16f84; }
+.kz-testimonial > p { color:#560623; font:500 clamp(18px,2vw,23px)/1.45 var(--kz-display); margin:24px 0 32px; }
+.kz-testimonial__foot { border-top:1px solid #ecdce0; padding-top:15px; display:flex; justify-content:space-between; gap:12px; color:#79636b; font-size:11px; margin-top:auto; }
+.kz-testimonial__foot span:first-child { color:#560623; font-weight:600; }
+.kz-testimonials__note { font-size:11px; margin-top:20px; color:#79636b; }
+@media(max-width:760px) {
+  .kz-catalog__grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+  .kz-catalog__card:last-child { grid-column:span 2; }
+  .kz-catalog__card:last-child .kz-catalog__image { height:230px; }
+  .kz-testimonial { flex-basis:80%; }
+  .kz-hero__display { font-size:clamp(74px,17vw,145px); }
+}
+@media(max-width:480px) {
+  .kz-catalog__grid { grid-template-columns:1fr; }
+  .kz-catalog__card:last-child { grid-column:auto; }
+  .kz-catalog__image,.kz-catalog__card:last-child .kz-catalog__image { height:260px; }
+  .kz-testimonial { flex-basis:89%; padding:24px; }
+  .kz-testimonials__arrows button { width:40px; height:40px; }
+  .kz-testimonials__header { align-items:center; }
+}
