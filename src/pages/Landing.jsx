@@ -23,13 +23,14 @@ const CATALOGO = [
 
 // Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
 const FEEDBACKS = [
-{ frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
-{ frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado" },
-{ frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios" },
-{ frase: "Tá literalmente inteiro.", tipo: "Durabilidade" },
-{ frase: "Amei meus cílios, ficou perfeito.", tipo: "Resultado" },
-{ frase: "Você é maravilhosa no que você faz.", tipo: "Carinho das clientes" }];
-
+  { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
+  { frase: "Sucesso! Você é maravilhosa no que você faz.", tipo: "Elogio recebido" },
+  { frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado" },
+  { frase: "Está de parabéns pelo trabalho, hoje tá completando 15 dias. Tá literalmente inteiro.", tipo: "Durabilidade" },
+  { frase: "Cílios maravilhoso meu deusssss.", tipo: "Extensão de cílios" },
+  { frase: "Ameiii meus cílios, ficou perfeito. Você é dedicada, profissional e maravilhosa, com uma mão de fada.", tipo: "Atendimento" },
+  { frase: "Só pra te elogiar, entrei umas 6x em piscina e fiquei mais de 4 horas cada uma das vezes.", tipo: "Durabilidade" },
+];
 const nav = [
 { href: "#sobre", label: "Sobre" },
 { href: "#procedimentos", label: "Procedimentos" },
@@ -81,7 +82,7 @@ export default function Landing() {
   const reduzirMovimento = useReducedMotion();
   const [menuAberto, setMenuAberto] = useState(false);
   const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
-  const [servicos, setServicos] = useState([]);
+  const [servicos, setServicos] = useState([]);\n  const [carouselPausado, setCarouselPausado] = useState(false);
   const [servicosCarregando, setServicosCarregando] = useState(true);
 
   useEffect(() => {
@@ -94,6 +95,12 @@ export default function Landing() {
     finally(() => {if (ativo) setServicosCarregando(false);});
     return () => {ativo = false;};
   }, []);
+
+  useEffect(() => {
+    if (!carouselApi || carouselPausado || reduzirMovimento) return undefined;
+    const interval = window.setInterval(() => carouselApi.scrollNext(), 5500);
+    return () => window.clearInterval(interval);
+  }, [carouselApi, carouselPausado, reduzirMovimento]);
 
   const fecharMenu = () => setMenuAberto(false);
 
@@ -118,7 +125,7 @@ export default function Landing() {
             <span className="kz-hero__halo kz-hero__halo--two" />
             <span className="kz-hero__glass kz-hero__glass--rear" />
             <span className="kz-hero__glass kz-hero__glass--left" />
-            <span className="kz-hero__glass kz-hero__glass--front" />
+
           </div>
           <motion.div className="kz-hero__portrait" aria-hidden="true"
           initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
@@ -127,6 +134,7 @@ export default function Landing() {
             <img src="/brand/real/kauane-recorte.png" alt="" loading="eager" decoding="async" fetchPriority="high" />
           </motion.div>
 
+          <span className="kz-hero__front-shape" aria-hidden="true" />
           <header className="kz-header">
             <Link to="/" className="kz-header__brand" aria-label="Kauane Zenie — início" onClick={fecharMenu}>
               <BrandLogo variant="horizontal" className="w-full" />
@@ -225,11 +233,17 @@ export default function Landing() {
                 <button type="button" aria-label="Próxima avaliação" onClick={() => carouselApi?.scrollNext()}><ChevronRight size={20} /></button>
               </div>
             </Reveal>
-            <div className="kz-testimonials__viewport" ref={carouselRef}>
+            <div className="kz-testimonials__viewport" ref={carouselRef}
+              onMouseEnter={() => setCarouselPausado(true)}
+              onMouseLeave={() => setCarouselPausado(false)}
+              onFocusCapture={() => setCarouselPausado(true)}
+              onBlurCapture={() => setCarouselPausado(false)}>
               <div className="kz-testimonials__track">
                 {FEEDBACKS.map((item, i) =>
                 <article className="kz-testimonial" key={i}>
-                    <span className="kz-testimonial__quote" aria-hidden="true">“</span>
+                    <div className="kz-testimonial__message" aria-label="Trecho de mensagem real">
+                      <span className="kz-testimonial__bubble">{item.frase}</span>
+                    </div>
                     <p>“{item.frase}”</p>
                     <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Depoimento recebido</span></div>
                   </article>
