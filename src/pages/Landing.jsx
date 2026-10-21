@@ -1,27 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, ArrowRight, Instagram, MapPin, Menu, MessageCircle, X } from "lucide-react";
+import { ArrowDown, ArrowRight, ChevronLeft, ChevronRight, Instagram, MapPin, Menu, MessageCircle, X } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { STUDIO } from "@/lib/brand";
 import { base44 } from "@/api/base44Client";
 import { formatBRL } from "@/lib/helpers";
+import useEmblaCarousel from "embla-carousel-react";
 import "./Landing.css";
 
+// Fotografias retiradas do catálogo público oficial da Kauane (Keepo).
 const FOTOS = {
-  hero: "https://images.pexels.com/photos/8554941/pexels-photo-8554941.jpeg?auto=compress&cs=tinysrgb&w=1800",
-  detalhe: "https://images.pexels.com/photos/7446923/pexels-photo-7446923.jpeg?auto=compress&cs=tinysrgb&w=1100",
-  aplicacao: "https://images.pexels.com/photos/7446922/pexels-photo-7446922.jpeg?auto=compress&cs=tinysrgb&w=1100",
-  tecnica: "https://images.pexels.com/photos/5128233/pexels-photo-5128233.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  cuidado: "https://images.pexels.com/photos/7446924/pexels-photo-7446924.jpeg?auto=compress&cs=tinysrgb&w=1300",
+  hero: "/brand/real/keepo-3.jpg",
+  detalhe: "/brand/real/keepo-4.jpg",
+  aplicacao: "/brand/real/keepo-3.jpg",
+  tecnica: "/brand/real/keepo-5.jpg",
+  cuidado: "/brand/real/keepo-4.jpg",
 };
-
-// Fotografias editoriais ilustrativas (Pexels). Substituir por trabalhos autorizados da Kauane
-// quando as imagens reais do portfólio estiverem disponíveis.
+const CATALOGO = [
+  { nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
+  { nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
+  { nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" },
+];
+// Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
+const FEEDBACKS = [
+  { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
+  { frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado" },
+  { frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios" },
+  { frase: "Tá literalmente inteiro.", tipo: "Durabilidade" },
+  { frase: "Amei meus cílios, ficou perfeito.", tipo: "Resultado" },
+  { frase: "Você é maravilhosa no que você faz.", tipo: "Carinho das clientes" },
+];
 const nav = [
   { href: "#conceito", label: "Sobre" },
   { href: "#procedimentos", label: "Procedimentos" },
-  { href: "#experiencia", label: "Experiência" },
+  { href: "#feedbacks", label: "Feedbacks" },
   { href: "#contato", label: "Contato" },
 ];
 
@@ -68,6 +81,7 @@ function BotaoAgendar({ className = "", children = "Agendar horário" }) {
 export default function Landing() {
   const reduzirMovimento = useReducedMotion();
   const [menuAberto, setMenuAberto] = useState(false);
+  const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
   const [servicos, setServicos] = useState([]);
   const [servicosCarregando, setServicosCarregando] = useState(true);
 
@@ -117,106 +131,91 @@ export default function Landing() {
             )}
           </AnimatePresence>
 
-          <div className="kz-hero__eyebrow">KAUANE ZENIE <span>·</span> LASH & BROW STUDIO</div>
+          <div className="kz-hero__eyebrow">KAUANE ZENIE <span>·</span> CÍLIOS & SOBRANCELHAS</div>
           <motion.div className="kz-hero__content"
             initial={reduzirMovimento ? false : { opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.88, delay: 0.16, ease: [0.22, 1, 0.36, 1] }}>
-            <h1 id="kz-hero-title">Cílios que combinam com <em>você.</em></h1>
-            <p>Alongamento de cílios e cuidados com o olhar em Ipanema, Pontal do Paraná.</p>
-            <BotaoAgendar className="kz-hero__button">Escolher meu horário</BotaoAgendar>
+            <h1 id="kz-hero-title">Seu olhar, <em>sua essência.</em></h1>
+            <p>Cílios & sobrancelhas · Ipanema, Pontal do Paraná.</p>
+            <BotaoAgendar className="kz-hero__button">Agendar horário</BotaoAgendar>
           </motion.div>
           <motion.span className="kz-hero__display" aria-hidden="true"
             initial={reduzirMovimento ? false : { opacity: 0, y: 34 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.1, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>olhar</motion.span>
+            transition={{ duration: 1.1, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>Kauane</motion.span>
           <a className="kz-hero__scroll" href="#conceito" aria-label="Conheça o estúdio"><ArrowDown size={18} /></a>
         </section>
 
         <main>
-          <section className="kz-concept kz-section" id="conceito" aria-labelledby="kz-concept-title">
-            <Reveal className="kz-concept__copy">
-              <p className="kz-kicker">01 — Nossa essência</p>
-              <h2 id="kz-concept-title">Seu olhar, <em>do seu jeito.</em></h2>
-              <p className="kz-copy-lead">Cada detalhe tem um propósito.</p>
-              <p>Curvatura, volume e acabamento fazem diferença no resultado. Aqui, a proposta é valorizar seu olhar com um atendimento cuidadoso, sem fórmulas prontas.</p>
-              <BotaoAgendar>Ver horários</BotaoAgendar>
+          <section className="kz-catalog kz-section" id="procedimentos" aria-labelledby="kz-catalog-title">
+            <Reveal>
+              <p className="kz-kicker">CÍLIOS & SOBRANCELHAS</p>
+              <h2 id="kz-catalog-title">Catálogo</h2>
             </Reveal>
-            <Reveal className="kz-concept__photo" delay={0.12}>
-              <Foto src={FOTOS.detalhe} alt="Aplicação cuidadosa de extensão de cílios" />
-              <span className="kz-image-caption">KAUANE ZENIE · LASH STUDIO</span>
+            <div className="kz-catalog__grid">
+              {CATALOGO.map((item, i) => (
+                <Reveal className="kz-catalog__card" delay={i * .08} key={item.nome}>
+                  <div className="kz-catalog__image"><Foto src={item.foto} alt={item.nome + " — foto do catálogo da Kauane Zenie"} /></div>
+                  <div className="kz-catalog__details">
+                    <h3>{item.nome}</h3>
+                    <p>{item.desc}</p>
+                    <Link to="/agendar">Agendar <ArrowRight size={16}/></Link>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+            <div className="kz-catalog__book"><BotaoAgendar>Ver horários e valores</BotaoAgendar></div>
+          </section>
+          <section className="kz-services kz-section" aria-labelledby="kz-services-title">
+            <Reveal className="kz-services__intro">
+              <p className="kz-kicker">AGENDE SEU HORÁRIO</p>
+              <h2 id="kz-services-title">Procedimentos disponíveis</h2>
+              <p>Escolha o procedimento e confira os horários disponíveis.</p>
+            </Reveal>
+            <Reveal className="kz-services__list">
+              {servicosCarregando ? (
+                <p className="kz-services__feedback" role="status">Carregando procedimentos…</p>
+              ) : servicos.length ? servicos.slice(0,6).map((servico,i) => (
+                <Link to="/agendar" className="kz-service" key={servico.id}>
+                  <span className="kz-service__number">{String(i+1).padStart(2,"0")}</span>
+                  <span className="kz-service__name">{servico.nome}</span>
+                  <span className="kz-service__meta">{servico.preco > 0 ? formatBRL(servico.preco) : "Consultar"}</span>
+                  <ArrowRight size={19}/>
+                </Link>
+              )) : <p className="kz-services__feedback">Confira os procedimentos e valores na agenda.</p>}
+              <BotaoAgendar className="kz-services__action">Agendar horário</BotaoAgendar>
             </Reveal>
           </section>
-
-          <section className="kz-gallery kz-section" id="experiencia" aria-labelledby="kz-experience-title">
-            <Reveal className="kz-gallery__item">
-              <Foto src={FOTOS.aplicacao} alt="Procedimento profissional de extensão de cílios" />
-            </Reveal>
-            <Reveal className="kz-gallery__item kz-gallery__item--offset" delay={0.1}>
-              <Foto src={FOTOS.tecnica} alt="Detalhe do trabalho de uma profissional aplicando cílios" />
-            </Reveal>
-            <Reveal className="kz-gallery__copy" delay={0.08}>
-              <p className="kz-kicker">02 — A experiência</p>
-              <h2 id="kz-experience-title">Precisão em cada <em>fio.</em></h2>
-              <p>Do primeiro atendimento à manutenção, cada etapa merece atenção. O resultado é pensado para acompanhar a sua rotina e o estilo que você gosta.</p>
-              <a href="#procedimentos" className="kz-text-link">Descubra os procedimentos <ArrowRight size={17} aria-hidden="true" /></a>
-              <div className="kz-gallery__small">
-                <Foto src={FOTOS.cuidado} alt="Atendimento de extensão de cílios em ambiente profissional" />
+          <section className="kz-testimonials kz-section" id="feedbacks" aria-labelledby="kz-testimonials-title">
+            <Reveal className="kz-testimonials__header">
+              <div>
+                <p className="kz-kicker">MENSAGENS DAS CLIENTES</p>
+                <h2 id="kz-testimonials-title">Feedbacks <em>reais.</em></h2>
+              </div>
+              <div className="kz-testimonials__arrows">
+                <button type="button" aria-label="Avaliação anterior" onClick={() => carouselApi?.scrollPrev()}><ChevronLeft size={20}/></button>
+                <button type="button" aria-label="Próxima avaliação" onClick={() => carouselApi?.scrollNext()}><ChevronRight size={20}/></button>
               </div>
             </Reveal>
+            <div className="kz-testimonials__viewport" ref={carouselRef}>
+              <div className="kz-testimonials__track">
+                {FEEDBACKS.map((item,i) => (
+                  <article className="kz-testimonial" key={i}>
+                    <span className="kz-testimonial__quote" aria-hidden="true">“</span>
+                    <p>“{item.frase}”</p>
+                    <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Depoimento recebido</span></div>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <p className="kz-testimonials__note">Trechos de mensagens enviadas pelas clientes, sem identificação pessoal.</p>
           </section>
-
-          <section className="kz-services kz-section" id="procedimentos" aria-labelledby="kz-services-title">
-            <Reveal className="kz-services__intro">
-              <p className="kz-kicker">03 — Procedimentos</p>
-              <h2 id="kz-services-title">Escolha seu próximo <em>olhar.</em></h2>
-              <p>Veja as opções e os valores disponíveis no agendamento. Tudo o que aparecer aqui vem da agenda atual do estúdio.</p>
-            </Reveal>
-            <Reveal className="kz-services__list" delay={0.12}>
-              {servicosCarregando ? (
-                <p className="kz-services__feedback" role="status">Consultando procedimentos disponíveis…</p>
-              ) : servicos.length > 0 ? (
-                servicos.slice(0, 6).map((servico, i) => (
-                  <Link to="/agendar" className="kz-service" key={servico.id}>
-                    <span className="kz-service__number">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="kz-service__name">{servico.nome}</span>
-                    <span className="kz-service__meta">
-                      {servico.preco > 0 ? formatBRL(servico.preco) : "Consulte o valor"}
-                      {servico.duracao > 0 ? ` · ${servico.duracao} min` : ""}
-                    </span>
-                    <ArrowRight size={20} aria-hidden="true" />
-                  </Link>
-                ))
-              ) : (
-                <div className="kz-services__feedback">
-                  <p>Extensão de cílios, manutenção e cuidados com o olhar.</p>
-                  <p>Confira os procedimentos disponíveis e os horários na agenda.</p>
-                </div>
-              )}
-              <BotaoAgendar className="kz-services__action">Ver horários disponíveis</BotaoAgendar>
-            </Reveal>
-          </section>
-
-          <section className="kz-statement kz-section" aria-labelledby="kz-statement-title">
-            <div className="kz-statement__display" aria-hidden="true">beleza</div>
-            <Reveal className="kz-statement__top">
-              <p className="kz-kicker">Sua rotina, seu tempo</p>
-              <h2 id="kz-statement-title">Um tempo reservado <em>para você.</em></h2>
-            </Reveal>
-            <Reveal className="kz-statement__visual" delay={0.12}>
-              <Foto src={FOTOS.cuidado} alt="Momento de cuidado durante um procedimento de beleza" />
-            </Reveal>
-            <Reveal className="kz-statement__bottom" delay={0.06}>
-              <p>Encontre um horário que encaixe na sua semana. Escolha o procedimento, consulte a disponibilidade e faça sua reserva online.</p>
-              <BotaoAgendar>Reservar horário</BotaoAgendar>
-            </Reveal>
-          </section>
-
           <section className="kz-contact kz-section" id="contato" aria-labelledby="kz-contact-title">
             <Reveal>
-              <p className="kz-kicker">04 — Onde estamos</p>
-              <h2 id="kz-contact-title">Te espero em <em>Ipanema.</em></h2>
-              <p>Conheça o espaço e venha cuidar do seu olhar.</p>
+              <p className="kz-kicker">IPANEMA · PONTAL DO PARANÁ</p>
+              <h2 id="kz-contact-title">Seu olhar, <em>sua essência.</em></h2>
+              <p>Agende seu horário no Studio de Beleza Kauane Zenie.</p>
             </Reveal>
             <Reveal className="kz-contact__info" delay={0.1}>
               <div className="kz-contact__address"><MapPin size={20} aria-hidden="true" /><span>{STUDIO.address}<br />{STUDIO.city}</span></div>
@@ -237,7 +236,7 @@ export default function Landing() {
             <Link to="/agendar">Agendamento</Link>
             <Link to="/login">Área administrativa</Link>
           </nav>
-          <small>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza · Fotografias ilustrativas</small>
+          <small>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza · Fotografias do catálogo da Kauane</small>
         </footer>
       </div>
     </div>
