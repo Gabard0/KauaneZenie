@@ -20,14 +20,15 @@ const DIRECOES = "https://maps.app.goo.gl/QbwzzV5FzwSZW9Ym9";
 const CURSO_WHATSAPP = "https://wa.me/55" + STUDIO.whatsapp + "?text=" +
   encodeURIComponent("Olá, Kau! Tenho interesse no seu curso de extensão de cílios. Pode me passar mais informações?");
 // Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
+// Depoimentos reais compartilhados nos destaques da Kauane.
 const FEEDBACKS = [
   { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento", foto: "/brand/real/feedback-02.webp" },
-  { frase: "Sucesso! Você é maravilhosa no que você faz.", tipo: "Elogio recebido", foto: "/brand/real/feedback-03.webp" },
-  { frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado", foto: "/brand/real/feedback-04.webp" },
+  { frase: "Sucesso! Você é maravilhosa no que você faz. Eu amei o resultado do seu trabalho.", tipo: "Resultado", foto: "/brand/real/feedback-03.webp" },
   { frase: "Está de parabéns pelo trabalho, hoje tá completando 15 dias. Tá literalmente inteiro.", tipo: "Durabilidade", foto: "/brand/real/feedback-07.webp" },
-  { frase: "Cílios maravilhoso meu deusssss.", tipo: "Extensão de cílios", foto: "/brand/real/feedback-06.webp" },
-  { frase: "Ameiii meus cílios, ficou perfeito. Você é dedicada, profissional e maravilhosa, com uma mão de fada.", tipo: "Atendimento", foto: "/brand/real/feedback-04.webp" },
+  { frase: "Seu trabalho é incrível, você tem um ótimo atendimento.", tipo: "Cuidado com as clientes", foto: "/brand/real/feedback-06.webp" },
+  { frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios", foto: "/brand/real/feedback-04.webp" },
   { frase: "Só pra te elogiar, entrei umas 6x em piscina e fiquei mais de 4 horas cada uma das vezes.", tipo: "Durabilidade", foto: "/brand/real/feedback-01.webp" },
+  { frase: "Chocada com a duração.", tipo: "Durabilidade", foto: "/brand/real/feedback-05.webp" },
 ];
 const nav = [
 { href: "#sobre", label: "Sobre" },
