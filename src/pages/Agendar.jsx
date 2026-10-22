@@ -23,6 +23,8 @@ const passoNum =
 export default function Agendar() {
   const [config, setConfig] = useState(null);
   const [falha, setFalha] = useState(false);
+  const [enviandoEspera, setEnviandoEspera] = useState(false);
+  const [esperaConfirmada, setEsperaConfirmada] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [reenviando, setReenviando] = useState(false);

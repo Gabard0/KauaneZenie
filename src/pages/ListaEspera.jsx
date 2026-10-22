@@ -25,7 +25,7 @@ export default function ListaEspera(){
   };
   useEffect(()=>{carregar();},[]);
   const ativos=useMemo(()=>registros.filter(r=>r.status==="aguardando"||r.status==="contatada").sort((a,b)=>String(a.criado_em||a.created_date||"").localeCompare(String(b.criado_em||b.created_date||""))),[registros]);
-  const horarios=(r)=>slotsDoDia({funcionamento:config?.funcionamento,excecoes:config?.excecoes||[],ocupados:config?.ocupados||[],dataISO:r.data,duracao:r.duracao||60,agoraMin:r.data===new Date().toLocaleDateString("en-CA")?hojeLocalMin():0});
+  const horarios=(r)=>slotsDoDia({funcionamento:config?.funcionamento,periodosEspeciais:config?.periodosEspeciais||[],excecoes:config?.excecoes||[],ocupados:config?.ocupados||[],dataISO:r.data,duracao:r.duracao||60,agoraMin:r.data===new Date().toLocaleDateString("en-CA")?hojeLocalMin():0});
   const status=async(r,novo)=>{
     try{const x=await base44.functions.invoke("listaEspera",{acao:"status",token:getToken(),id:r.id,status:novo});if(!x.data?.ok)throw new Error("Falha ao salvar");setRegistros(a=>a.map(v=>v.id===r.id?{...v,status:novo}:v));}
     catch{setErro("Não foi possível atualizar o status.");}

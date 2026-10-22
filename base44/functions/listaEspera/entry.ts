@@ -1,6 +1,6 @@
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.44";
 import { exigirAdmin, comTravaAgenda } from "../../shared/auth.ts";
-import { hojeSP, agoraMinSP, slotsDisponiveis } from "../../shared/agenda.ts";
+import { hojeSP, agoraMinSP, slotsDisponiveis, horarioNaData } from "../../shared/agenda.ts";
 const digits = (v) => String(v || "").replace(/\D/g, "");
 function out(value, status=200) { return Response.json(value, {status}); }
 export default async function(req) {
@@ -14,7 +14,7 @@ export default async function(req) {
       const data = String(p.data || "");
       const ids = Array.isArray(p.servico_ids) ? [...new Set(p.servico_ids.map(String))].slice(0,8) : [];
       if (nome.length < 2 || tel.length < 10 || tel.length > 11 || !/^\d{4}-\d{2}-\d{2}$/.test(data) || data < hojeSP() || !ids.length) return out({ok:false,error:"dados_invalidos"},400);
-      const [services,cfg,funcs,excs,ags] = await Promise.all([svc.entities.Servico.list(),svc.entities.ConfigApp.list(),svc.entities.ConfigAgenda.filter({tipo:"funcionamento"}),svc.entities.ConfigAgenda.filter({tipo:"excecao"}),svc.entities.Agendamento.filter({data,status:{$ne:"cancelado"}})]);
+      const [services,cfg,funcs,excs,periodosEspeciais,ags] = await Promise.all([svc.entities.Servico.list(),svc.entities.ConfigApp.list(),svc.entities.ConfigAgenda.filter({tipo:"funcionamento"}),svc.entities.ConfigAgenda.filter({tipo:"excecao"}),svc.entities.ConfigAgenda.filter({tipo:"periodo"}),svc.entities.Agendamento.filter({data,status:{$ne:"cancelado"}})]);
       const limit = Math.min(365,Math.max(1,cfg[0]?.limite_agendamento_dias || 180));
       const h=hojeSP().split("-").map(Number); const dtMax=new Date(h[0],h[1]-1,h[2]+limit); const max=dtMax.getFullYear()+"-"+String(dtMax.getMonth()+1).padStart(2,"0")+"-"+String(dtMax.getDate()).padStart(2,"0");
       if(data > max) return out({ok:false,error:"data_fora_limite"},400);
@@ -22,9 +22,9 @@ export default async function(req) {
       if(chosen.some(s=>!s)) return out({ok:false,error:"servico_invalido"},400);
       const duration=chosen.reduce((t,s)=>t+(s.duracao>0?s.duracao:60),0);
       const wd = new Date(data+"T12:00:00").getDay();
-      const day=(funcs[0]?.horarios || []).find(d=>Number(d.dia)===wd);
+      const day=horarioNaData(funcs[0] || null,periodosEspeciais,data);
       if(!day || day.ativo===false || !(day.periodos||[]).some(v=>v.inicio<v.fim) || excs.some(e=>e.data===data)) return out({ok:false,error:"dia_fechado"},409);
-      const available=slotsDisponiveis({funcionamento:funcs[0],excecoes:excs,dataISO:data,duracao:duration,ocupados:ags,agoraMin:data===hojeSP()?agoraMinSP():0});
+      const available=slotsDisponiveis({funcionamento:funcs[0],periodosEspeciais,excecoes:excs,dataISO:data,duracao:duration,ocupados:ags,agoraMin:data===hojeSP()?agoraMinSP():0});
       if(available.length) return out({ok:false,error:"horarios_disponiveis"},409);
       return await comTravaAgenda(svc,async()=>{
         const previous=await svc.entities.ListaEspera.filter({data,whatsapp:tel,status:"aguardando"});
