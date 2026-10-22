@@ -12,6 +12,8 @@ const chipOff = "bg-card text-foreground hover:bg-muted";
 export default function ServicoForm({ open, onClose, onSaved, servico = null }) {
   const [nome, setNome] = useState("");
   const [preco, setPreco] = useState("");
+  const [fotoUrl, setFotoUrl] = useState("");
+  const [subindoFoto, setSubindoFoto] = useState(false);
   const [duracao, setDuracao] = useState("60");
   const [geraManut, setGeraManut] = useState(false);
   const [manutServId, setManutServId] = useState("");
@@ -24,6 +26,7 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
     if (!open) return;
     setNome(servico?.nome || "");
     setPreco(servico?.preco != null ? String(servico.preco) : "");
+    setFotoUrl(servico?.foto_url || "");
     setDuracao(servico?.duracao != null ? String(servico.duracao) : "60");
     setGeraManut(servico?.gera_manutencao === true);
     setManutServId(servico?.manutencao_servico_id || "");
@@ -32,16 +35,34 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
     base44.entities.Servico.list().then(setTodosServicos).catch(() => setTodosServicos([]));
   }, [open]);
 
+  const enviarFoto = async (file) => {
+    if (!file) return;
+    if (!["image/jpeg","image/png","image/webp"].includes(file.type) || file.size > 12 * 1024 * 1024) {
+      setErro("Envie uma foto JPG, PNG ou WebP com até 12 MB.");
+      return;
+    }
+    setSubindoFoto(true); setErro("");
+    try {
+      const res = await base44.integrations.Core.UploadPublicFile({ file });
+      if (!res?.file_url) throw new Error("upload_invalido");
+      setFotoUrl(res.file_url);
+    } catch {
+      setErro("Não foi possível enviar a imagem. Tente novamente.");
+    } finally { setSubindoFoto(false); }
+  };
+
   const salvar = async (e) => {
     e.preventDefault();
     if (!Number.isInteger(Number(duracao)) || Number(duracao) <= 0) return setErro("Informe uma duração maior que zero.");
     if (!nome.trim()) return setErro("Informe o nome do procedimento.");
+    if (subindoFoto) return setErro("Aguarde o envio da imagem.");
     if (geraManut && !manutServId) return setErro("Selecione o procedimento de manutenção correspondente.");
     setSalvando(true);
     try {
       const dados = {
         demo: false,
         nome: nome.trim(),
+        foto_url: fotoUrl,
         preco: Number(preco) || 0,
         duracao: Number(duracao) || 0,
         gera_manutencao: geraManut,
@@ -69,6 +90,16 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
           <div className="space-y-1">
             <Label>Nome</Label>
             <Input value={nome} onChange={(e) => setNome(e.target.value)} className="h-12" placeholder="Ex.: Volume Brasileiro" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="foto-procedimento">Foto real do procedimento (catálogo público)</Label>
+            {fotoUrl && <img src={fotoUrl} alt="Prévia do procedimento" className="w-full h-40 rounded-xl object-cover border" />}
+            <Input id="foto-procedimento" type="file" accept="image/png,image/jpeg,image/webp"
+              className="h-12 pt-2 cursor-pointer"
+              disabled={subindoFoto || salvando}
+              onChange={(e) => { void enviarFoto(e.target.files?.[0]); e.target.value = ""; }} />
+            <p className="text-xs text-muted-foreground">{subindoFoto ? "Enviando imagem..." : "Adicione uma foto do procedimento. Será exibida automaticamente no catálogo da home."}</p>
+            {fotoUrl && <Button type="button" variant="outline" size="sm" onClick={() => setFotoUrl("")} disabled={subindoFoto || salvando}>Remover foto</Button>}
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
@@ -155,7 +186,7 @@ export default function ServicoForm({ open, onClose, onSaved, servico = null }) 
             <Button type="button" variant="outline" className="flex-1 h-12" onClick={onClose}>
               Cancelar
             </Button>
-            <Button type="submit" className="flex-1 h-12" disabled={salvando}>
+            <Button type="submit" className="flex-1 h-12" disabled={salvando || subindoFoto}>
               {salvando ? "Salvando..." : "Salvar"}
             </Button>
           </div>

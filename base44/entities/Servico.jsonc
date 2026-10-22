@@ -31,6 +31,10 @@
     "demo": {
       "type": "boolean",
       "default": false
+    },
+    "foto_url": {
+      "type": "string",
+      "description": "Foto real do procedimento exibida no catálogo público"
     }
   },
   "required": [

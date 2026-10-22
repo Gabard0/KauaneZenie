@@ -50,6 +50,7 @@ export default async function (req) {
         .map((s) => ({
           id: s.id,
           nome: s.nome,
+          foto_url: s.foto_url || "",
           preco: s.preco || 0,
           duracao: s.duracao > 0 ? s.duracao : 60,
           gera_manutencao: cfg?.manutencao_automatica !== false && s.gera_manutencao === true,

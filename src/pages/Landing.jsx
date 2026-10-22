@@ -110,6 +110,7 @@ function BotaoAgendar({ className = "", children = "Agendar horário" }) {
 
 export default function Landing() {
   const reduzirMovimento = useReducedMotion();
+  const [fotosServicos, setFotosServicos] = useState({});
   const [menuAberto, setMenuAberto] = useState(false);
   const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
   const [carouselPausado, setCarouselPausado] = useState(false);
@@ -124,6 +125,21 @@ export default function Landing() {
   const catalogoDirecao = useRef(1);
   const catalogoPausaTimer = useRef(null);
   const catalogoSecaoRef = useRef(null);
+
+  useEffect(() => {
+    let ativo = true;
+    import("@/api/base44Client").then(({ base44 }) =>
+      base44.functions.invoke("getBookingConfig", {})
+    ).then((res) => {
+      if (!ativo) return;
+      const map = {};
+      for (const servico of res?.data?.servicos || []) {
+        if (servico.foto_url) map[servico.nome] = servico.foto_url;
+      }
+      setFotosServicos(map);
+    }).catch(() => {});
+    return () => { ativo = false; };
+  }, []);
 
   useEffect(() => {
     if (!carouselApi || carouselPausado || reduzirMovimento) return undefined;
@@ -275,8 +291,8 @@ export default function Landing() {
                   {CATALOGO.map((item) => (
                     <article className="kz-catalog__card" key={item.nome}>
                       <div className="kz-catalog__image">
-                        {item.foto
-                          ? <Foto src={item.foto} alt={item.nome + " — foto do catálogo da Kauane Zenie"} />
+                        {(fotosServicos[item.nome] || item.foto)
+                          ? <Foto src={fotosServicos[item.nome] || item.foto} alt={item.nome + " — foto do catálogo da Kauane Zenie"} />
                           : <div className="kz-catalog__unillustrated" aria-label={"Procedimento " + item.nome}>
                               <span>KZ</span><span>{item.nome}</span>
                             </div>}
