@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { POLITICA_RESERVA, formatBRL, dataLonga } from "@/lib/helpers";
 import { Copy, MessageCircle, AlertTriangle, Loader2, Check } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function TelaPagamento({ politica = POLITICA_RESERVA, pagamento, resumo, onEnviado, enviando }) {
   const [copiado, setCopiado] = useState(false);
@@ -77,6 +78,7 @@ export default function TelaPagamento({ politica = POLITICA_RESERVA, pagamento, 
         <p className="text-sm text-amber-800/90 dark:text-amber-200/80">
           Seu horário só será confirmado após a conferência do comprovante.
         </p>
+        <p className="text-sm"><Link className="underline font-semibold" to="/reembolso" target="_blank" rel="noopener noreferrer">Política de cancelamento e reembolso</Link></p>
       </div>
 
       <Button className="w-full h-14 font-semibold text-base" onClick={onEnviado} disabled={enviando}>

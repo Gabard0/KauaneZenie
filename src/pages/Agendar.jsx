@@ -17,6 +17,13 @@ import { MessageCircle, Loader2, CreditCard, ExternalLink } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from "react-router-dom";
 
+function ConsentimentoAtendimento({ checked, onChange }) {
+  return <label className="flex items-start gap-3 text-xs sm:text-sm leading-relaxed cursor-pointer rounded-xl border border-gold/25 bg-gold/5 p-3.5">
+    <Checkbox checked={checked} onCheckedChange={(v) => onChange(v === true)} aria-label="Li os termos e fui informado sobre o uso dos meus dados" />
+    <span>Li os <Link className="underline font-semibold text-gold" to="/termos" target="_blank" rel="noopener noreferrer">Termos de Atendimento</Link> e estou ciente de como meus dados necessários são tratados, conforme a <Link className="underline font-semibold text-gold" to="/privacidade" target="_blank" rel="noopener noreferrer">Política de Privacidade</Link>. Este aceite não autoriza mensagens de propaganda.</span>
+  </label>;
+}
+
 const secaoCls = "rounded-3xl bg-card border border-border/60 p-5 space-y-4";
 const passoTitulo = "flex items-center gap-2.5 font-heading text-lg";
 const passoNum =
@@ -353,9 +360,11 @@ export default function Agendar() {
                 ) : (
                   <>
                     <p className="text-sm text-muted-foreground">Este dia está lotado. Deixe seu nome e WhatsApp para receber um contato se surgir uma vaga.</p>
-                    <DadosCliente nome={dados.nome} whatsapp={dados.whatsapp} nascimento={dados.nascimento} onChange={mudar} />
+                    <DadosCliente nome={dados.nome} whatsapp={dados.whatsapp}
+                      onChange={mudar} exibirAniversario={false} />
+                    <ConsentimentoAtendimento checked={aceitouTermos} onChange={setAceitouTermos} />
                     {erro && <p role="alert" className="text-sm text-destructive">{erro}</p>}
-                    <Button className="w-full h-12" disabled={enviandoEspera || dados.nome.trim().length < 2 || digits(dados.whatsapp).length < 10} onClick={entrarNaEspera}>
+                    <Button className="w-full h-12" disabled={!aceitouTermos || enviandoEspera || dados.nome.trim().length < 2 || digits(dados.whatsapp).length < 10} onClick={entrarNaEspera}>
                       {enviandoEspera ? "Enviando..." : "Entrar na lista de espera"}
                     </Button>
                     <p className="text-xs text-muted-foreground">A inscrição não bloqueia o horário, nem exige Pix. A vaga será confirmada pela Kauane.</p>
@@ -369,7 +378,8 @@ export default function Agendar() {
                 <h2 className={passoTitulo}>
                   <span className={passoNum}>3</span> Seus dados
                 </h2>
-                <DadosCliente nome={dados.nome} whatsapp={dados.whatsapp} nascimento={dados.nascimento} onChange={mudar} />
+                <DadosCliente nome={dados.nome} whatsapp={dados.whatsapp} nascimento={dados.nascimento}
+                  aceitaAniversario={dados.aceitaAniversario} onChange={mudar} />
                 {temManutencao && (
                   <div className="rounded-2xl border border-gold/40 bg-gold/5 p-4 text-sm space-y-1.5 animate-in fade-in slide-in-from-top-1 duration-300">
                     <p className="font-semibold text-gold flex items-center gap-1.5">
@@ -415,6 +425,7 @@ export default function Agendar() {
                     reservar o horário. <span className="whitespace-pre-wrap">{politica}</span>
                   </div>
                 )}
+                <ConsentimentoAtendimento checked={aceitouTermos} onChange={setAceitouTermos} />
                 {erro && <p className="text-sm text-destructive">{erro}</p>}
                 <Button
                   className="w-full h-14 font-semibold uppercase tracking-widest text-sm"
