@@ -3,12 +3,12 @@ import { aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, Loader2 } from "lucide-react";
+import { User, LockKeyhole, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { adminLogin, setToken } from "@/lib/adminAuth";
 
 const ERROS = {
-  credenciais_invalidas: "Usuário incorreto",
+  credenciais_invalidas: "Usuário ou senha incorretos",
   sessao_invalida: "Sua sessão expirou. Entre novamente."
 };
 
@@ -29,6 +29,7 @@ const inputCls =
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");
+  const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +42,7 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      const r = await adminLogin(usuario.trim());
+      const r = await adminLogin(usuario.trim(), senha);
       if (!r.ok) {
         setError(ERROS[r.error] || "Não foi possível entrar");
         return;
@@ -104,6 +105,15 @@ export default function Login() {
                 />
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="senha" className="text-foreground/80">Senha</Label>
+              <div className="relative">
+                <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                <Input id="senha" type="password" autoComplete="current-password"
+                  placeholder="Sua senha" value={senha} onChange={(e) => setSenha(e.target.value)}
+                  className={inputCls} required />
+              </div>
+            </div>
             <Button
               type="submit"
               className="w-full h-12 font-semibold uppercase tracking-widest"
@@ -122,7 +132,7 @@ export default function Login() {
         </div>
 
         <p className="text-center text-xs text-muted-foreground pt-2">
-          Sem senha por enquanto. O acesso direto é temporário.
+          Acesso protegido. Use as credenciais do estúdio.
         </p>
       </div>
       </main>
