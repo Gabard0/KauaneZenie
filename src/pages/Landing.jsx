@@ -9,27 +9,27 @@ import "./Landing.css";
 
 // Catálogo conferido na página oficial: https://kauanezenie.keepo.bio/
 const CATALOGO = [
-  { nome: "Volume Brasileiro", desc: "Mais escolhido. Proporciona mais curvatura e volume ao olhar.", foto: "/brand/real/keepo-1.jpg" },
-  { nome: "Volume Egípcio", desc: "Deixa o olhar preenchido, delicado e apaixonante.", foto: "/brand/real/keepo-2.jpg" },
-  { nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
-  { nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
-  { nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" },
-];
+{ nome: "Volume Brasileiro", desc: "Mais escolhido. Proporciona mais curvatura e volume ao olhar.", foto: "/brand/real/keepo-1.jpg" },
+{ nome: "Volume Egípcio", desc: "Deixa o olhar preenchido, delicado e apaixonante.", foto: "/brand/real/keepo-2.jpg" },
+{ nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
+{ nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
+{ nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" }];
+
 const HIGHLIGHTS = "https://www.instagram.com/stories/highlights/17942089640796543/";
 const DIRECOES = "https://maps.app.goo.gl/QbwzzV5FzwSZW9Ym9";
 const CURSO_WHATSAPP = "https://wa.me/55" + STUDIO.whatsapp + "?text=" +
-  encodeURIComponent("Olá, Kau! Tenho interesse no seu curso de extensão de cílios. Pode me passar mais informações?");
+encodeURIComponent("Olá, Kau! Tenho interesse no seu curso de extensão de cílios. Pode me passar mais informações?");
 // Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
 // Depoimentos reais compartilhados nos destaques da Kauane.
 const FEEDBACKS = [
-  { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento", foto: "/brand/real/feedback-02.webp" },
-  { frase: "Sucesso! Você é maravilhosa no que você faz. Eu amei o resultado do seu trabalho.", tipo: "Resultado", foto: "/brand/real/feedback-03.webp" },
-  { frase: "Está de parabéns pelo trabalho, hoje tá completando 15 dias. Tá literalmente inteiro.", tipo: "Durabilidade", foto: "/brand/real/feedback-07.webp" },
-  { frase: "Seu trabalho é incrível, você tem um ótimo atendimento.", tipo: "Cuidado com as clientes", foto: "/brand/real/feedback-06.webp" },
-  { frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios", foto: "/brand/real/feedback-04.webp" },
-  { frase: "Só pra te elogiar, entrei umas 6x em piscina e fiquei mais de 4 horas cada uma das vezes.", tipo: "Durabilidade", foto: "/brand/real/feedback-01.webp" },
-  { frase: "Chocada com a duração.", tipo: "Durabilidade", foto: "/brand/real/feedback-05.webp" },
-];
+{ frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento", foto: "/brand/real/feedback-02.webp" },
+{ frase: "Sucesso! Você é maravilhosa no que você faz. Eu amei o resultado do seu trabalho.", tipo: "Resultado", foto: "/brand/real/feedback-03.webp" },
+{ frase: "Está de parabéns pelo trabalho, hoje tá completando 15 dias. Tá literalmente inteiro.", tipo: "Durabilidade", foto: "/brand/real/feedback-07.webp" },
+{ frase: "Seu trabalho é incrível, você tem um ótimo atendimento.", tipo: "Cuidado com as clientes", foto: "/brand/real/feedback-06.webp" },
+{ frase: "Seu trabalho é impecável, você arrasa!", tipo: "Cílios", foto: "/brand/real/feedback-04.webp" },
+{ frase: "Só pra te elogiar, entrei umas 6x em piscina e fiquei mais de 4 horas cada uma das vezes.", tipo: "Durabilidade", foto: "/brand/real/feedback-01.webp" },
+{ frase: "Chocada com a duração.", tipo: "Durabilidade", foto: "/brand/real/feedback-05.webp" }];
+
 const nav = [
 { href: "#sobre", label: "Sobre" },
 { href: "#procedimentos", label: "Procedimentos" },
@@ -39,9 +39,9 @@ const nav = [
 
 function Foto({ src, alt, className = "" }) {
   const [falhou, setFalhou] = useState(false);
-  return falhou
-    ? <div className={"kz-photo-fallback " + className} role="img" aria-label={alt}><span>kz.</span></div>
-    : <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />;
+  return falhou ?
+  <div className={"kz-photo-fallback " + className} role="img" aria-label={alt}><span>kz.</span></div> :
+  <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />;
 }
 
 function CursoCaixa() {
@@ -78,8 +78,8 @@ function CursoCaixa() {
         <span className="kz-course__ambient kz-course__ambient--two" aria-hidden="true" />
       </div>
       <p className="kz-course__scroll-hint">Role a página para fechar a caixa</p>
-    </div>
-  );
+    </div>);
+
 }
 
 // Reveals once and respects reduced-motion preferences.
@@ -145,7 +145,7 @@ export default function Landing() {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
             <img src="/brand/real/kauane-retrato-atualizado.webp" alt="" loading="eager" decoding="async" fetchPriority="high"
-              onError={(event) => {event.currentTarget.onerror = null; event.currentTarget.src = "/brand/real/kauane-recorte.png";}} />
+            onError={(event) => {event.currentTarget.onerror = null;event.currentTarget.src = "/brand/real/kauane-recorte.png";}} />
           </motion.div>
 
           <span className="kz-hero__front-shape" aria-hidden="true" />
@@ -226,11 +226,11 @@ export default function Landing() {
             <CursoCaixa />
             <div className="kz-course__material">
               <figure>
-                <img src="/brand/real/curso-material-01.webp" alt="Material de curso da Kauane: caixa com laço, apostila e certificado" loading="lazy" />
+                <img src="/brand/real/curso-material-01.webp" alt="Material de curso da Kauane: caixa com laço, apostila e certificado" loading="lazy" className="hidden" />
                 <figcaption>Material completo</figcaption>
               </figure>
               <figure>
-                <img src="/brand/real/curso-material-02.webp" alt="Embalagem e apostila do curso da Kauane Zenie" loading="lazy" />
+                <img src="/brand/real/curso-material-02.webp" alt="Embalagem e apostila do curso da Kauane Zenie" loading="lazy" className="hidden" />
                 <figcaption>Apostila exclusiva</figcaption>
               </figure>
             </div>
@@ -247,10 +247,10 @@ export default function Landing() {
               </div>
             </Reveal>
             <div className="kz-testimonials__viewport" ref={carouselRef}
-              onMouseEnter={() => setCarouselPausado(true)}
-              onMouseLeave={() => setCarouselPausado(false)}
-              onFocusCapture={() => setCarouselPausado(true)}
-              onBlurCapture={() => setCarouselPausado(false)}>
+            onMouseEnter={() => setCarouselPausado(true)}
+            onMouseLeave={() => setCarouselPausado(false)}
+            onFocusCapture={() => setCarouselPausado(true)}
+            onBlurCapture={() => setCarouselPausado(false)}>
               <div className="kz-testimonials__track">
                 {FEEDBACKS.map((item, i) =>
                 <a className="kz-testimonial" key={i} href={HIGHLIGHTS} target="_blank" rel="noopener noreferrer" aria-label={"Ver feedback real no Instagram: " + item.tipo}>
@@ -258,13 +258,13 @@ export default function Landing() {
                       <img src={item.foto} alt={"Captura de conversa real — " + item.tipo} loading="lazy" />
                     </div>
                     <p>“{item.frase}”</p>
-                    <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Ver destaque <ExternalLink size={13}/></span></div>
+                    <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Ver destaque <ExternalLink size={13} /></span></div>
                   </a>
                 )}
               </div>
             </div>
             <a className="kz-testimonials__source" href={HIGHLIGHTS} target="_blank" rel="noopener noreferrer">
-              <Instagram size={18}/> São feedbacks reais. Confira o destaque no Instagram <ExternalLink size={14}/>
+              <Instagram size={18} /> São feedbacks reais. Confira o destaque no Instagram <ExternalLink size={14} />
             </a>
           </section>
           <section className="kz-contact kz-section" id="contato" aria-labelledby="kz-contact-title">
@@ -275,7 +275,7 @@ export default function Landing() {
             </Reveal>
             <Reveal className="kz-contact__info" delay={0.1}>
               <div className="kz-contact__address"><MapPin size={20} aria-hidden="true" /><span>{STUDIO.address}<br />{STUDIO.city}</span></div>
-              <a className="kz-directions-button" href={DIRECOES} target="_blank" rel="noopener noreferrer"><Navigation size={19}/> Como chegar <ArrowRight size={18}/></a>
+              <a className="kz-directions-button" href={DIRECOES} target="_blank" rel="noopener noreferrer"><Navigation size={19} /> Como chegar <ArrowRight size={18} /></a>
               <div className="kz-contact__socials">
                 <a href={STUDIO.instagram} target="_blank" rel="noopener noreferrer"><Instagram size={17} /> Instagram</a>
                 <a href={STUDIO.whatsappLink} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> WhatsApp</a>
@@ -290,7 +290,7 @@ export default function Landing() {
           <div className="kz-footer__location">
             <MapPin size={18} aria-hidden="true" />
             <div><span>{STUDIO.address}</span><span>{STUDIO.city}</span>
-              <a href={DIRECOES} target="_blank" rel="noopener noreferrer">Ver rota no Google Maps <ArrowRight size={14}/></a>
+              <a href={DIRECOES} target="_blank" rel="noopener noreferrer">Ver rota no Google Maps <ArrowRight size={14} /></a>
             </div>
           </div>
           <nav aria-label="Links do rodapé">
@@ -299,7 +299,7 @@ export default function Landing() {
             <Link to="/login">Área administrativa</Link>
           </nav>
           <small className="kz-footer__bottom"><span>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza</span>
-            <a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer">Desenvolvido por GabardoLabs.com <ExternalLink size={12}/></a>
+            <a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer">Desenvolvido por GabardoLabs.com <ExternalLink size={12} /></a>
           </small>
         </footer>
       </div>
