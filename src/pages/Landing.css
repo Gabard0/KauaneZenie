@@ -1425,3 +1425,21 @@
     font-size:11px;
   }
 }
+
+/* Suaviza o clique nos links internos e mantém a navegação acessível. */
+html.kz-scroll-suave { scroll-behavior: smooth; }
+.kz-site :is(#sobre,#procedimentos,#curso,#feedbacks,#contato) { scroll-margin-top: 22px; }
+/* Os spans de vidro têm deslocamento gerenciado pelo Framer Motion.
+   Rotação visual fica no elemento via rotate CSS, sem competir com a translação. */
+.kz-site .kz-hero__halo--one,
+.kz-site .kz-hero__halo--two { rotate: -27deg; transform: none; }
+.kz-site .kz-hero__glass--rear { rotate: -15deg; transform:translate(calc(var(--kz-pointer-x) * -19px), 0px); }
+.kz-site .kz-hero__glass--left { rotate: 12deg; transform:translate(calc(var(--kz-pointer-x) * 28px), 0px); }
+@media (max-width: 760px) {
+  .kz-site .kz-hero__glass--rear,.kz-site .kz-hero__glass--left {
+    transform:none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.kz-scroll-suave { scroll-behavior: auto; }
+}

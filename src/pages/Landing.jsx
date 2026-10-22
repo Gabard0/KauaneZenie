@@ -110,6 +110,21 @@ function BotaoAgendar({ className = "", children = "Agendar horário" }) {
 
 export default function Landing() {
   const reduzirMovimento = useReducedMotion();
+  const heroRef = useRef(null);
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const heroScrollSuave = useSpring(heroScroll, { stiffness: 85, damping: 28, mass: 0.65 });
+  const vidroFundoY = useTransform(heroScrollSuave, [0, 1], [0, -45]);
+  const vidroLateralY = useTransform(heroScrollSuave, [0, 1], [0, 62]);
+  const arcoY = useTransform(heroScrollSuave, [0, 1], [0, -24]);
+  const retratoY = useTransform(heroScrollSuave, [0, 1], [0, 17]);
+
+  useEffect(() => {
+    document.documentElement.classList.add("kz-scroll-suave");
+    return () => document.documentElement.classList.remove("kz-scroll-suave");
+  }, []);
   const [fotosServicos, setFotosServicos] = useState({});
   const [menuAberto, setMenuAberto] = useState(false);
   const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
@@ -188,7 +203,7 @@ export default function Landing() {
     <div className="kz-site" id="topo">
       <a className="kz-public-skip" href="#conteudo-principal">Pular para o conteúdo principal</a>
       <div className="kz-shell">
-        <section className="kz-hero" aria-labelledby="kz-hero-title"
+        <section ref={heroRef} className="kz-hero" aria-labelledby="kz-hero-title"
         onPointerMove={(event) => {
           if (reduzirMovimento || event.pointerType !== "mouse") return;
           const rect = event.currentTarget.getBoundingClientRect();
@@ -202,13 +217,14 @@ export default function Landing() {
           event.currentTarget.style.setProperty("--kz-pointer-y", "0");
         }}>
           <div className="kz-hero__art" aria-hidden="true">
-            <span className="kz-hero__halo kz-hero__halo--one" />
-            <span className="kz-hero__halo kz-hero__halo--two" />
-            <span className="kz-hero__glass kz-hero__glass--rear" />
-            <span className="kz-hero__glass kz-hero__glass--left" />
+            <motion.span className="kz-hero__halo kz-hero__halo--one" style={reduzirMovimento ? undefined : { y: arcoY }} />
+            <motion.span className="kz-hero__halo kz-hero__halo--two" style={reduzirMovimento ? undefined : { y: vidroLateralY }} />
+            <motion.span className="kz-hero__glass kz-hero__glass--rear" style={reduzirMovimento ? undefined : { y: vidroFundoY }} />
+            <motion.span className="kz-hero__glass kz-hero__glass--left" style={reduzirMovimento ? undefined : { y: vidroLateralY }} />
 
           </div>
           <motion.div className="kz-hero__portrait" aria-hidden="true"
+          style={reduzirMovimento ? undefined : { y: retratoY }}
           initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
