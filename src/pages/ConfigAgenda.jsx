@@ -1,4 +1,6 @@
 import ConfiguracoesDialog from "@/components/ConfiguracoesDialog";
+import HorariosEspeciais from "@/components/configagenda/HorariosEspeciais";
+import { Link } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import React, { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
@@ -98,7 +100,12 @@ export default function ConfigAgenda() {
           <p className="text-sm text-muted-foreground">Resumo do funcionamento do estúdio.</p></div>
         <ConfiguracoesDialog titulo="Configurar horários" descricao="Funcionamento semanal, folgas e feriados." open={configOpen} onOpenChange={(v) => { if (salvando) return; if (v) setHorarios(registro?.horarios || vazio()); setConfigOpen(v); }}>
           <Tabs defaultValue="semana">
-            <TabsList className="grid grid-cols-2 w-full mb-4"><TabsTrigger value="semana">Semana</TabsTrigger><TabsTrigger value="excecoes">Folgas e feriados</TabsTrigger></TabsList>
+            <TabsList className="grid grid-cols-3 w-full mb-4 h-12">
+              <TabsTrigger value="semana" className="px-1 text-xs sm:text-sm">Semana</TabsTrigger>
+              <TabsTrigger value="especiais" className="px-1 text-xs sm:text-sm">Períodos</TabsTrigger>
+              <TabsTrigger value="excecoes" className="px-1 text-xs sm:text-sm">Folgas</TabsTrigger>
+            </TabsList>
+            <TabsContent value="especiais"><HorariosEspeciais /></TabsContent>
             <TabsContent value="semana">      <div className="space-y-3">
         {horarios.map((d) => (
           <DiaFuncionamento key={d.dia} label={LABELS[d.dia]} dia={d} onChange={(v) => mudarDia(d, v)} />
@@ -164,6 +171,9 @@ export default function ConfigAgenda() {
           </div>
         ))}
       </div>
+      <Link to="/agendamento-online" className="block text-sm font-medium text-gold underline underline-offset-4">
+        Configurar o limite de abertura da agenda (1 a 365 dias)
+      </Link>
       {excecoes.length > 0 && <section className="space-y-2"><h2 className="font-semibold">Folgas e feriados</h2>{excecoes.map((e) => <ExcecaoItem key={e.id} excecao={e} onRemover={removerExcecao} />)}</section>}
     </div>
   );

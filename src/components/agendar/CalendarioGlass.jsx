@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toISO, todayISO } from "@/lib/helpers";
-import { slotsDoDia, hojeLocalMin } from "@/lib/booking";
+import { slotsDoDia, hojeLocalMin, horarioNaData } from "@/lib/booking";
 
 const SEMANA = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-export default function CalendarioGlass({ config, duracao = 60, selecionado, onSelect }) {
+export default function CalendarioGlass({ config, duracao = 60, selecionado, onSelect, permitirListaEspera = false }) {
   const [mes, setMes] = useState(0);
   const hoje0 = useMemo(() => {
     const d = new Date();
@@ -13,8 +13,8 @@ export default function CalendarioGlass({ config, duracao = 60, selecionado, onS
     return d;
   }, []);
   const fim = useMemo(
-    () => new Date(hoje0.getFullYear(), hoje0.getMonth(), hoje0.getDate() + 60),
-    [hoje0]
+    () => new Date(hoje0.getFullYear(), hoje0.getMonth(), hoje0.getDate() + (config?.limite_agendamento_dias || 60)),
+    [hoje0, config?.limite_agendamento_dias]
   );
   const base = new Date(hoje0.getFullYear(), hoje0.getMonth() + mes, 1);
   const proxOk = new Date(hoje0.getFullYear(), hoje0.getMonth() + mes + 1, 1) <= fim;
@@ -34,16 +34,20 @@ export default function CalendarioGlass({ config, duracao = 60, selecionado, onS
       if (!c) continue;
       const iso = toISO(c);
       const livre =
-        c >= hoje0 &&
+        c >= hoje0 && c <= fim &&
         slotsDoDia({
           funcionamento: config?.funcionamento,
+          periodosEspeciais: config?.periodosEspeciais,
           excecoes: config?.excecoes,
           ocupados: config?.ocupados,
           dataISO: iso,
           duracao,
           agoraMin: iso === todayISO() ? agoraMin : 0,
         }).length > 0;
-      m[iso] = livre;
+      const diaCfg = horarioNaData(config?.funcionamento, config?.periodosEspeciais, iso);
+      const aberto = diaCfg?.ativo !== false && (diaCfg?.periodos || []).some(p => p.inicio < p.fim);
+      const bloqueado = (config?.excecoes || []).some(e => e.data === iso);
+      m[iso] = { livre, lista: permitirListaEspera && !livre && !!aberto && !bloqueado && c >= hoje0 && c <= fim };
     }
     return m;
   }, [dias, config, duracao, hoje0]);
@@ -84,24 +88,24 @@ export default function CalendarioGlass({ config, duracao = 60, selecionado, onS
         {dias.map((c, i) => {
           if (!c) return <span key={`vazio-${i}`} />;
           const iso = toISO(c);
-          const livre = mapa[iso];
+          const { livre, lista } = mapa[iso] || { livre: false, lista: false };
           const on = selecionado === iso;
           const hoje = iso === todayISO();
           return (
             <button
               key={iso}
               type="button"
-              disabled={!livre}
+              disabled={!livre && !lista}
               onClick={() => onSelect(iso)}
               className={`aspect-square rounded-xl sm:rounded-2xl text-sm font-medium transition-all duration-200 ${
                 on
                   ? "bg-primary text-primary-foreground font-semibold border border-gold-dark/40 shadow-lg scale-105"
                   : livre
                     ? `bg-card border hover:border-gold/60 hover:bg-gold/10 ${hoje ? "text-gold" : ""}`
-                    : "text-muted-foreground/35 cursor-not-allowed"
+                    : lista ? "bg-pink-100/30 border border-pink-400/50 text-pink-700 dark:text-pink-300 hover:bg-pink-100/50" : "text-muted-foreground/35 cursor-not-allowed"
               }`}
             >
-              {c.getDate()}
+              <span>{c.getDate()}</span>{lista && <span className="block text-[8px] leading-tight">Lista</span>}
             </button>
           );
         })}

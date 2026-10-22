@@ -64,7 +64,12 @@ export default function AgendamentoOnline() {
           <Button variant="ghost" className="h-11" disabled={!qr} asChild={!!qr}>{qr ? <a href={qr} download="qrcode-kauane-zenie.png"><Download /> Baixar QR</a> : <span>Gerando QR…</span>}</Button>
         </div>
       </section>
-      <Button variant="outline" className="w-full h-12" onClick={() => { setAbaConfig("pix"); setConfigOpen(true); }}><QrCode /> Configurar Pix e QR Code</Button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <Button variant="outline" className="w-full h-12" onClick={() => { setAbaConfig("reserva"); setConfigOpen(true); }}>
+          Limite de dias e manutenção
+        </Button>
+        <Button variant="outline" className="w-full h-12" onClick={() => { setAbaConfig("pix"); setConfigOpen(true); }}><QrCode /> Configurar Pix e QR Code</Button>
+      </div>
     </div>
   );
 }

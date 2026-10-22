@@ -38,6 +38,7 @@ export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" })
   const [pixCopia, setPixCopia] = useState("");
   const [waComprovantes, setWaComprovantes] = useState("");
   const [tempoReserva, setTempoReserva] = useState("15");
+  const [limiteDias, setLimiteDias] = useState("60");
   const [subindoQr, setSubindoQr] = useState(false);
   const areaRef = useRef(null);
   const fileRef = useRef(null);
@@ -56,6 +57,7 @@ export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" })
         setPixCopia(cfg.pix_copia_cola || "");
         setWaComprovantes(maskTelefone(studioPhone(cfg.whatsapp_comprovantes || cfg.whatsapp)));
         setTempoReserva(String(cfg.tempo_reserva_minutos || 15));
+        setLimiteDias(String(cfg.limite_agendamento_dias ?? 60));
         setCarregado(true);
       })
       .catch(() => toast({ title: "Não foi possível carregar as configurações. Feche e reabra as configurações para tentar novamente.", variant: "destructive" }));
@@ -100,6 +102,11 @@ export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" })
   };
 
   const salvarCfg = async () => {
+    const limite = Number(limiteDias);
+    if (!Number.isInteger(limite) || limite < 1 || limite > 365) {
+      toast({title:"Escolha entre 1 e 365 dias para abertura da agenda.",variant:"destructive"});
+      return;
+    }
     setSalvando(true);
     try {
       const r = await adminSalvarConfig({
@@ -113,6 +120,7 @@ export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" })
         pix_copia_cola: pixCopia,
         whatsapp_comprovantes: digits(waComprovantes),
         tempo_reserva_minutos: Number(tempoReserva) || 15,
+        limite_agendamento_dias: Number(limiteDias),
       });
       if (!r?.ok) {
         toast({ title: ERROS[r.error] || "Não foi possível salvar", variant: "destructive" });
@@ -134,7 +142,7 @@ export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" })
       <Tabs defaultValue={abaInicial}>
         <TabsList className="grid grid-cols-3 w-full h-11 mb-4">
           <TabsTrigger className="px-1 text-xs sm:text-sm" value="comunicacao">WhatsApp</TabsTrigger>
-          <TabsTrigger className="px-1 text-xs sm:text-sm" value="reserva">Reserva</TabsTrigger>
+          <TabsTrigger className="px-1 text-xs sm:text-sm" value="reserva">Agenda</TabsTrigger>
           <TabsTrigger className="px-1 text-xs sm:text-sm" value="pix">Pix</TabsTrigger>
         </TabsList>
         <TabsContent value="comunicacao">
@@ -197,6 +205,13 @@ export default function ConfiguracoesAgendamento({ abaInicial = "comunicacao" })
         <TabsContent value="reserva">
       <div className="min-w-0 space-y-4">
         <h2 className="text-lg font-heading font-semibold">Reserva e manutenção</h2>
+        <div className="space-y-2 rounded-2xl border p-4">
+          <Label htmlFor="limite-agenda">Até quantos dias à frente a cliente pode agendar?</Label>
+          <Input id="limite-agenda" type="number" min="1" max="365" step="1" inputMode="numeric"
+            className="h-12 max-w-xs" value={limiteDias}
+            onChange={(e) => setLimiteDias(e.target.value)} disabled={!carregado || salvando} />
+          <p className="text-xs text-muted-foreground">De 1 a 365 dias. O padrão é 60 dias. Pode alterar quando quiser, sem apagar os agendamentos existentes.</p>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="politica-reserva">Mensagem de cancelamento e reembolso</Label>
           <Textarea id="politica-reserva" value={politica} onChange={(e) => setPolitica(e.target.value)} rows={5} maxLength={1500} disabled={!carregado || salvando} />
