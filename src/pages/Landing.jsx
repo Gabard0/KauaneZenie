@@ -77,7 +77,6 @@ function CursoCaixa() {
         <span className="kz-course__ambient kz-course__ambient--one" aria-hidden="true" />
         <span className="kz-course__ambient kz-course__ambient--two" aria-hidden="true" />
       </div>
-      <p className="kz-course__scroll-hint">Role a página para fechar a caixa</p>
     </div>);
 
 }
@@ -108,12 +107,58 @@ export default function Landing() {
   const [menuAberto, setMenuAberto] = useState(false);
   const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
   const [carouselPausado, setCarouselPausado] = useState(false);
+  const [catalogoRef, catalogoApi] = useEmblaCarousel({
+    align: "start",
+    containScroll: "trimSnaps",
+    loop: false,
+    duration: 33,
+  });
+  const [catalogoPausado, setCatalogoPausado] = useState(false);
+  const [catalogoVisivel, setCatalogoVisivel] = useState(false);
+  const catalogoDirecao = useRef(1);
+  const catalogoPausaTimer = useRef(null);
+  const catalogoSecaoRef = useRef(null);
 
   useEffect(() => {
     if (!carouselApi || carouselPausado || reduzirMovimento) return undefined;
     const interval = window.setInterval(() => carouselApi.scrollNext(), 5500);
     return () => window.clearInterval(interval);
   }, [carouselApi, carouselPausado, reduzirMovimento]);
+
+  useEffect(() => {
+    const node = catalogoSecaoRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => setCatalogoVisivel(entry.isIntersecting),
+      { threshold: 0.14 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!catalogoApi || !catalogoVisivel || catalogoPausado || reduzirMovimento) return undefined;
+    const timer = window.setInterval(() => {
+      if (!catalogoApi.canScrollNext()) catalogoDirecao.current = -1;
+      if (!catalogoApi.canScrollPrev()) catalogoDirecao.current = 1;
+      if (catalogoDirecao.current === 1) catalogoApi.scrollNext();
+      else catalogoApi.scrollPrev();
+    }, 3200);
+    return () => window.clearInterval(timer);
+  }, [catalogoApi, catalogoVisivel, catalogoPausado, reduzirMovimento]);
+
+  useEffect(() => () => window.clearTimeout(catalogoPausaTimer.current), []);
+
+  const pausarCatalogoTemporariamente = () => {
+    window.clearTimeout(catalogoPausaTimer.current);
+    setCatalogoPausado(true);
+    catalogoPausaTimer.current = window.setTimeout(() => setCatalogoPausado(false), 10000);
+  };
+  const navegarCatalogo = (direcao) => {
+    pausarCatalogoTemporariamente();
+    if (direcao === "anterior") catalogoApi?.scrollPrev();
+    else catalogoApi?.scrollNext();
+  };
 
   const fecharMenu = () => setMenuAberto(false);
 
@@ -144,7 +189,7 @@ export default function Landing() {
           initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
-            <img src="/brand/real/kauane-retrato-atualizado.webp" alt="" loading="eager" decoding="async" fetchPriority="high"
+            <img src="/brand/real/kauane-hero-busto.webp" alt="" loading="eager" decoding="async" fetchPriority="high"
             onError={(event) => {event.currentTarget.onerror = null;event.currentTarget.src = "/brand/real/kauane-recorte.png";}} />
           </motion.div>
 
@@ -194,6 +239,7 @@ export default function Landing() {
               <span>KAUANE ZENIE · STUDIO DE BELEZA</span>
               <h2>Cuidar de você é <em>investimento.</em></h2>
               <p>Realçando a beleza do seu olhar!</p>
+              <BotaoAgendar className="kz-brand-note__book">Agendar meu horário</BotaoAgendar>
             </Reveal>
           </section>
           <section className="kz-catalog kz-section" id="procedimentos" aria-labelledby="kz-catalog-title">
@@ -201,17 +247,46 @@ export default function Landing() {
               <p className="kz-kicker">CÍLIOS & SOBRANCELHAS</p>
               <h2 id="kz-catalog-title">Catálogo</h2>
             </Reveal>
-            <div className="kz-catalog__grid">
-              {CATALOGO.map((item, i) =>
-              <Reveal className="kz-catalog__card" delay={i * .08} key={item.nome}>
-                  <div className="kz-catalog__image"><Foto src={item.foto} alt={item.nome + " — foto do catálogo da Kauane Zenie"} /></div>
-                  <div className="kz-catalog__details">
-                    <h3>{item.nome}</h3>
-                    <p>{item.desc}</p>
-                    <Link to="/agendar">Ver horários <ArrowRight size={16} /></Link>
-                  </div>
-                </Reveal>
-              )}
+            <div className="kz-catalog__carousel" ref={catalogoSecaoRef}>
+              <div className="kz-catalog__viewport" ref={catalogoRef}
+                aria-label="Catálogo de procedimentos. Arraste para navegar."
+                onMouseEnter={() => {
+                  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                    window.clearTimeout(catalogoPausaTimer.current);
+                    setCatalogoPausado(true);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                    window.clearTimeout(catalogoPausaTimer.current);
+                    setCatalogoPausado(false);
+                  }
+                }}
+                onPointerDown={() => pausarCatalogoTemporariamente()}
+                onFocusCapture={() => setCatalogoPausado(true)}
+                onBlurCapture={() => pausarCatalogoTemporariamente()}>
+                <div className="kz-catalog__track">
+                  {CATALOGO.map((item) => (
+                    <article className="kz-catalog__card" key={item.nome}>
+                      <div className="kz-catalog__image">
+                        <Foto src={item.foto} alt={item.nome + " — foto do catálogo da Kauane Zenie"} />
+                      </div>
+                      <div className="kz-catalog__details">
+                        <h3>{item.nome}</h3>
+                        <p>{item.desc}</p>
+                        <Link to="/agendar">Ver horários <ArrowRight size={16} aria-hidden="true" /></Link>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+              <div className="kz-catalog__controls">
+                <span className="kz-catalog__hint">Deslize para explorar os procedimentos</span>
+                <div className="kz-catalog__arrows">
+                  <button type="button" aria-label="Procedimento anterior" onClick={() => navegarCatalogo("anterior")}><ChevronLeft size={20} /></button>
+                  <button type="button" aria-label="Próximo procedimento" onClick={() => navegarCatalogo("proximo")}><ChevronRight size={20} /></button>
+                </div>
+              </div>
             </div>
           </section>
           <section className="kz-course kz-section" id="curso" aria-labelledby="kz-course-title">
@@ -224,16 +299,6 @@ export default function Landing() {
               </a>
             </Reveal>
             <CursoCaixa />
-            <div className="kz-course__material">
-              <figure>
-                
-                <figcaption>Material completo</figcaption>
-              </figure>
-              <figure>
-                
-                <figcaption>Apostila exclusiva</figcaption>
-              </figure>
-            </div>
           </section>
           <section className="kz-testimonials kz-section" id="feedbacks" aria-labelledby="kz-testimonials-title">
             <Reveal className="kz-testimonials__header">

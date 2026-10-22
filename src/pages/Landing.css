@@ -1027,3 +1027,99 @@
 @media (prefers-reduced-motion:reduce) {
   .kz-course__scroll-hint {display:none;}
 }
+
+/* Refinamento de outubro — Kauane em close de busto, catálogo com movimento reversível. */
+.kz-brand-note__inner .kz-brand-note__book {
+  margin: 31px auto 0;
+  min-height: 56px;
+  padding: 15px 36px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fffaf9;
+  background: #61174c;
+  box-shadow: 0 15px 35px rgba(97, 23, 76, .19);
+}
+.kz-brand-note__inner .kz-brand-note__book:hover {
+  background: #7b275f;
+  box-shadow: 0 18px 38px rgba(97, 23, 76, .25);
+}
+.kz-brand-note__inner > p { margin-bottom: 0; }
+
+/* Embla controls the track, while media queries determine one/two/three cards. */
+.kz-catalog__carousel { min-width:0; position:relative; }
+.kz-catalog__viewport {
+  overflow:hidden;
+  width:100%;
+  touch-action:pan-y pinch-zoom;
+  cursor:grab;
+  border-radius:18px;
+}
+.kz-catalog__viewport:active {cursor:grabbing;}
+.kz-catalog__track {
+  display:flex;
+  gap:clamp(12px,1.6vw,22px);
+  align-items:stretch;
+  touch-action:pan-y pinch-zoom;
+}
+.kz-catalog__track > .kz-catalog__card {
+  min-width:0;
+  flex:0 0 calc((100% - 2 * clamp(12px,1.6vw,22px))/3);
+  align-self:stretch;
+  box-sizing:border-box;
+  user-select:none;
+}
+.kz-catalog__track .kz-catalog__image img {
+  -webkit-user-drag:none;
+  user-select:none;
+}
+.kz-catalog__controls {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;margin-top:24px;
+}
+.kz-catalog__hint {
+  font-size:12px;letter-spacing:.02em;color:#855b6c;
+}
+.kz-catalog__arrows {display:flex;gap:10px;}
+.kz-catalog__arrows button {
+  width:46px;height:46px;border:1px solid #61174c;
+  border-radius:50%;color:#61174c;background:transparent;
+  display:grid;place-items:center;cursor:pointer;
+  transition:background .2s ease,color .2s ease,transform .2s ease;
+}
+.kz-catalog__arrows button:hover {background:#61174c;color:#fff;transform:translateY(-2px);}
+.kz-catalog__arrows button:focus-visible {outline:2px solid #61174c;outline-offset:3px;}
+
+/* A fotografia foi recortada no arquivo para manter o enquadramento do peito para cima. */
+.kz-hero__portrait {
+  right:2.5%;
+  bottom:0;
+  width:49%;
+  height:88%;
+  overflow:visible;
+}
+.kz-hero__portrait img {
+  height:100%;
+  width:100%;
+  max-width:none;
+  object-fit:contain;
+  object-position:center bottom;
+}
+@media (max-width: 900px) {
+  .kz-hero__portrait {width:56%;height:82%;right:-5%;}
+}
+@media (max-width: 760px) {
+  .kz-catalog__track > .kz-catalog__card {
+    flex-basis:calc((100% - 14px)/2);
+  }
+  .kz-hero__portrait {height:55%;width:88%;right:-13%;bottom:0;}
+}
+@media (max-width: 480px) {
+  .kz-catalog__track > .kz-catalog__card {flex-basis:87%;}
+  .kz-catalog__controls {margin-top:17px;}
+  .kz-catalog__hint {font-size:11px;max-width:180px;}
+  .kz-catalog__arrows button {width:42px;height:42px;}
+  .kz-hero__portrait {height:51%;width:94%;right:-21%;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .kz-catalog__arrows button {transition:none;}
+}
