@@ -56,7 +56,6 @@ export default async function (req) {
       nascimento < hoje
         ? nascimento
         : "";
-    if (data > limiteISO) return invalido();
 
     const resultados = await Promise.all([
       svc.entities.Servico.list(),
