@@ -86,7 +86,7 @@ function Cookies() {
   return <>
     <Bloco titulo="1. Informações armazenadas no navegador">
       <p>Este site mantém preferências de visualização, o registro de leitura deste aviso e, na área privada, informações técnicas para autenticação e sessão. Parte disso pode utilizar armazenamento local do navegador, que é diferente de cookies tradicionais.</p>
-      <p>Até a presente versão do código, não foram incluídos pelo estúdio pixels próprios de publicidade ou scripts opcionais de análise comportamental. A infraestrutura Base44 e serviços externos acessados por links podem empregar cookies técnicos sob suas próprias regras.</p>
+      <p>Até a presente versão do código, não foram incluídos pelo estúdio pixels próprios de publicidade ou scripts opcionais de análise comportamental. A infraestrutura Base44 pode empregar cookies técnicos sob suas próprias regras. Além disso, a tipografia é carregada por meio do Google Fonts, que pode receber dados técnicos de conexão quando a fonte é solicitada pelo navegador. Serviços externos acessados por links têm políticas próprias.</p>
     </Bloco>
     <Bloco titulo="2. Finalidades e escolhas">
       <p>Identificadores necessários ao funcionamento e segurança do serviço não são usados como permissão genérica de publicidade. Se no futuro forem incluídas tecnologias não essenciais que exijam consentimento, o site deverá solicitar uma escolha livre e específica antes de ativá-las.</p>

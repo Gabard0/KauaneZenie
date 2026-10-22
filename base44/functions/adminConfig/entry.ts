@@ -1,4 +1,4 @@
-const POLITICA_RESERVA = "A taxa de reserva não é reembolsável em caso de cancelamento ou não comparecimento. O valor do procedimento é pago no dia do atendimento.";
+const POLITICA_RESERVA = "Cancelamentos e reagendamentos devem ser solicitados ao estúdio pelo WhatsApp. Taxas de reserva e devoluções serão avaliadas conforme as condições informadas antes da contratação, a situação concreta e os direitos previstos no Código de Defesa do Consumidor, inclusive o direito de arrependimento quando aplicável. Eventuais reembolsos serão comunicados e processados pelo canal de atendimento.";
 import { createClientFromRequest } from "npm:@base44/sdk@0.8.44";
 import { MENSAGEM_PADRAO, carregarConfig, exigirAdmin } from "../../shared/auth.ts";
 
