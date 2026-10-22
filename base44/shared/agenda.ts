@@ -68,8 +68,25 @@ export function weekdayOf(dataISO) {
   return new Date(parts[0], parts[1] - 1, parts[2]).getDay();
 }
 
+// Um período especial substitui o horário semanal apenas nas datas selecionadas.
+// Bloqueios de dia inteiro continuam prevalecendo sobre qualquer período.
+export function horarioNaData(funcionamento, periodosEspeciais = [], dataISO) {
+  if (!dataISO) return null;
+  const wd = weekdayOf(dataISO);
+  const aplicaveis = (periodosEspeciais || []).filter((p) =>
+    p.data_inicio && p.data_fim && p.data_inicio <= dataISO && p.data_fim >= dataISO
+  );
+  // Regras legadas sobrepostas: período mais recente por data de início prevalece.
+  aplicaveis.sort((a,b) => String(b.data_inicio).localeCompare(String(a.data_inicio)) ||
+    String(b.created_date || b.id || "").localeCompare(String(a.created_date || a.id || "")));
+  const especial = aplicaveis[0];
+  if (especial) return (especial.horarios || []).find(h => Number(h.dia) === wd) || null;
+  return (funcionamento?.horarios || []).find(h => Number(h.dia) === wd) || null;
+}
+
 export function slotsDisponiveis(args) {
   const funcionamento = args.funcionamento;
+  const periodosEspeciais = args.periodosEspeciais || [];
   const excecoes = args.excecoes || [];
   const ocupados = args.ocupados || [];
   const dataISO = args.dataISO;
@@ -78,8 +95,7 @@ export function slotsDisponiveis(args) {
 
   if (!dataISO) return [];
   if (excecoes.some((e) => e.data === dataISO)) return [];
-  if (!funcionamento) return [];
-  const dia = (funcionamento.horarios || []).find((h) => h.dia === weekdayOf(dataISO));
+  const dia = horarioNaData(funcionamento, periodosEspeciais, dataISO);
   if (!dia || dia.ativo === false) return [];
 
   const periodos = (dia.periodos || [])
@@ -151,7 +167,7 @@ export async function expirarReservasAguardando(svc) {
 // Cria ou recalcula a manutenção automática vinculada a um atendimento principal.
 // Retorna { data, horario, servico_nome, status } ou null quando o procedimento
 // não gera manutenção.
-export async function criarManutencaoPara({ svc, principal, servicos, funcionamento, excecoes, hoje }) {
+export async function criarManutencaoPara({ svc, principal, servicos, funcionamento, periodosEspeciais = [], excecoes, hoje }) {
   const configs = await svc.entities.ConfigApp.list();
   if (configs[0]?.manutencao_automatica === false) return null;
   const svcConfig = servicos.find((s) => s.id === principal.servico_id);
@@ -180,6 +196,7 @@ export async function criarManutencaoPara({ svc, principal, servicos, funcioname
   const agoraMinM = dataManut === hoje ? agoraMinSP() : 0;
   const slotsM = slotsDisponiveis({
     funcionamento,
+    periodosEspeciais,
     excecoes,
     ocupados: ocupadosM,
     dataISO: dataManut,
