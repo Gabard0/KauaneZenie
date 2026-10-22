@@ -19,7 +19,7 @@ export default function ServicosLista({ servicos, selecionados, onToggle }) {
             <div className="min-w-0">
               <p className="font-medium truncate">{s.nome}</p>
               <p className="text-sm text-muted-foreground">
-                {formatBRL(s.preco)} · {s.duracao} min
+                {s.preco > 0 ? formatBRL(s.preco) : 'Valor a definir'} · {s.duracao} min
               </p>
             </div>
             <div

@@ -10,6 +10,7 @@ export default function Servicos() {
   const [erroCarga, setErroCarga] = useState(false);
   const [busca, setBusca] = useState("");
   const [servicos, setServicos] = useState(null);
+  const [mostrarInativos, setMostrarInativos] = useState(false);
   const [abrirForm, setAbrirForm] = useState(false);
   const [editando, setEditando] = useState(null);
 
@@ -26,7 +27,7 @@ export default function Servicos() {
   if (servicos === null) return <Carregando />;
 
   const normalizar = (v) => (v || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const lista = servicos.filter((s) => normalizar(s.nome).includes(normalizar(busca))).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const lista = servicos.filter((s) => (mostrarInativos || s.ativo !== false) && normalizar(s.nome).includes(normalizar(busca))).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
 
   const alternarAtivo = async (s) => {
     await base44.entities.Servico.update(s.id, { ativo: s.ativo === false });
@@ -59,6 +60,7 @@ export default function Servicos() {
       </p>
 
       <Input aria-label="Buscar procedimento" placeholder="Buscar procedimento…" value={busca} onChange={(e) => setBusca(e.target.value)} className="h-11" />
+      <label className="flex items-center gap-2 text-xs text-muted-foreground"><input type="checkbox" checked={mostrarInativos} onChange={(e) => setMostrarInativos(e.target.checked)} /> Mostrar serviços inativos/arquivados</label>
       {servicos.some((s) => s.demo) && <p className="text-xs text-muted-foreground">Os serviços marcados como exemplo têm preços e durações provisórios. Edite e salve para confirmar os dados do estúdio.</p>}
       {lista.length === 0 ? (
         <div className="rounded-2xl border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">
