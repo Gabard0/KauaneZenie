@@ -10,15 +10,15 @@ import "./Landing.css";
 // Catálogo conferido na página oficial: https://kauanezenie.keepo.bio/
 // Procedimentos mostrados pela Kauane no WhatsApp e em seu catálogo público.
 const CATALOGO = [
-  { nome: "Volume 4D", desc: "Extensão de cílios", foto: "/brand/real/keepo-3.jpg" },
-  { nome: "Volume Infinity", desc: "Extensão de cílios", foto: null },
-  { nome: "Volume 5D", desc: "Extensão de cílios", foto: null },
-  { nome: "Clássico", desc: "Extensão de cílios", foto: null },
-  { nome: "Brasileiro D", desc: "Extensão de cílios", foto: null },
+  { nome: "Volume 4D", desc: "Extensão de cílios", foto: "/brand/real/catalogo/volume-4d.webp" },
+  { nome: "Volume Infinity", desc: "Extensão de cílios", foto: "/brand/real/catalogo/volume-infinity.webp" },
+  { nome: "Volume 5D", desc: "Extensão de cílios", foto: "/brand/real/catalogo/volume-5d.webp" },
+  { nome: "Clássico", desc: "Extensão de cílios", foto: "/brand/real/catalogo/classico.webp" },
+  { nome: "Brasileiro D", desc: "Extensão de cílios", foto: "/brand/real/catalogo/brasileiro-d.webp" },
   { nome: "Volume Brasileiro", desc: "Extensão de cílios", foto: "/brand/real/keepo-1.jpg" },
-  { nome: "Volume Egípcio", desc: "Extensão de cílios", foto: "/brand/real/keepo-2.jpg" },
-  { nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" },
-  { nome: "Design com Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
+  { nome: "Volume Egípcio", desc: "Extensão de cílios", foto: "/brand/real/catalogo/volume-egipcio.webp" },
+  { nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/catalogo/design-personalizado.webp" },
+  { nome: "Design com Henna", desc: "Sobrancelhas", foto: "/brand/real/catalogo/design-com-henna.webp" },
 ];
 
 const HIGHLIGHTS = "https://www.instagram.com/stories/highlights/17942089640796543/";

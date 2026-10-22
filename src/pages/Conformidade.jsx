@@ -4,7 +4,7 @@ import { adminLerConfig, adminSalvarConfig } from "@/lib/adminAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ShieldCheck, Check, AlertCircle, ExternalLink } from "lucide-react";
+import { Check, AlertCircle, ExternalLink } from "lucide-react";
 
 const ITENS = [
   ["Política de privacidade","Página criada: descreve dados, finalidades, direitos e canal de solicitação.","feito"],
