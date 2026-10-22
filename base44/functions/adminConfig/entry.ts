@@ -33,6 +33,7 @@ export default async function (req) {
         mensagem_whatsapp: cfg.mensagem_whatsapp || MENSAGEM_PADRAO,
         politica_reserva: cfg.politica_reserva || POLITICA_RESERVA,
         manutencao_automatica: cfg.manutencao_automatica !== false,
+        limite_agendamento_dias: Number.isInteger(cfg.limite_agendamento_dias) && cfg.limite_agendamento_dias >= 1 && cfg.limite_agendamento_dias <= 365 ? cfg.limite_agendamento_dias : 60,
         exigir_taxa: cfg.exigir_taxa !== false,
         taxa_agendamento: cfg.taxa_agendamento > 0 ? cfg.taxa_agendamento : 30,
         pix_qr_code_url: cfg.pix_qr_code_url || "",
@@ -44,6 +45,11 @@ export default async function (req) {
 
     if (acao === "salvar") {
       const dados = {};
+      if (payload.limite_agendamento_dias !== undefined) {
+        const n = Number(payload.limite_agendamento_dias);
+        if (!Number.isInteger(n) || n < 1 || n > 365) return erro("limite_agendamento_invalido");
+        dados.limite_agendamento_dias = n;
+      }
       if (payload.tema !== undefined) dados.tema = temaNormalizado(payload.tema);
       if (payload.modo !== undefined) dados.modo = modoNormalizado(payload.modo);
       if (typeof payload.whatsapp === "string") {

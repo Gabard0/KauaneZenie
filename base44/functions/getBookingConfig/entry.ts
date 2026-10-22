@@ -16,14 +16,16 @@ export default async function (req) {
       svc.entities.Servico.filter({ ativo: true }),
       svc.entities.ConfigAgenda.filter({ tipo: "funcionamento" }),
       svc.entities.ConfigAgenda.filter({ tipo: "excecao" }),
+      svc.entities.ConfigAgenda.filter({ tipo: "periodo" }),
       svc.entities.Agendamento.filter({ data: { $gte: hoje }, status: { $ne: "cancelado" } }),
       svc.entities.ConfigApp.list(),
     ]);
     const servicos = resultados[0];
     const funcionamentos = resultados[1];
     const excecoesRecs = resultados[2];
-    const ags = resultados[3];
-    const cfg = resultados[4][0] || null;
+    const especiais = resultados[3];
+    const ags = resultados[4];
+    const cfg = resultados[5][0] || null;
 
     const duracaoPorServico = {};
     for (const s of servicos) duracaoPorServico[s.id] = s.duracao > 0 ? s.duracao : 60;
@@ -42,6 +44,7 @@ export default async function (req) {
     return Response.json({
       politica_reserva: cfg?.politica_reserva || POLITICA_RESERVA,
       manutencao_automatica: cfg?.manutencao_automatica !== false,
+      limite_agendamento_dias: Number.isInteger(cfg?.limite_agendamento_dias) && cfg.limite_agendamento_dias >= 1 && cfg.limite_agendamento_dias <= 365 ? cfg.limite_agendamento_dias : 60,
       servicos: servicos
         .filter((s) => s.ativo !== false)
         .map((s) => ({
@@ -54,6 +57,7 @@ export default async function (req) {
           intervalo_manutencao: s.intervalo_manutencao > 0 ? s.intervalo_manutencao : 20,
         })),
       funcionamento: funcionamentos[0] || null,
+      periodosEspeciais: especiais.map(p => ({ id:p.id, data_inicio:p.data_inicio, data_fim:p.data_fim, horarios:p.horarios || [] })),
       excecoes: excecoesRecs.map((e) => ({ data: e.data, motivo: e.motivo || "" })),
       ocupados,
       whatsapp_profissional: (cfg && cfg.whatsapp) || "41998047493",

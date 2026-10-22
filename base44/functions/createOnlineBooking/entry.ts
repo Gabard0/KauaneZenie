@@ -56,28 +56,27 @@ export default async function (req) {
       nascimento < hoje
         ? nascimento
         : "";
-    const h = hoje.split("-").map(Number);
-    const limite = new Date(h[0], h[1] - 1, h[2] + 60);
-    const limiteISO =
-      limite.getFullYear() +
-      "-" +
-      String(limite.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(limite.getDate()).padStart(2, "0");
     if (data > limiteISO) return invalido();
 
     const resultados = await Promise.all([
       svc.entities.Servico.list(),
       svc.entities.ConfigAgenda.filter({ tipo: "funcionamento" }),
       svc.entities.ConfigAgenda.filter({ tipo: "excecao" }),
+      svc.entities.ConfigAgenda.filter({ tipo: "periodo" }),
       svc.entities.Agendamento.filter({ data, status: { $ne: "cancelado" } }),
       svc.entities.ConfigApp.list(),
     ]);
     const servicos = resultados[0];
     const funcionamentos = resultados[1];
     const excecoesRecs = resultados[2];
-    const agsDoDia = resultados[3];
-    const cfg = resultados[4][0] || null;
+    const periodosEspeciais = resultados[3];
+    const agsDoDia = resultados[4];
+    const cfg = resultados[5][0] || null;
+    const limiteDias = Number.isInteger(cfg?.limite_agendamento_dias) && cfg.limite_agendamento_dias >= 1 && cfg.limite_agendamento_dias <= 365 ? cfg.limite_agendamento_dias : 60;
+    const h = hoje.split("-").map(Number);
+    const limite = new Date(h[0], h[1] - 1, h[2] + limiteDias);
+    const limiteISO = limite.getFullYear() + "-" + String(limite.getMonth()+1).padStart(2,"0") + "-" + String(limite.getDate()).padStart(2,"0");
+    if (data > limiteISO) return invalido();
 
     const escolhidos = servicoIds
       .map((id) => servicos.find((s) => s.id === id && s.ativo !== false))
@@ -104,6 +103,7 @@ export default async function (req) {
     const agoraMin = data === hoje ? agoraMinSP() : 0;
     const slots = slotsDisponiveis({
       funcionamento: funcionamentos[0] || null,
+      periodosEspeciais,
       excecoes,
       ocupados,
       dataISO: data,
@@ -178,6 +178,7 @@ export default async function (req) {
         funcionamento: funcionamentos[0] || null,
         excecoes,
         hoje,
+        periodosEspeciais,
       });
     } catch (e) {
       /* não bloqueia o agendamento principal */

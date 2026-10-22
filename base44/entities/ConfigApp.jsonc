@@ -79,6 +79,12 @@
     "manutencao_automatica": {
       "type": "boolean",
       "default": true
+    },
+    "limite_agendamento_dias": {
+      "type": "number",
+      "default": 60,
+      "minimum": 1,
+      "maximum": 365
     }
   },
   "required": [
