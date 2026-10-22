@@ -218,7 +218,7 @@ export default function Landing() {
             <Reveal className="kz-course__copy">
               <p className="kz-kicker">Kauane Zenie · Lash Designer</p>
               <h2 id="kz-course-title">Curso de <em>extensão de cílios.</em></h2>
-              <p>Aprenda com material completo, apostila exclusiva e certificado.</p>
+              <p>A aluna recebe material completo, apostila exclusiva e certificado.</p>
               <a href={CURSO_WHATSAPP} target="_blank" rel="noopener noreferrer" className="kz-course__cta">
                 Quero saber mais sobre o curso <MessageCircle size={18} aria-hidden="true" />
               </a>

@@ -1020,3 +1020,10 @@
 @media(prefers-reduced-motion:reduce) {
   .kz-course__material img {transition:none;}
 }
+
+@media (min-width:481px) and (max-width:760px) {
+  .kz-catalog__card:last-child {grid-column:1/-1;width:calc(50% - 6px);justify-self:center;}
+}
+@media (prefers-reduced-motion:reduce) {
+  .kz-course__scroll-hint {display:none;}
+}
