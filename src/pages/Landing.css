@@ -976,3 +976,47 @@
 @media(prefers-reduced-motion:reduce) {
   .kz-course__cta,.kz-catalog__details a,.kz-directions-button {transition:none!important;}
 }
+
+/* Fotografias reais do curso e capturas recortadas das conversas */
+.kz-course__material {
+  grid-column:1 / -1;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;max-width:860px;width:100%;margin:5px auto 0;
+}
+.kz-course__material figure {
+  position:relative;min-width:0;
+  aspect-ratio:1.75;
+  overflow:hidden;border-radius:19px;
+  background:#f9f0ef;box-shadow:0 15px 32px rgba(97,23,76,.1);
+}
+.kz-course__material img {
+  width:100%;height:100%;display:block;object-fit:cover;
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+}
+.kz-course__material figure:hover img {transform:scale(1.035);}
+.kz-course__material figcaption {
+  position:absolute;left:12px;bottom:12px;
+  padding:8px 13px;background:#fff8f3ed;color:#61174c;
+  border-radius:99px;font-size:11px;font-weight:700;box-shadow:0 4px 15px rgba(0,0,0,.09);
+}
+.kz-testimonial__photo {
+  width:100%;height:205px;
+  display:grid;place-items:center;
+  background:#151719;overflow:hidden;border-radius:14px;
+}
+.kz-testimonial__photo img {
+  width:100%;height:100%;object-fit:contain;display:block;
+}
+.kz-testimonial > p {font-size:18px;margin:20px 10px 25px;}
+.kz-testimonial__foot {margin-top:auto;}
+@media(max-width:760px){
+  .kz-course__material {gap:12px;}
+  .kz-course__material figure {aspect-ratio:1.15;}
+}
+@media(max-width:480px){
+  .kz-course__material figure {aspect-ratio:.92;}
+  .kz-course__material figcaption {font-size:10px;left:8px;bottom:8px;padding:7px 9px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .kz-course__material img {transition:none;}
+}

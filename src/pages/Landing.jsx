@@ -21,13 +21,13 @@ const CURSO_WHATSAPP = "https://wa.me/55" + STUDIO.whatsapp + "?text=" +
   encodeURIComponent("Olá, Kau! Tenho interesse no seu curso de extensão de cílios. Pode me passar mais informações?");
 // Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
 const FEEDBACKS = [
-  { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
-  { frase: "Sucesso! Você é maravilhosa no que você faz.", tipo: "Elogio recebido" },
-  { frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado" },
-  { frase: "Está de parabéns pelo trabalho, hoje tá completando 15 dias. Tá literalmente inteiro.", tipo: "Durabilidade" },
-  { frase: "Cílios maravilhoso meu deusssss.", tipo: "Extensão de cílios" },
-  { frase: "Ameiii meus cílios, ficou perfeito. Você é dedicada, profissional e maravilhosa, com uma mão de fada.", tipo: "Atendimento" },
-  { frase: "Só pra te elogiar, entrei umas 6x em piscina e fiquei mais de 4 horas cada uma das vezes.", tipo: "Durabilidade" },
+  { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento", foto: "/brand/real/feedback-02.webp" },
+  { frase: "Sucesso! Você é maravilhosa no que você faz.", tipo: "Elogio recebido", foto: "/brand/real/feedback-03.webp" },
+  { frase: "Eu amei o resultado do seu trabalho.", tipo: "Resultado", foto: "/brand/real/feedback-04.webp" },
+  { frase: "Está de parabéns pelo trabalho, hoje tá completando 15 dias. Tá literalmente inteiro.", tipo: "Durabilidade", foto: "/brand/real/feedback-07.webp" },
+  { frase: "Cílios maravilhoso meu deusssss.", tipo: "Extensão de cílios", foto: "/brand/real/feedback-06.webp" },
+  { frase: "Ameiii meus cílios, ficou perfeito. Você é dedicada, profissional e maravilhosa, com uma mão de fada.", tipo: "Atendimento", foto: "/brand/real/feedback-04.webp" },
+  { frase: "Só pra te elogiar, entrei umas 6x em piscina e fiquei mais de 4 horas cada uma das vezes.", tipo: "Durabilidade", foto: "/brand/real/feedback-01.webp" },
 ];
 const nav = [
 { href: "#sobre", label: "Sobre" },
@@ -143,7 +143,8 @@ export default function Landing() {
           initial={reduzirMovimento ? false : { opacity: 0, x: 35, scale: 0.98 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
-            <img src="/brand/real/kauane-recorte.png" alt="" loading="eager" decoding="async" fetchPriority="high" />
+            <img src="/brand/real/kauane-retrato-atualizado.webp" alt="" loading="eager" decoding="async" fetchPriority="high"
+              onError={(event) => {event.currentTarget.onerror = null; event.currentTarget.src = "/brand/real/kauane-recorte.png";}} />
           </motion.div>
 
           <span className="kz-hero__front-shape" aria-hidden="true" />
@@ -222,6 +223,16 @@ export default function Landing() {
               </a>
             </Reveal>
             <CursoCaixa />
+            <div className="kz-course__material">
+              <figure>
+                <img src="/brand/real/curso-material-01.webp" alt="Material de curso da Kauane: caixa com laço, apostila e certificado" loading="lazy" />
+                <figcaption>Material completo</figcaption>
+              </figure>
+              <figure>
+                <img src="/brand/real/curso-material-02.webp" alt="Embalagem e apostila do curso da Kauane Zenie" loading="lazy" />
+                <figcaption>Apostila exclusiva</figcaption>
+              </figure>
+            </div>
           </section>
           <section className="kz-testimonials kz-section" id="feedbacks" aria-labelledby="kz-testimonials-title">
             <Reveal className="kz-testimonials__header">
@@ -242,8 +253,8 @@ export default function Landing() {
               <div className="kz-testimonials__track">
                 {FEEDBACKS.map((item, i) =>
                 <a className="kz-testimonial" key={i} href={HIGHLIGHTS} target="_blank" rel="noopener noreferrer" aria-label={"Ver feedback real no Instagram: " + item.tipo}>
-                    <div className="kz-testimonial__message" aria-label="Trecho de mensagem real">
-                      <span className="kz-testimonial__bubble">{item.frase}</span>
+                    <div className="kz-testimonial__photo">
+                      <img src={item.foto} alt={"Captura de conversa real — " + item.tipo} loading="lazy" />
                     </div>
                     <p>“{item.frase}”</p>
                     <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Ver destaque <ExternalLink size={13}/></span></div>
