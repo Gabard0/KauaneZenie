@@ -1,0 +1,72 @@
+{
+  "name": "ListaEspera",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string"
+    },
+    "whatsapp": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string"
+    },
+    "servico_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "servicos_nome": {
+      "type": "string"
+    },
+    "duracao": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "aguardando",
+        "contatada",
+        "atendida",
+        "cancelada"
+      ],
+      "default": "aguardando"
+    },
+    "criado_em": {
+      "type": "string"
+    },
+    "contatada_em": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "nome",
+    "whatsapp",
+    "data",
+    "servico_ids",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
