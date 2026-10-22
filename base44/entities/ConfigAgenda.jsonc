@@ -6,7 +6,8 @@
       "type": "string",
       "enum": [
         "funcionamento",
-        "excecao"
+        "excecao",
+        "periodo"
       ]
     },
     "horarios": {
@@ -51,6 +52,14 @@
     },
     "motivo": {
       "type": "string"
+    },
+    "data_inicio": {
+      "type": "string",
+      "format": "date"
+    },
+    "data_fim": {
+      "type": "string",
+      "format": "date"
     }
   },
   "required": [
