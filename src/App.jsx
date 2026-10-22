@@ -27,6 +27,7 @@ const Agendar = lazy(() => import("@/pages/Agendar"));
 const AgendamentoOnline = lazy(() => import("@/pages/AgendamentoOnline"));
 const ConfigAgenda = lazy(() => import("@/pages/ConfigAgenda"));
 const ListaEspera = lazy(() => import("@/pages/ListaEspera"));
+const Conformidade = lazy(() => import("@/pages/Conformidade"));
 import BrandLogo from '@/components/BrandLogo';
 import CookieNotice from "@/components/CookieNotice";
 const Legal = lazy(() => import("@/pages/Legal"));
@@ -68,6 +69,7 @@ const AuthenticatedApp = () => {
         <Route path="agendamento-online" element={<AgendamentoOnline />} />
         <Route path="config-agenda" element={<ConfigAgenda />} />
         <Route path="lista-espera" element={<ListaEspera />} />
+        <Route path="conformidade" element={<Conformidade />} />
       </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />

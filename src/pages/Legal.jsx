@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { base44 } from "@/api/base44Client";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Scale, ShieldCheck, FileText, Cookie, MessageCircle } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
@@ -18,11 +19,11 @@ function Bloco({ titulo, children }) {
   return <section className="kz-legal__section"><h2>{titulo}</h2><div className="kz-legal__copy">{children}</div></section>;
 }
 
-function Privacidade() {
+function Privacidade({ empresa }) {
   return <>
     <Bloco titulo="1. Quem é responsável pelo tratamento">
-      <p>O tratamento de dados do site e do sistema de agendamento é realizado por <strong>Kauane Zenie · Studio de Beleza</strong>, localizada em {STUDIO.address}, {STUDIO.city}. Para dúvidas, solicitações sobre seus dados ou reclamações, fale pelo <a href={CONTATO} target="_blank" rel="noopener noreferrer">WhatsApp do estúdio</a>.</p>
-      <p>A identificação cadastral/fiscal da responsável deve ser confirmada antes da publicação definitiva dos documentos. Nenhum CPF ou CNPJ foi presumido neste aviso.</p>
+      <p>O tratamento de dados do site e do sistema de agendamento é realizado por <strong>{empresa?.nome_empresarial || "Kauane Zenie · Studio de Beleza"}</strong>, localizada em {STUDIO.address}, {STUDIO.city}. Para dúvidas, solicitações sobre seus dados ou reclamações, fale pelo <a href={CONTATO} target="_blank" rel="noopener noreferrer">WhatsApp do estúdio</a>.</p>
+      <p>{empresa?.cnpj ? "CNPJ informado pelo estúdio: " + empresa.cnpj : "O número de inscrição fiscal ainda precisa ser informado pela responsável."} {empresa?.email_comercial ? "E-mail comercial: " + empresa.email_comercial : "Para contato utilize o WhatsApp do estúdio."}</p>
     </Bloco>
     <Bloco titulo="2. Quais dados são utilizados">
       <p>Para solicitar ou administrar um atendimento, são coletados nome, telefone/WhatsApp, procedimento, data e horário escolhidos. Quando necessários, o histórico de atendimento e os valores também são registrados no sistema privado.</p>
@@ -102,6 +103,14 @@ export default function Legal() {
   const tipo = useLocation().pathname.slice(1) || "privacidade";
   const current = LINKS.find(l => l.id === tipo) || LINKS[0];
   const Conteudo = CONTENT[current.id];
+  const [empresa, setEmpresa] = useState(null);
+  useEffect(() => {
+    let live = true;
+    base44.functions.invoke("getBookingConfig", {}).then(({ data }) => {
+      if (live) setEmpresa(data?.identificacao_estudio || null);
+    }).catch(() => {});
+    return () => { live = false; };
+  }, []);
   return <div className="kz-legal">
     <a className="kz-skip" href="#conteudo-legal">Pular para o conteúdo</a>
     <header className="kz-legal__header">
@@ -115,7 +124,7 @@ export default function Legal() {
       <nav className="kz-legal__nav" aria-label="Documentos e políticas">
         {LINKS.map(l => <Link key={l.id} to={"/" + l.id} aria-current={l.id === current.id ? "page" : undefined}>{l.nome}</Link>)}
       </nav>
-      <Conteudo />
+      <Conteudo empresa={empresa} />
       <aside className="kz-legal__contact">
         <MessageCircle size={22} aria-hidden="true" />
         <div><strong>Precisa falar com o estúdio?</strong><p>Solicite esclarecimentos ou exerça seus direitos de privacidade.</p></div>

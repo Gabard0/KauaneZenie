@@ -43,6 +43,11 @@ export default async function (req) {
 
     return Response.json({
       politica_reserva: cfg?.politica_reserva || POLITICA_RESERVA,
+      identificacao_estudio: {
+        nome_empresarial: cfg?.nome_empresarial || "",
+        cnpj: cfg?.cnpj || "",
+        email_comercial: cfg?.email_comercial || "",
+      },
       manutencao_automatica: cfg?.manutencao_automatica !== false,
       limite_agendamento_dias: Number.isInteger(cfg?.limite_agendamento_dias) && cfg.limite_agendamento_dias >= 1 && cfg.limite_agendamento_dias <= 365 ? cfg.limite_agendamento_dias : 60,
       servicos: servicos

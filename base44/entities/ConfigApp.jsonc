@@ -85,6 +85,15 @@
       "default": 60,
       "minimum": 1,
       "maximum": 365
+    },
+    "nome_empresarial": {
+      "type": "string"
+    },
+    "cnpj": {
+      "type": "string"
+    },
+    "email_comercial": {
+      "type": "string"
     }
   },
   "required": [

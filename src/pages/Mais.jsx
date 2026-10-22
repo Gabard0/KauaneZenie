@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { Cake, Scissors, BarChart3, Trash2, QrCode, Clock, Palette, KeyRound, ClipboardList } from "lucide-react";
+import { Cake, Scissors, BarChart3, Trash2, QrCode, Clock, Palette, KeyRound, ClipboardList, ShieldCheck } from "lucide-react";
 import { Carregando } from "@/lib/helpers";
 
 
@@ -20,6 +20,7 @@ const GRUPOS = [
   ] },
   { titulo: "Identidade visual", descricao: "Personalize a experiência do seu espaço.", links: [
     { to: "/aparencia", label: "Aparência", desc: "Modo claro ou escuro", icon: Palette },
+    { to: "/conformidade", label: "Conformidade do site", desc: "LGPD, documentos, copyright e checklist", icon: ShieldCheck },
   ] },
   { titulo: "Conta", descricao: "Gerencie o acesso ao sistema.", links: [
     { to: "/conta", label: "Trocar senha", desc: "Defina sua própria senha de acesso", icon: KeyRound },

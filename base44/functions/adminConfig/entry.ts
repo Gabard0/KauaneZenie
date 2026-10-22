@@ -30,6 +30,9 @@ export default async function (req) {
         tema: temaNormalizado(cfg.tema),
         modo: modoNormalizado(cfg.modo),
         whatsapp: cfg.whatsapp || "41998047493",
+        nome_empresarial: cfg.nome_empresarial || "",
+        cnpj: cfg.cnpj || "",
+        email_comercial: cfg.email_comercial || "",
         mensagem_whatsapp: cfg.mensagem_whatsapp || MENSAGEM_PADRAO,
         politica_reserva: cfg.politica_reserva || POLITICA_RESERVA,
         manutencao_automatica: cfg.manutencao_automatica !== false,
@@ -45,6 +48,20 @@ export default async function (req) {
 
     if (acao === "salvar") {
       const dados = {};
+      if (payload.nome_empresarial !== undefined) {
+        if (typeof payload.nome_empresarial !== "string" || payload.nome_empresarial.length > 150) return erro("dados_empresa_invalidos");
+        dados.nome_empresarial = payload.nome_empresarial.trim();
+      }
+      if (payload.cnpj !== undefined) {
+        const cnpj = String(payload.cnpj || "").replace(/\D/g, "");
+        if (cnpj && cnpj.length !== 14) return erro("cnpj_invalido");
+        dados.cnpj = cnpj;
+      }
+      if (payload.email_comercial !== undefined) {
+        const email = String(payload.email_comercial || "").trim().toLowerCase();
+        if (email.length > 150 || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) return erro("email_invalido");
+        dados.email_comercial = email;
+      }
       if (payload.limite_agendamento_dias !== undefined) {
         const n = Number(payload.limite_agendamento_dias);
         if (!Number.isInteger(n) || n < 1 || n > 365) return erro("limite_agendamento_invalido");
