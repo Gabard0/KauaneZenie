@@ -407,7 +407,7 @@ export default function AgendamentoDialog({
                     </div>
                     {escolhidos.length > 0 && (
                       <p className="text-xs text-muted-foreground">
-                        {duracaoTotal} min · {formatBRL(valorTotal)}
+                        {duracaoTotal} min · {escolhidos.some(s=>!s.preco) ? "Valor a definir" : formatBRL(valorTotal)}
                       </p>
                     )}
                   </div>

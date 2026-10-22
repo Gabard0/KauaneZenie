@@ -61,7 +61,13 @@ export default function Servicos() {
 
       <Input aria-label="Buscar procedimento" placeholder="Buscar procedimento…" value={busca} onChange={(e) => setBusca(e.target.value)} className="h-11" />
       <label className="flex items-center gap-2 text-xs text-muted-foreground"><input type="checkbox" checked={mostrarInativos} onChange={(e) => setMostrarInativos(e.target.checked)} /> Mostrar serviços inativos/arquivados</label>
-      {servicos.some((s) => s.demo) && <p className="text-xs text-muted-foreground">Os serviços marcados como exemplo têm preços e durações provisórios. Edite e salve para confirmar os dados do estúdio.</p>}
+      {servicos.some((s) => s.ativo !== false && !(s.preco > 0)) && (
+        <div role="status" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-sm leading-relaxed">
+          <strong>Valores pendentes:</strong> os procedimentos importados estão sem preço.
+          Clique no lápis de cada serviço para definir o valor e confirmar a duração estimada antes de divulgar os preços.
+        </div>
+      )}
+      {servicos.some((s) => s.demo && s.ativo !== false) && <p className="text-xs text-muted-foreground">Os serviços marcados como exemplo têm preços e durações provisórios.</p>}
       {lista.length === 0 ? (
         <div className="rounded-2xl border border-dashed bg-card p-8 text-center text-sm text-muted-foreground">
           Nenhum procedimento encontrado.
@@ -73,7 +79,7 @@ export default function Servicos() {
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{s.nome}{s.demo && <span className="ml-2 text-[10px] uppercase text-muted-foreground">Exemplo</span>}</p>
                 <p className="text-sm text-muted-foreground">
-                  {formatBRL(s.preco)} · {s.duracao || 0} min
+                  {s.preco > 0 ? formatBRL(s.preco) : "Valor a definir"} · {s.duracao || 0} min
                   {s.gera_manutencao === true && <span className="text-gold"> · 💕 gera manutenção</span>}
                 </p>
               </div>

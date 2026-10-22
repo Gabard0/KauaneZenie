@@ -166,7 +166,7 @@ export default function Agendar() {
             procedimentos: ag.servico_nome,
             data: formatData(ag.data),
             horario: ag.horario,
-            valor: formatBRL(ag.valor_total),
+            valor: Number(ag.valor_total) > 0 ? formatBRL(ag.valor_total) : "A definir com a Kauane",
             whatsapp: maskTelefone(digits(dados.whatsapp)),
             taxa: formatBRL(pag?.taxa || 0),
           });
