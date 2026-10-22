@@ -68,6 +68,7 @@ export default function Agendar() {
     if (!config || !dados.data) return [];
     return horariosDoDia({
       funcionamento: config.funcionamento,
+      periodosEspeciais: config.periodosEspeciais,
       excecoes: config.excecoes,
       ocupados: config.ocupados,
       dataISO: dados.data,
@@ -76,11 +77,27 @@ export default function Agendar() {
     });
   }, [config, dados.data, duracaoBase]);
 
+  const nenhumLivre = !!dados.data && !horarios.some(h => h.livre);
+  const entrarNaEspera = async () => {
+    setErro(""); setEnviandoEspera(true);
+    try {
+      const r = await base44.functions.invoke("listaEspera", {
+        acao: "inscrever", nome: dados.nome.trim(), whatsapp: digits(dados.whatsapp),
+        data: dados.data, servico_ids: dados.servicos
+      });
+      if (r.data?.ok) setEsperaConfirmada(true);
+      else setErro(r.data?.error === "horarios_disponiveis"
+        ? "Um horário ficou disponível. Atualize a agenda para escolher seu horário."
+        : "Não foi possível entrar na lista de espera. Confira os dados.");
+    } catch { setErro("Não foi possível enviar agora. Tente novamente."); }
+    finally { setEnviandoEspera(false); }
+  };
   const mudar = (campo, valor) => setDados((d) => ({ ...d, [campo]: valor }));
 
   const escolherDia = (iso) => {
     setAviso("");
     setErro("");
+    setEsperaConfirmada(false);
     setDados((d) => ({ ...d, data: iso, horario: "" }));
   };
 
@@ -98,6 +115,7 @@ export default function Agendar() {
         (config.servicos || []).filter((s) => servicos.includes(s.id)).reduce((t, s) => t + s.duracao, 0);
       const hs = horariosDoDia({
         funcionamento: config.funcionamento,
+        periodosEspeciais: config.periodosEspeciais,
         excecoes: config.excecoes,
         ocupados: config.ocupados,
         dataISO: dados.data,
@@ -283,7 +301,7 @@ export default function Agendar() {
               />
               {dados.servicos.length > 0 && (
                 <p className="text-xs text-muted-foreground">
-                  {duracaoTotal} min · {formatBRL(valorTotal)}
+                  {duracaoTotal} min · {servicosSel.some(s=>!s.preco) ? "Valor a definir" : formatBRL(valorTotal)}
                 </p>
               )}
               {aviso && <p className="text-sm text-destructive">{aviso}</p>}
@@ -295,6 +313,7 @@ export default function Agendar() {
                   <span className={passoNum}>2</span> Escolha o dia e horário
                 </h2>
                 <CalendarioGlass
+                  permitirListaEspera
                   config={config}
                   duracao={duracaoBase}
                   selecionado={dados.data}
@@ -311,6 +330,27 @@ export default function Agendar() {
                       }}
                     />
                   </div>
+                )}
+              </section>
+            )}
+
+            {nenhumLivre && dados.servicos.length > 0 && (
+              <section className={secaoCls}>
+                <h2 className={passoTitulo}>Lista de espera</h2>
+                {esperaConfirmada ? (
+                  <p role="status" className="rounded-xl bg-emerald-500/10 border border-emerald-500/30 p-4 text-sm">
+                    Você entrou na lista! Se surgir uma vaga, a Kauane poderá chamar você pelo WhatsApp. Ainda não é uma reserva.
+                  </p>
+                ) : (
+                  <>
+                    <p className="text-sm text-muted-foreground">Este dia está lotado. Deixe seu nome e WhatsApp para receber um contato se surgir uma vaga.</p>
+                    <DadosCliente nome={dados.nome} whatsapp={dados.whatsapp} nascimento={dados.nascimento} onChange={mudar} />
+                    {erro && <p role="alert" className="text-sm text-destructive">{erro}</p>}
+                    <Button className="w-full h-12" disabled={enviandoEspera || dados.nome.trim().length < 2 || digits(dados.whatsapp).length < 10} onClick={entrarNaEspera}>
+                      {enviandoEspera ? "Enviando..." : "Entrar na lista de espera"}
+                    </Button>
+                    <p className="text-xs text-muted-foreground">A inscrição não bloqueia o horário, nem exige Pix. A vaga será confirmada pela Kauane.</p>
+                  </>
                 )}
               </section>
             )}
@@ -351,7 +391,7 @@ export default function Agendar() {
                   </p>
                   <p className="flex justify-between gap-3">
                     <span className="text-muted-foreground">Valor do procedimento</span>
-                    <span className="font-medium">{formatBRL(valorTotal)}</span>
+                    <span className="font-medium">{servicosSel.some(s=>!s.preco) ? "Valor a definir" : formatBRL(valorTotal)}</span>
                   </p>
                   {exigirTaxa && (
                     <p className="flex justify-between gap-3 pt-1 border-t border-gold/20">

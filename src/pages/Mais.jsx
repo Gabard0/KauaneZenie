@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
-import { Cake, Scissors, BarChart3, Trash2, QrCode, Clock, Palette, KeyRound } from "lucide-react";
+import { Cake, Scissors, BarChart3, Trash2, QrCode, Clock, Palette, KeyRound, ClipboardList } from "lucide-react";
 import { Carregando } from "@/lib/helpers";
 
 
 const GRUPOS = [
   { titulo: "Agenda e reservas", descricao: "Comece pelos serviços, horários e pelo link para suas clientes.", links: [
     { to: "/servicos", label: "Serviços e preços", desc: "Procedimentos, valores e duração", icon: Scissors },
-    { to: "/config-agenda", label: "Horários da agenda", desc: "Funcionamento, folgas e exceções", icon: Clock },
-    { to: "/agendamento-online", label: "Agendamento online", desc: "Link, QR Code, WhatsApp e taxa Pix", icon: QrCode },
+    { to: "/config-agenda", label: "Horários da agenda", desc: "Funcionamento, períodos especiais e folgas", icon: Clock },
+    { to: "/lista-espera", label: "Lista de espera", desc: "Clientes aguardando vaga", icon: ClipboardList },
+    { to: "/agendamento-online", label: "Agendamento online", desc: "Link, QR Code, limite da agenda e Pix", icon: QrCode },
   ] },
   { titulo: "Clientes e resultados", descricao: "Acompanhe datas especiais e o desempenho do espaço.", links: [
     { to: "/aniversarios", label: "Aniversários", desc: "Parabenize suas clientes", icon: Cake },

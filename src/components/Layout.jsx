@@ -15,6 +15,7 @@ import {
   QrCode,
   Clock,
   Palette,
+  ClipboardList,
   ExternalLink } from
 "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
@@ -31,6 +32,7 @@ const navPrincipal = [
 const navExtra = [
 { to: "/agendamento-online", label: "Agendamento Online", icon: QrCode },
 { to: "/config-agenda", label: "Horários da Agenda", icon: Clock },
+{ to: "/lista-espera", label: "Lista de espera", icon: ClipboardList },
 { to: "/aniversarios", label: "Aniversários", icon: Cake },
 { to: "/servicos", label: "Serviços", icon: Scissors },
 { to: "/relatorios", label: "Relatórios", icon: BarChart3 },

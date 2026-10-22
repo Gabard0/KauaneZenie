@@ -26,6 +26,7 @@ const Aparencia = lazy(() => import("@/pages/Aparencia"));
 const Agendar = lazy(() => import("@/pages/Agendar"));
 const AgendamentoOnline = lazy(() => import("@/pages/AgendamentoOnline"));
 const ConfigAgenda = lazy(() => import("@/pages/ConfigAgenda"));
+const ListaEspera = lazy(() => import("@/pages/ListaEspera"));
 import BrandLogo from '@/components/BrandLogo';
 
 const AuthenticatedApp = () => {
@@ -60,6 +61,7 @@ const AuthenticatedApp = () => {
         <Route path="aparencia" element={<Aparencia />} />
         <Route path="agendamento-online" element={<AgendamentoOnline />} />
         <Route path="config-agenda" element={<ConfigAgenda />} />
+        <Route path="lista-espera" element={<ListaEspera />} />
       </Route>
       </Route>
       <Route path="*" element={<PageNotFound />} />
