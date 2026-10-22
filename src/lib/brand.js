@@ -7,8 +7,8 @@ export const STUDIO = {
   linktree: "https://linktr.ee/kauanezeniestudio",
   whatsapp: "41998047493",
   whatsappLink: "https://wa.me/message/MCUVKVF73VPLE1",
-  address: "Rodovia PR-412, 5699 · Sala 20 · Ipanema",
-  city: "Pontal do Paraná · PR",
+  address: "Rodovia Engenheiro Darci Gomes de Morais, 5699 - Sl 20 - Ipanema",
+  city: "Pontal do Paraná - PR, 83255-000",
 };
 
 // Corrige apenas os contatos herdados do clone, preservando números personalizados.

@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, ArrowRight, ChevronLeft, ChevronRight, Instagram, MapPin, Menu, MessageCircle, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { ArrowDown, ArrowRight, ChevronLeft, ChevronRight, ExternalLink, Instagram, MapPin, Menu, MessageCircle, Navigation, X } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { STUDIO } from "@/lib/brand";
-import { base44 } from "@/api/base44Client";
-import { formatBRL } from "@/lib/helpers";
 import useEmblaCarousel from "embla-carousel-react";
 import "./Landing.css";
 
-// Fotografias retiradas do catálogo público oficial da Kauane (Keepo).
-const FOTOS = {
-  detalhe: "/brand/real/keepo-4.jpg",
-  aplicacao: "/brand/real/keepo-3.jpg",
-  tecnica: "/brand/real/keepo-5.jpg",
-  cuidado: "/brand/real/keepo-4.jpg"
-};
+// Catálogo conferido na página oficial: https://kauanezenie.keepo.bio/
 const CATALOGO = [
-{ nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
-{ nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
-{ nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" }];
-
+  { nome: "Volume Brasileiro", desc: "Mais escolhido. Proporciona mais curvatura e volume ao olhar.", foto: "/brand/real/keepo-1.jpg" },
+  { nome: "Volume Egípcio", desc: "Deixa o olhar preenchido, delicado e apaixonante.", foto: "/brand/real/keepo-2.jpg" },
+  { nome: "Volume 4D", desc: "Para aquelas que gostam de bastante volume e de destacar o olhar.", foto: "/brand/real/keepo-3.jpg" },
+  { nome: "Design e Henna", desc: "Sobrancelhas", foto: "/brand/real/keepo-4.jpg" },
+  { nome: "Design Personalizado", desc: "Sobrancelhas", foto: "/brand/real/keepo-5.jpg" },
+];
+const HIGHLIGHTS = "https://www.instagram.com/stories/highlights/17942089640796543/";
+const DIRECOES = "https://maps.app.goo.gl/QbwzzV5FzwSZW9Ym9";
+const CURSO_WHATSAPP = "https://wa.me/55" + STUDIO.whatsapp + "?text=" +
+  encodeURIComponent("Olá, Kau! Tenho interesse no seu curso de extensão de cílios. Pode me passar mais informações?");
 // Trechos literais de depoimentos compartilhados pela marca, sem identificação das clientes.
 const FEEDBACKS = [
   { frase: "Muito obrigada pela sua atenção e pelo seu trabalho, uma ótima profissional.", tipo: "Atendimento" },
@@ -38,23 +36,49 @@ const nav = [
 { href: "#contato", label: "Contato" }];
 
 
-function Foto({ src, alt, className = "", loading = "lazy" }) {
+function Foto({ src, alt, className = "" }) {
   const [falhou, setFalhou] = useState(false);
-  const reduzirMovimento = useReducedMotion();
-  return falhou ?
-  <div className={`kz-photo-fallback ${className}`} role="img" aria-label={alt}>
-      <span>kz<span className="kz-photo-fallback__point">.</span></span>
-    </div> :
+  return falhou
+    ? <div className={"kz-photo-fallback " + className} role="img" aria-label={alt}><span>kz.</span></div>
+    : <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />;
+}
 
-  loading === "eager" ?
-  <motion.img className={className} src={src} alt={alt} loading="eager" decoding="async" onError={() => setFalhou(true)}
-  initial={reduzirMovimento ? false : { opacity: 0.65, scale: 1.075 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 1.35, ease: [0.22, 1, 0.36, 1] }} /> :
-
-  <img className={className} src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFalhou(true)} />;
-
-
+function CursoCaixa() {
+  const ref = useRef(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 88%", "center 42%"]
+  });
+  const smooth = useSpring(scrollYProgress, { stiffness: 75, damping: 22, mass: 0.65 });
+  const lidAngle = useTransform(smooth, [0, 1], [-98, 0]);
+  const lidY = useTransform(smooth, [0, 1], [-54, 0]);
+  return (
+    <div ref={ref} className="kz-course__stage" aria-label="Caixa do material do curso de extensão de cílios, que se fecha ao rolar a página">
+      <div className="kz-course__box-scene">
+        <div className="kz-course__box">
+          <div className="kz-course__inside">
+            <span className="kz-course__inside-mark">KAUANE ZENIE</span>
+            <span className="kz-course__inside-title">Extensão<br />de cílios</span>
+            <span className="kz-course__inside-subtitle">APOSTILA · CERTIFICADO</span>
+          </div>
+          <div className="kz-course__box-front">
+            <span className="kz-course__box-ribbon" aria-hidden="true" />
+          </div>
+          <motion.div className="kz-course__lid" style={reduced ? {} : { rotateX: lidAngle, y: lidY }}>
+            <div className="kz-course__lid-top">
+              <span className="kz-course__lid-band" aria-hidden="true" />
+              <img src="/brand/kauane-horizontal.png" alt="Kauane Zenie" loading="lazy" />
+            </div>
+            <span className="kz-course__lid-edge" aria-hidden="true" />
+          </motion.div>
+        </div>
+        <span className="kz-course__ambient kz-course__ambient--one" aria-hidden="true" />
+        <span className="kz-course__ambient kz-course__ambient--two" aria-hidden="true" />
+      </div>
+      <p className="kz-course__scroll-hint">Role a página para fechar a caixa</p>
+    </div>
+  );
 }
 
 // Reveals once and respects reduced-motion preferences.
@@ -82,20 +106,7 @@ export default function Landing() {
   const reduzirMovimento = useReducedMotion();
   const [menuAberto, setMenuAberto] = useState(false);
   const [carouselRef, carouselApi] = useEmblaCarousel({ align: "start", containScroll: "trimSnaps", loop: true });
-  const [servicos, setServicos] = useState([]);
   const [carouselPausado, setCarouselPausado] = useState(false);
-  const [servicosCarregando, setServicosCarregando] = useState(true);
-
-  useEffect(() => {
-    let ativo = true;
-    base44.functions.invoke("getBookingConfig", {}).
-    then((r) => {
-      if (ativo) setServicos(Array.isArray(r?.data?.servicos) ? r.data.servicos : []);
-    }).
-    catch(() => {if (ativo) setServicos([]);}).
-    finally(() => {if (ativo) setServicosCarregando(false);});
-    return () => {ativo = false;};
-  }, []);
 
   useEffect(() => {
     if (!carouselApi || carouselPausado || reduzirMovimento) return undefined;
@@ -181,7 +192,6 @@ export default function Landing() {
               <span>KAUANE ZENIE · STUDIO DE BELEZA</span>
               <h2>Cuidar de você é <em>investimento.</em></h2>
               <p>Realçando a beleza do seu olhar!</p>
-              <BotaoAgendar>Agendar horário</BotaoAgendar>
             </Reveal>
           </section>
           <section className="kz-catalog kz-section" id="procedimentos" aria-labelledby="kz-catalog-title">
@@ -196,32 +206,22 @@ export default function Landing() {
                   <div className="kz-catalog__details">
                     <h3>{item.nome}</h3>
                     <p>{item.desc}</p>
-                    <Link to="/agendar">Agendar <ArrowRight size={16} /></Link>
+                    <Link to="/agendar">Ver horários <ArrowRight size={16} /></Link>
                   </div>
                 </Reveal>
               )}
             </div>
-            <div className="kz-catalog__book"><BotaoAgendar>Ver horários e valores</BotaoAgendar></div>
           </section>
-          <section className="kz-services kz-section" aria-labelledby="kz-services-title">
-            <Reveal className="kz-services__intro">
-              <p className="kz-kicker">AGENDE SEU HORÁRIO</p>
-              <h2 id="kz-services-title">Procedimentos disponíveis</h2>
-              <p>Agende o seu horário e eleve a sua autoestima.</p>
+          <section className="kz-course kz-section" id="curso" aria-labelledby="kz-course-title">
+            <Reveal className="kz-course__copy">
+              <p className="kz-kicker">Kauane Zenie · Lash Designer</p>
+              <h2 id="kz-course-title">Curso de <em>extensão de cílios.</em></h2>
+              <p>Aprenda com material completo, apostila exclusiva e certificado.</p>
+              <a href={CURSO_WHATSAPP} target="_blank" rel="noopener noreferrer" className="kz-course__cta">
+                Quero saber mais sobre o curso <MessageCircle size={18} aria-hidden="true" />
+              </a>
             </Reveal>
-            <Reveal className="kz-services__list">
-              {servicosCarregando ?
-              <p className="kz-services__feedback" role="status">Carregando procedimentos…</p> :
-              servicos.length ? servicos.slice(0, 6).map((servico, i) =>
-              <Link to="/agendar" className="kz-service" key={servico.id}>
-                  <span className="kz-service__number">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="kz-service__name">{servico.nome}</span>
-                  <span className="kz-service__meta">{servico.preco > 0 ? formatBRL(servico.preco) : "Consultar"}</span>
-                  <ArrowRight size={19} />
-                </Link>
-              ) : <p className="kz-services__feedback">Confira os procedimentos e valores na agenda.</p>}
-              <BotaoAgendar className="kz-services__action">Agendar horário</BotaoAgendar>
-            </Reveal>
+            <CursoCaixa />
           </section>
           <section className="kz-testimonials kz-section" id="feedbacks" aria-labelledby="kz-testimonials-title">
             <Reveal className="kz-testimonials__header">
@@ -241,17 +241,19 @@ export default function Landing() {
               onBlurCapture={() => setCarouselPausado(false)}>
               <div className="kz-testimonials__track">
                 {FEEDBACKS.map((item, i) =>
-                <article className="kz-testimonial" key={i}>
+                <a className="kz-testimonial" key={i} href={HIGHLIGHTS} target="_blank" rel="noopener noreferrer" aria-label={"Ver feedback real no Instagram: " + item.tipo}>
                     <div className="kz-testimonial__message" aria-label="Trecho de mensagem real">
                       <span className="kz-testimonial__bubble">{item.frase}</span>
                     </div>
                     <p>“{item.frase}”</p>
-                    <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Depoimento recebido</span></div>
-                  </article>
+                    <div className="kz-testimonial__foot"><span>{item.tipo}</span><span>Ver destaque <ExternalLink size={13}/></span></div>
+                  </a>
                 )}
               </div>
             </div>
-            <p className="kz-testimonials__note">Trechos de mensagens enviadas pelas clientes, sem identificação pessoal.</p>
+            <a className="kz-testimonials__source" href={HIGHLIGHTS} target="_blank" rel="noopener noreferrer">
+              <Instagram size={18}/> São feedbacks reais. Confira o destaque no Instagram <ExternalLink size={14}/>
+            </a>
           </section>
           <section className="kz-contact kz-section" id="contato" aria-labelledby="kz-contact-title">
             <Reveal>
@@ -261,7 +263,7 @@ export default function Landing() {
             </Reveal>
             <Reveal className="kz-contact__info" delay={0.1}>
               <div className="kz-contact__address"><MapPin size={20} aria-hidden="true" /><span>{STUDIO.address}<br />{STUDIO.city}</span></div>
-              <BotaoAgendar>Agendar meu horário</BotaoAgendar>
+              <a className="kz-directions-button" href={DIRECOES} target="_blank" rel="noopener noreferrer"><Navigation size={19}/> Como chegar <ArrowRight size={18}/></a>
               <div className="kz-contact__socials">
                 <a href={STUDIO.instagram} target="_blank" rel="noopener noreferrer"><Instagram size={17} /> Instagram</a>
                 <a href={STUDIO.whatsappLink} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> WhatsApp</a>
@@ -273,12 +275,20 @@ export default function Landing() {
         <footer className="kz-footer">
           <div className="kz-footer__brand"><BrandLogo variant="horizontal" className="w-full" /></div>
           <p>Cuidar de você é investimento.</p>
+          <div className="kz-footer__location">
+            <MapPin size={18} aria-hidden="true" />
+            <div><span>{STUDIO.address}</span><span>{STUDIO.city}</span>
+              <a href={DIRECOES} target="_blank" rel="noopener noreferrer">Ver rota no Google Maps <ArrowRight size={14}/></a>
+            </div>
+          </div>
           <nav aria-label="Links do rodapé">
             <a href="#topo">Voltar ao topo</a>
             <Link to="/agendar">Agendamento</Link>
             <Link to="/login">Área administrativa</Link>
           </nav>
-          <small>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza · Fotografias do catálogo da Kauane</small>
+          <small className="kz-footer__bottom"><span>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza</span>
+            <a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer">Desenvolvido por GabardoLabs.com <ExternalLink size={12}/></a>
+          </small>
         </footer>
       </div>
     </div>);

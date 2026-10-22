@@ -13,7 +13,7 @@ import ServicosLista from "@/components/agendar/ServicosLista";
 import DadosCliente from "@/components/agendar/DadosCliente";
 import TelaPagamento from "@/components/agendar/TelaPagamento";
 import TelaConfirmacao from "@/components/agendar/TelaConfirmacao";
-import { MessageCircle, Loader2, CreditCard } from "lucide-react";
+import { MessageCircle, Loader2, CreditCard, ExternalLink } from "lucide-react";
 
 const secaoCls = "rounded-3xl bg-card border border-border/60 p-5 space-y-4";
 const passoTitulo = "flex items-center gap-2.5 font-heading text-lg";
@@ -224,8 +224,8 @@ export default function Agendar() {
           <BrandLogo className="w-72 max-w-full" />
           <div className="w-10 h-px bg-[#C16F84] my-6" />
           <p className="text-[10px] uppercase tracking-[.2em] text-[#E7B5C3]">Cílios & sobrancelhas</p>
-          <h1 className="font-heading booking-heading mt-3">Seu olhar,<br /><span className="italic text-[#E7B5C3]">sua essência.</span></h1>
-          <p className="text-[#F8EFEB]/75 text-xs mt-5">Escolha o procedimento, a data e o horário.</p>
+          <h1 className="font-heading booking-heading mt-3">Realçando a beleza<br /><span className="italic text-[#E7B5C3]">do seu olhar!</span></h1>
+          <p className="text-[#F8EFEB]/75 text-xs mt-5">Agende o seu horário e eleve a sua autoestima.</p>
         </header>
 
         {etapa === "pagamento" && resultado ? (
@@ -392,10 +392,13 @@ export default function Agendar() {
         <footer className="text-center text-xs text-muted-foreground space-y-3 py-5">
           <p className="font-heading text-xl text-foreground">Kauane Zenie · Studio de Beleza</p>
           <p>{STUDIO.address}<br />{STUDIO.city}</p>
+          <p>Cuidar de você é investimento.</p>
+          <a href="https://maps.app.goo.gl/QbwzzV5FzwSZW9Ym9" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 justify-center rounded-full bg-[#560623] px-5 py-3 text-white font-semibold">Como chegar ao studio <ExternalLink size={15} /></a>
           <div className="flex items-center justify-center gap-5">
             <a className="text-gold underline underline-offset-4" href={STUDIO.instagram} target="_blank" rel="noreferrer">Instagram</a>
             <a className="text-gold underline underline-offset-4" href={STUDIO.whatsappLink} target="_blank" rel="noreferrer">Fale com o studio</a>
           </div>
+          <p><a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Desenvolvido por GabardoLabs.com</a></p>
         </footer>
       </div>
     </div>
