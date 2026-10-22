@@ -186,6 +186,7 @@ export default function Landing() {
 
   return (
     <div className="kz-site" id="topo">
+      <a className="kz-public-skip" href="#conteudo-principal">Pular para o conteúdo principal</a>
       <div className="kz-shell">
         <section className="kz-hero" aria-labelledby="kz-hero-title"
         onPointerMove={(event) => {
@@ -271,7 +272,12 @@ export default function Landing() {
             </Reveal>
             <div className="kz-catalog__carousel" ref={catalogoSecaoRef}>
               <div className="kz-catalog__viewport" ref={catalogoRef}
-                aria-label="Catálogo de procedimentos. Arraste para navegar."
+                tabIndex={0} role="region" aria-roledescription="carrossel"
+                aria-label="Catálogo de procedimentos. Use as setas esquerda e direita ou arraste para navegar."
+                onKeyDown={(e) => {
+                  if (e.key === "ArrowRight") { e.preventDefault(); navegarCatalogo("proximo"); }
+                  if (e.key === "ArrowLeft") { e.preventDefault(); navegarCatalogo("anterior"); }
+                }}
                 onMouseEnter={() => {
                   if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
                     window.clearTimeout(catalogoPausaTimer.current);
@@ -338,6 +344,12 @@ export default function Landing() {
               </div>
             </Reveal>
             <div className="kz-testimonials__viewport" ref={carouselRef}
+            tabIndex={0} role="region" aria-roledescription="carrossel"
+            aria-label="Depoimentos. Use as setas direita e esquerda ou os botões para navegar."
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight") { e.preventDefault(); carouselApi?.scrollNext(); }
+              if (e.key === "ArrowLeft") { e.preventDefault(); carouselApi?.scrollPrev(); }
+            }}
             onMouseEnter={() => setCarouselPausado(true)}
             onMouseLeave={() => setCarouselPausado(false)}
             onFocusCapture={() => setCarouselPausado(true)}
@@ -394,7 +406,9 @@ export default function Landing() {
             <Link to="/cookies">Cookies</Link>
             <button type="button" className="kz-footer__cookie-link" onClick={() => window.dispatchEvent(new Event("kz:aviso-cookies"))}>Aviso de cookies</button>
           </nav>
-          <small className="kz-footer__bottom"><span>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza</span>
+          <small className="kz-footer__bottom">
+            <span className="kz-footer__rights">Fotografias e depoimentos: uso sujeito às autorizações de seus titulares. Para solicitar a remoção de uma imagem, fale com o estúdio.</span>
+            <span>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza</span>
             <a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer">Desenvolvido por GabardoLabs.com <ExternalLink size={12} /></a>
           </small>
         </footer>
