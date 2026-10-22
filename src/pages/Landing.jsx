@@ -226,11 +226,11 @@ export default function Landing() {
             <CursoCaixa />
             <div className="kz-course__material">
               <figure>
-                <img src="/brand/real/curso-material-01.webp" alt="Material de curso da Kauane: caixa com laço, apostila e certificado" loading="lazy" className="hidden" />
+                
                 <figcaption>Material completo</figcaption>
               </figure>
               <figure>
-                <img src="/brand/real/curso-material-02.webp" alt="Embalagem e apostila do curso da Kauane Zenie" loading="lazy" className="hidden" />
+                
                 <figcaption>Apostila exclusiva</figcaption>
               </figure>
             </div>
