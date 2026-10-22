@@ -36,9 +36,6 @@ export default async function (req) {
     const cfg = await carregarConfig(svc);
 
     if (acao === "login") {
-      const usuario = String(payload.usuario || "").trim();
-      if (!usuario) return erro("credenciais_invalidas");
-      if (usuario.toLowerCase() !== String(cfg.usuario || "admin").toLowerCase()) return erro("credenciais_invalidas");
       if (!await verificarSenha(String(payload.senha || ""), cfg)) return erro("credenciais_invalidas");
       etapa = "gerar_sessao";
       const token = String(Date.now() + 12 * 3600000) + "." + novoToken();

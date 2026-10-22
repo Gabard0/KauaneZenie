@@ -14,7 +14,7 @@ const invocar = async (payload) => {
   return r.data;
 };
 
-export const adminLogin = (usuario, senha) => invocar({ acao: "login", usuario, senha });
+export const adminLogin = (senha) => invocar({ acao: "login", senha });
 
 export const adminVerificar = (token) => invocar({ acao: "verificar", token });
 

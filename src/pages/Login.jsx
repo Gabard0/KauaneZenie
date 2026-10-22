@@ -3,12 +3,12 @@ import { aplicarTema, temaSalvo, modoSalvo } from "@/lib/tema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { User, LockKeyhole, Loader2 } from "lucide-react";
+import { LockKeyhole, Loader2 } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
 import { adminLogin, setToken } from "@/lib/adminAuth";
 
 const ERROS = {
-  credenciais_invalidas: "Usuário ou senha incorretos",
+  credenciais_invalidas: "Senha incorreta",
   sessao_invalida: "Sua sessão expirou. Entre novamente."
 };
 
@@ -28,7 +28,6 @@ const inputCls =
   "pl-10 h-12 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground focus-visible:border-gold/60";
 
 export default function Login() {
-  const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -42,7 +41,7 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      const r = await adminLogin(usuario.trim(), senha);
+      const r = await adminLogin(senha);
       if (!r.ok) {
         setError(ERROS[r.error] || "Não foi possível entrar");
         return;
@@ -84,28 +83,6 @@ export default function Login() {
 
           <form onSubmit={entrar} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="usuario" className="text-foreground/80">
-                Usuário
-              </Label>
-              <div className="relative">
-                <User
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground"
-                  aria-hidden="true"
-                />
-                <Input
-                  id="usuario"
-                  type="text"
-                  autoComplete="username"
-                  autoFocus
-                  placeholder="Seu usuário"
-                  value={usuario}
-                  onChange={(e) => setUsuario(e.target.value)}
-                  className={inputCls}
-                  required
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
               <Label htmlFor="senha" className="text-foreground/80">Senha</Label>
               <div className="relative">
                 <LockKeyhole className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" aria-hidden="true" />
@@ -132,7 +109,7 @@ export default function Login() {
         </div>
 
         <p className="text-center text-xs text-muted-foreground pt-2">
-          Acesso protegido. Use as credenciais do estúdio.
+          Acesso protegido. Digite sua senha para continuar.
         </p>
       </div>
       </main>
