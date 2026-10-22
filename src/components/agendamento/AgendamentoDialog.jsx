@@ -66,11 +66,12 @@ export default function AgendamentoDialog({
     setPendentes(null);
     setRecalcManut(true);
     const carregar = async () => {
-      const [cls, svcs, funcs, excs, lista, config] = await Promise.all([
+      const [cls, svcs, funcs, excs, especiais, lista, config] = await Promise.all([
         base44.entities.Cliente.list(),
         base44.entities.Servico.list(),
         base44.entities.ConfigAgenda.filter({ tipo: "funcionamento" }),
         base44.entities.ConfigAgenda.filter({ tipo: "excecao" }),
+        base44.entities.ConfigAgenda.filter({ tipo: "periodo" }),
         base44.entities.Agendamento.list(),
         adminLerConfig(),
       ]);
@@ -79,6 +80,7 @@ export default function AgendamentoDialog({
       setServicos(svcs.filter((s) => s.ativo !== false));
       setAgendaCfg({
         funcionamento: funcs[0] || null,
+        periodosEspeciais: especiais,
         excecoes: excs.map((e) => ({ data: e.data, motivo: e.motivo || "" })),
       });
       setAgs(lista);
@@ -174,6 +176,7 @@ export default function AgendamentoDialog({
     if (!agendaCfg || !data) return [];
     return horariosDoDia({
       funcionamento: agendaCfg.funcionamento,
+      periodosEspeciais: agendaCfg.periodosEspeciais,
       excecoes: agendaCfg.excecoes,
       ocupados,
       dataISO: data,
@@ -197,6 +200,7 @@ export default function AgendamentoDialog({
         servicos.filter((s) => novos.includes(s.id)).reduce((t, s) => t + (s.duracao || 60), 0);
       const hs = horariosDoDia({
         funcionamento: agendaCfg?.funcionamento,
+        periodosEspeciais: agendaCfg?.periodosEspeciais,
         excecoes: agendaCfg?.excecoes,
         ocupados,
         dataISO: data,
@@ -228,6 +232,7 @@ export default function AgendamentoDialog({
         .map((a) => ({ data: a.data, horario: a.horario, duracao: a.duracao > 0 ? a.duracao : 60 }));
       const hs = horariosDoDia({
         funcionamento: agendaCfg?.funcionamento,
+        periodosEspeciais: agendaCfg?.periodosEspeciais,
         excecoes: agendaCfg?.excecoes,
         ocupados: ocupadosFrescos,
         dataISO: data,
@@ -287,7 +292,7 @@ export default function AgendamentoDialog({
     }
   };
 
-  const calCfg = agendaCfg ? { funcionamento: agendaCfg.funcionamento, excecoes: agendaCfg.excecoes, ocupados } : null;
+  const calCfg = agendaCfg ? { funcionamento: agendaCfg.funcionamento, periodosEspeciais: agendaCfg.periodosEspeciais, excecoes: agendaCfg.excecoes, ocupados } : null;
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>

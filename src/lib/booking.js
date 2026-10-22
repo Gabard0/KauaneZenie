@@ -92,7 +92,7 @@ export function horariosDoDia({ funcionamento, periodosEspeciais = [], excecoes 
   for (const p of periodos) {
     for (let t = p.ini; t + 30 <= p.fim; t += 30) {
       const passou = t < agoraMin;
-      const livre = !passou && !busy.some((b) => t < b.fim && t + total > b.ini);
+      const livre = !passou && t + total <= p.fim && !busy.some((b) => t < b.fim && t + total > b.ini);
       out.push({ hora: fromMin(t), livre });
     }
   }

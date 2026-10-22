@@ -35,14 +35,15 @@ async function listar(entity, query, sort) {
 
 async function garantirHorario(svc, data, id) {
   if (!data.horario || data.status === "cancelado") return;
-  const [funcs, excs, ags] = await Promise.all([
+  const [funcs, excs, especiais, ags] = await Promise.all([
     svc.entities.ConfigAgenda.filter({tipo:"funcionamento"}),
     svc.entities.ConfigAgenda.filter({tipo:"excecao"}),
+    svc.entities.ConfigAgenda.filter({tipo:"periodo"}),
     svc.entities.Agendamento.filter({data:data.data}),
   ]);
   const hoje = hojeSP();
   if (data.data < hoje) throw new Error("data_passada");
-  const slots = slotsDisponiveis({funcionamento:funcs[0],excecoes:excs,ocupados:ags.filter(a=>a.id!==id && a.status!=="cancelado"),dataISO:data.data,duracao:data.duracao || 60,agoraMin:data.data===hoje?agoraMinSP():0});
+  const slots = slotsDisponiveis({funcionamento:funcs[0],periodosEspeciais:especiais,excecoes:excs,ocupados:ags.filter(a=>a.id!==id && a.status!=="cancelado"),dataISO:data.data,duracao:data.duracao || 60,agoraMin:data.data===hoje?agoraMinSP():0});
   if (!slots.includes(data.horario)) throw new Error("horario_ocupado");
 }
 

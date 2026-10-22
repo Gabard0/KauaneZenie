@@ -19,11 +19,12 @@ export default async function (req) {
     const principalId = String(payload.agendamento_principal_id || "");
     if (!principalId) return Response.json({ ok: false, error: "dados_invalidos" });
 
-    const [principal, servicos, funcionamentos, excecoesRecs] = await Promise.all([
+    const [principal, servicos, funcionamentos, excecoesRecs, especiais] = await Promise.all([
       svc.entities.Agendamento.get(principalId),
       svc.entities.Servico.list(),
       svc.entities.ConfigAgenda.filter({ tipo: "funcionamento" }),
       svc.entities.ConfigAgenda.filter({ tipo: "excecao" }),
+      svc.entities.ConfigAgenda.filter({ tipo: "periodo" }),
     ]);
     const excecoes = excecoesRecs.map((e) => ({ data: e.data, motivo: e.motivo || "" }));
 
@@ -32,6 +33,7 @@ export default async function (req) {
       principal,
       servicos,
       funcionamento: funcionamentos[0] || null,
+      periodosEspeciais: especiais,
       excecoes,
       hoje: hojeSP(),
     });
