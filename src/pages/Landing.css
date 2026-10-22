@@ -1194,3 +1194,19 @@
 .kz-site .kz-footer nav a{color:#ffe5eb;text-decoration:underline;text-underline-offset:3px}
 .kz-site .kz-footer__bottom{margin-top:0}
 @media(max-width:760px){.kz-site .kz-footer nav{gap:13px 19px}.kz-site .kz-footer nav :is(a,button){font-size:12px;min-height:32px;display:inline-flex;align-items:center}}
+
+.kz-public-skip {position:fixed;top:-200px;left:16px;z-index:10000;color:#3a1024;background:#fff8f5;border:3px solid #a34c70;border-radius:10px;padding:11px 18px;font-size:14px;font-weight:700;text-decoration:none}
+.kz-public-skip:focus {top:14px}
+.kz-site :is(.kz-catalog__viewport,.kz-testimonials__viewport):focus-visible {outline:3px solid #752240;outline-offset:5px}
+.kz-site .kz-footer__rights{flex-basis:100%;font-size:11px;line-height:1.65;color:#ffe4ed}
+.kz-site .kz-catalog__hint{color:#5b3446}
+.kz-site .kz-brand-note__inner > span{color:#8d3052}
+.kz-site .kz-catalog__details p{color:#58444c}
+.kz-site .kz-testimonial__foot{color:#604551}
+.kz-site .kz-footer nav a{color:#fff3f7}
+.kz-site .kz-contact__socials a{color:#fff4f7}
+@media(prefers-reduced-motion:reduce){
+  .kz-site *, .kz-site *::before,.kz-site *::after {
+    animation-duration:0.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:0.01ms!important
+  }
+}

@@ -71,7 +71,7 @@ function Reembolso() {
     </Bloco>
     <Bloco titulo="2. Taxa de reserva e eventual devolução">
       <p>Quando houver taxa de reserva, seu valor, finalidade e prazo de pagamento devem ser apresentados antes da contratação. Pedidos de devolução serão analisados conforme as condições efetivamente informadas e aceitas, os fatos do caso e a legislação aplicável.</p>
-      <p><strong>A taxa não é declarada irrembolsável em qualquer hipótese.</strong> Condições comerciais não podem afastar direitos obrigatórios do consumidor, inclusive situações de falha na prestação ou cancelamento imputável ao fornecedor.</p>
+      <p><strong>A taxa não é declarada irreembolsável em qualquer hipótese.</strong> Condições comerciais não podem afastar direitos obrigatórios do consumidor, inclusive situações de falha na prestação ou cancelamento imputável ao fornecedor.</p>
     </Bloco>
     <Bloco titulo="3. Direito de arrependimento em contratações à distância">
       <p>O artigo 49 do Código de Defesa do Consumidor prevê, quando aplicável à contratação fora do estabelecimento comercial, o prazo de 7 dias para o exercício do direito de arrependimento, com restituição dos valores nos termos da lei. O enquadramento e as consequências em serviços já executados exigem análise das circunstâncias concretas.</p>

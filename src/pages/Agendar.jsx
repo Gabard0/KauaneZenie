@@ -255,7 +255,8 @@ export default function Agendar() {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-5">
+      <a className="kz-public-skip" href="#conteudo-agendamento">Pular para o formulário</a>
+      <div id="conteudo-agendamento" className="max-w-xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-5">
         <header className="brand-panel rounded-[1.75rem] px-5 py-8 sm:py-10 flex flex-col items-center text-center">
           <BrandLogo className="w-72 max-w-full" />
           <div className="w-10 h-px bg-[#C16F84] my-6" />
@@ -459,6 +460,12 @@ export default function Agendar() {
           <div className="flex items-center justify-center gap-5">
             <a className="text-gold underline underline-offset-4" href={STUDIO.instagram} target="_blank" rel="noreferrer">Instagram</a>
             <a className="text-gold underline underline-offset-4" href={STUDIO.whatsappLink} target="_blank" rel="noreferrer">Fale com o studio</a>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-5">
+            <Link className="underline underline-offset-4" to="/privacidade">Privacidade</Link>
+            <Link className="underline underline-offset-4" to="/termos">Termos</Link>
+            <Link className="underline underline-offset-4" to="/reembolso">Cancelamentos e reembolsos</Link>
+            <Link className="underline underline-offset-4" to="/cookies">Cookies</Link>
           </div>
           <p><a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Desenvolvido por GabardoLabs.com</a></p>
         </footer>

@@ -13,9 +13,10 @@ await test('Bloqueio em feriado/exceção',0,()=>slot({excecoes:[{data:date}]}).
 await test('Sobreposição bloqueada',false,()=>slot({ocupados:[{data:date,horario:'09:30',duracao:60}]}).includes('09:00'));
 await test('Horário adjacente disponível',true,()=>slot({ocupados:[{data:date,horario:'09:00',duracao:60}]}).includes('10:00'));
 await test('Horários passados ocultos',false,()=>slot({agoraMin:601}).includes('10:00'));
-const payload={nome:'TESTE — Cliente',whatsapp:'41999999999',servico_ids:['nail'],data:date,horario:'09:00'};
+const payload={nome:'TESTE — Cliente',whatsapp:'41999999999',servico_ids:['nail'],data:date,horario:'09:00',aceite_termos:true};
 await test('Reserva válida com taxa',true,async()=>{const d=db(seed),r=await(await fn('createOnlineBooking',d)(req(payload))).json();return r.ok&&r.pagamento.taxa===30&&d.data.Agendamento[0].status_pagamento==='aguardando_comprovante'});
 await test('Serviço inativo recusado','dados_invalidos',async()=> (await(await fn('createOnlineBooking',db(seed))(req({...payload,servico_ids:['inactive']}))).json()).error);
+await test('Sem ciência de termos recusa reserva','dados_invalidos',async()=> (await(await fn('createOnlineBooking',db(seed))(req({...payload,aceite_termos:false}))).json()).error);
 await test('Data passada recusada','dados_invalidos',async()=> (await(await fn('createOnlineBooking',db(seed))(req({...payload,data:'2020-01-01'}))).json()).error);
 await test('Telefone curto recusado','dados_invalidos',async()=> (await(await fn('createOnlineBooking',db(seed))(req({...payload,whatsapp:'123'}))).json()).error);
 await test('Conflito sequencial recusado','horario_ocupado',async()=>{const f=fn('createOnlineBooking',db(seed));await f(req(payload));return (await(await f(req(payload))).json()).error});
