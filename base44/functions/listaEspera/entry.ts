@@ -13,7 +13,7 @@ export default async function(req) {
       if (tel.length > 11 && tel.startsWith("55")) tel = tel.slice(2);
       const data = String(p.data || "");
       const ids = Array.isArray(p.servico_ids) ? [...new Set(p.servico_ids.map(String))].slice(0,8) : [];
-      if (nome.length < 2 || tel.length < 10 || tel.length > 11 || !/^\d{4}-\d{2}-\d{2}$/.test(data) || data < hojeSP() || !ids.length) return out({ok:false,error:"dados_invalidos"},400);
+      if (p.aceite_termos !== true || nome.length < 2 || tel.length < 10 || tel.length > 11 || !/^\d{4}-\d{2}-\d{2}$/.test(data) || data < hojeSP() || !ids.length) return out({ok:false,error:"dados_invalidos"},400);
       const [services,cfg,funcs,excs,periodosEspeciais,ags] = await Promise.all([svc.entities.Servico.list(),svc.entities.ConfigApp.list(),svc.entities.ConfigAgenda.filter({tipo:"funcionamento"}),svc.entities.ConfigAgenda.filter({tipo:"excecao"}),svc.entities.ConfigAgenda.filter({tipo:"periodo"}),svc.entities.Agendamento.filter({data,status:{$ne:"cancelado"}})]);
       const limit = Math.min(365,Math.max(1,cfg[0]?.limite_agendamento_dias || 180));
       const h=hojeSP().split("-").map(Number); const dtMax=new Date(h[0],h[1]-1,h[2]+limit); const max=dtMax.getFullYear()+"-"+String(dtMax.getMonth()+1).padStart(2,"0")+"-"+String(dtMax.getDate()).padStart(2,"0");
@@ -29,7 +29,7 @@ export default async function(req) {
       return await comTravaAgenda(svc,async()=>{
         const previous=await svc.entities.ListaEspera.filter({data,whatsapp:tel,status:"aguardando"});
         if(previous.some(a=>JSON.stringify([...a.servico_ids].sort())===JSON.stringify([...ids].sort()))) return out({ok:true,duplicada:true});
-        await svc.entities.ListaEspera.create({nome,whatsapp:tel,data,servico_ids:ids,servicos_nome:chosen.map(s=>s.nome).join(" + "),duracao:duration,status:"aguardando",criado_em:new Date().toISOString()});
+        await svc.entities.ListaEspera.create({nome,whatsapp:tel,data,servico_ids:ids,servicos_nome:chosen.map(s=>s.nome).join(" + "),duracao:duration,status:"aguardando",criado_em:new Date().toISOString(),aceite_termos_em:new Date().toISOString(),versao_politicas:"2026-10"});
         return out({ok:true});
       });
     }

@@ -14,6 +14,8 @@ import DadosCliente from "@/components/agendar/DadosCliente";
 import TelaPagamento from "@/components/agendar/TelaPagamento";
 import TelaConfirmacao from "@/components/agendar/TelaConfirmacao";
 import { MessageCircle, Loader2, CreditCard, ExternalLink } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 
 const secaoCls = "rounded-3xl bg-card border border-border/60 p-5 space-y-4";
 const passoTitulo = "flex items-center gap-2.5 font-heading text-lg";
@@ -25,6 +27,7 @@ export default function Agendar() {
   const [falha, setFalha] = useState(false);
   const [enviandoEspera, setEnviandoEspera] = useState(false);
   const [esperaConfirmada, setEsperaConfirmada] = useState(false);
+  const [aceitouTermos, setAceitouTermos] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [reenviando, setReenviando] = useState(false);
@@ -33,7 +36,7 @@ export default function Agendar() {
   const [resultado, setResultado] = useState(null);
   const [waUrl, setWaUrl] = useState("");
   const [etapa, setEtapa] = useState("form");
-  const [dados, setDados] = useState({ data: "", horario: "", servicos: [], nome: "", whatsapp: "", nascimento: "" });
+  const [dados, setDados] = useState({ data: "", horario: "", servicos: [], nome: "", whatsapp: "", nascimento: "", aceitaAniversario: false });
 
   useEffect(() => {
     aplicarTema(temaSalvo(), modoSalvo());
@@ -83,7 +86,7 @@ export default function Agendar() {
     try {
       const r = await base44.functions.invoke("listaEspera", {
         acao: "inscrever", nome: dados.nome.trim(), whatsapp: digits(dados.whatsapp),
-        data: dados.data, servico_ids: dados.servicos
+        data: dados.data, servico_ids: dados.servicos, aceite_termos: aceitouTermos
       });
       if (r.data?.ok) setEsperaConfirmada(true);
       else setErro(r.data?.error === "horarios_disponiveis"
@@ -92,7 +95,9 @@ export default function Agendar() {
     } catch { setErro("Não foi possível enviar agora. Tente novamente."); }
     finally { setEnviandoEspera(false); }
   };
-  const mudar = (campo, valor) => setDados((d) => ({ ...d, [campo]: valor }));
+  const mudar = (campo, valor) => setDados((d) => campo === "aceitaAniversario" && !valor
+    ? { ...d, aceitaAniversario: false, nascimento: "" }
+    : { ...d, [campo]: valor });
 
   const escolherDia = (iso) => {
     setAviso("");
@@ -136,7 +141,8 @@ export default function Agendar() {
     !!dados.horario &&
     dados.servicos.length > 0 &&
     dados.nome.trim().length >= 2 &&
-    digits(dados.whatsapp).length >= 10;
+    digits(dados.whatsapp).length >= 10 &&
+    aceitouTermos;
 
   const irParaPagamento = async () => {
     setConfirmando(true);
@@ -146,7 +152,9 @@ export default function Agendar() {
         nome: dados.nome.trim(),
         whatsapp: digits(dados.whatsapp),
         servico_ids: dados.servicos,
-        data_nascimento: dados.nascimento,
+        data_nascimento: dados.aceitaAniversario ? dados.nascimento : "",
+        aceita_aniversario: dados.aceitaAniversario === true,
+        aceite_termos: aceitouTermos,
         data: dados.data,
         horario: dados.horario,
       });
@@ -229,7 +237,8 @@ export default function Agendar() {
   };
 
   const reset = () => {
-    setDados({ data: "", horario: "", servicos: [], nome: "", whatsapp: "", nascimento: "" });
+    setDados({ data: "", horario: "", servicos: [], nome: "", whatsapp: "", nascimento: "", aceitaAniversario: false });
+    setAceitouTermos(false);
     setResultado(null);
     setWaUrl("");
     setErro("");

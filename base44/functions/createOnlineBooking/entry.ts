@@ -47,10 +47,12 @@ export default async function (req) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) return invalido();
     if (!/^\d{2}:\d{2}$/.test(horario)) return invalido();
     if (!servicoIds.length || new Set(servicoIds).size !== servicoIds.length) return invalido();
+    if (payload.aceite_termos !== true) return invalido();
 
     const hoje = hojeSP();
     if (data < hoje) return invalido();
     const nascimentoOK =
+      payload.aceita_aniversario === true &&
       /^\d{4}-\d{2}-\d{2}$/.test(nascimento) &&
       nascimento > "1900-01-01" &&
       nascimento < hoje
@@ -123,10 +125,10 @@ export default async function (req) {
       cliente = await svc.entities.Cliente.create({
         nome,
         telefone: maskTelefone(whatsapp),
-        ...(nascimentoOK ? { data_nascimento: nascimentoOK } : {}),
+        ...(nascimentoOK ? { data_nascimento: nascimentoOK, consentimento_aniversario: true } : {}),
       });
     } else if (nascimentoOK && !cliente.data_nascimento) {
-      await svc.entities.Cliente.update(cliente.id, { data_nascimento: nascimentoOK });
+      await svc.entities.Cliente.update(cliente.id, { data_nascimento: nascimentoOK, consentimento_aniversario: true });
     }
 
     const servicoNome = escolhidos.map((s) => s.nome).join(" + ");
@@ -148,6 +150,8 @@ export default async function (req) {
       duracao: duracaoTotal,
       valor: valorTotal,
       observacao: "Agendamento Online",
+      aceite_termos_em: new Date().toISOString(),
+      versao_politicas: "2026-10",
     };
 
     let agCriado;

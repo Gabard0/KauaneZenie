@@ -44,6 +44,10 @@
     "demo": {
       "type": "boolean",
       "default": false
+    },
+    "consentimento_aniversario": {
+      "type": "boolean",
+      "default": false
     }
   },
   "required": [

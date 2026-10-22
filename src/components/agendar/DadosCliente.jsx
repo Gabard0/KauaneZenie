@@ -3,11 +3,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { maskTelefone } from "@/lib/booking";
 import { todayISO } from "@/lib/helpers";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const inputCls =
   "h-12 bg-muted/50 border-border text-foreground placeholder:text-muted-foreground focus-visible:border-gold/60";
 
-export default function DadosCliente({ nome, whatsapp, nascimento = "", onChange }) {
+export default function DadosCliente({ nome, whatsapp, nascimento = "", onChange, aceitaAniversario = false, exibirAniversario = true }) {
   return (
     <div className="space-y-3">
       <div className="space-y-1.5">
@@ -32,8 +33,14 @@ export default function DadosCliente({ nome, whatsapp, nascimento = "", onChange
         />
         <p className="text-xs text-muted-foreground">O WhatsApp é obrigatório para confirmarmos seu horário.</p>
       </div>
-      <div className="space-y-1.5">
-        <Label htmlFor="ag-nasc">🎂 Data de aniversário (opcional)</Label>
+      {exibirAniversario && <div className="space-y-2 rounded-xl border p-3.5">
+        <label className="flex items-start gap-3 cursor-pointer text-sm leading-relaxed" htmlFor="ag-consentimento-aniversario">
+          <Checkbox id="ag-consentimento-aniversario" checked={aceitaAniversario}
+            onCheckedChange={(v) => onChange("aceitaAniversario", v === true)} />
+          Quero informar meu aniversário para receber felicitações ou benefícios opcionais do estúdio. Posso revogar essa escolha.
+        </label>
+        {aceitaAniversario && <div className="space-y-1.5 pt-2">
+        <Label htmlFor="ag-nasc">🎂 Data de nascimento (opcional)</Label>
         <Input
           id="ag-nasc"
           type="date"
@@ -42,8 +49,9 @@ export default function DadosCliente({ nome, whatsapp, nascimento = "", onChange
           onChange={(e) => onChange("nascimento", e.target.value)}
           className={inputCls}
         />
-        <p className="text-xs text-muted-foreground">Assim podemos lhe dar um tratamento especial no seu dia.</p>
-      </div>
+        <p className="text-xs text-muted-foreground">Informação opcional, somente para a finalidade descrita acima.</p>
+        </div>}
+      </div>}
     </div>
   );
 }

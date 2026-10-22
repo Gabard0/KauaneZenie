@@ -38,6 +38,12 @@
     },
     "contatada_em": {
       "type": "string"
+    },
+    "aceite_termos_em": {
+      "type": "string"
+    },
+    "versao_politicas": {
+      "type": "string"
     }
   },
   "required": [
