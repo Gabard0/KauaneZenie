@@ -255,7 +255,7 @@ export default function Landing() {
           <a className="kz-hero__scroll" href="#sobre" aria-label="Conheça o estúdio"><ArrowDown size={18} /></a>
         </section>
 
-        <main>
+        <main id="conteudo-principal">
           <section className="kz-brand-note kz-section" id="sobre">
             <Reveal className="kz-brand-note__inner">
               <span>KAUANE ZENIE · STUDIO DE BELEZA</span>
@@ -388,6 +388,11 @@ export default function Landing() {
             <a href="#topo">Voltar ao topo</a>
             <Link to="/agendar">Agendamento</Link>
             <Link to="/login">Área administrativa</Link>
+            <Link to="/privacidade">Privacidade</Link>
+            <Link to="/termos">Termos</Link>
+            <Link to="/reembolso">Cancelamento e reembolso</Link>
+            <Link to="/cookies">Cookies</Link>
+            <button type="button" className="kz-footer__cookie-link" onClick={() => window.dispatchEvent(new Event("kz:aviso-cookies"))}>Aviso de cookies</button>
           </nav>
           <small className="kz-footer__bottom"><span>© {new Date().getFullYear()} Kauane Zenie · Studio de Beleza</span>
             <a href="https://gabardolabs.com" target="_blank" rel="noopener noreferrer">Desenvolvido por GabardoLabs.com <ExternalLink size={12} /></a>

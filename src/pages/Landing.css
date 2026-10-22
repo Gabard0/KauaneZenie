@@ -1187,3 +1187,10 @@
   .kz-site .kz-catalog__image {height:250px;}
   .kz-site .kz-catalog__details {min-height:154px;}
 }
+/* Links legais integrados ao rodapé, com foco visível */
+.kz-site .kz-footer__cookie-link {color:#ffe2eb;font-size:11px;cursor:pointer;background:transparent;border:0;padding:0;text-align:left;text-decoration:underline;text-underline-offset:4px}
+.kz-site :is(a,button,[tabindex="0"]):focus-visible {outline:3px solid #edbacb!important;outline-offset:4px!important;border-radius:5px}
+.kz-site .kz-footer nav {display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.kz-site .kz-footer nav a{color:#ffe5eb;text-decoration:underline;text-underline-offset:3px}
+.kz-site .kz-footer__bottom{margin-top:0}
+@media(max-width:760px){.kz-site .kz-footer nav{gap:13px 19px}.kz-site .kz-footer nav :is(a,button){font-size:12px;min-height:32px;display:inline-flex;align-items:center}}

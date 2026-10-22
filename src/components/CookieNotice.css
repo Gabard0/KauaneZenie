@@ -1,0 +1,7 @@
+.kz-cookie{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:1000;width:min(900px,calc(100% - 28px));display:flex;gap:18px;align-items:center;background:#fff8f5;color:#3e1626;border:1px solid #dcb3c2;border-radius:20px;box-shadow:0 13px 44px #34091c38;padding:19px 48px 19px 20px}
+.kz-cookie__symbol{color:#752a47}.kz-cookie__content{flex:1;min-width:0}.kz-cookie__content strong{font-size:14px}.kz-cookie__content p{margin-top:4px;font-size:12px;line-height:1.55;color:#604150}
+.kz-cookie a{color:#721e41;text-decoration:underline;font-weight:700}
+.kz-cookie__ok{background:#560623;color:white;cursor:pointer;border:none;border-radius:999px;font-size:12px;font-weight:700;padding:13px 22px;white-space:nowrap}
+.kz-cookie__close{position:absolute;right:11px;top:12px;border:none;background:transparent;cursor:pointer;color:#64213e;padding:5px}
+.kz-cookie :is(a,button):focus-visible{outline:3px solid #8d3f63;outline-offset:3px}
+@media(max-width:600px){.kz-cookie{bottom:10px;padding:17px 43px 16px 16px;flex-wrap:wrap;align-items:start;gap:8px}.kz-cookie__symbol{display:none}.kz-cookie__ok{width:100%}}

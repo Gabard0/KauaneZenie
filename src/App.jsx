@@ -28,6 +28,8 @@ const AgendamentoOnline = lazy(() => import("@/pages/AgendamentoOnline"));
 const ConfigAgenda = lazy(() => import("@/pages/ConfigAgenda"));
 const ListaEspera = lazy(() => import("@/pages/ListaEspera"));
 import BrandLogo from '@/components/BrandLogo';
+import CookieNotice from "@/components/CookieNotice";
+const Legal = lazy(() => import("@/pages/Legal"));
 
 const AuthenticatedApp = () => {
   const { isLoadingPublicSettings } = useAuth();
@@ -45,6 +47,10 @@ const AuthenticatedApp = () => {
     <Suspense fallback={<Carregando />}><Routes>
       <Route path="/" element={<Landing />} />
       <Route path="/agendar" element={<Agendar />} />
+      <Route path="/privacidade" element={<Legal />} />
+      <Route path="/termos" element={<Legal />} />
+      <Route path="/reembolso" element={<Legal />} />
+      <Route path="/cookies" element={<Legal />} />
       <Route path="/login" element={<Login />} />
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/login" replace />} />}>
       <Route path="/" element={<Layout />}>
@@ -78,6 +84,7 @@ function App() {
         <Router>
           <ScrollToTop />
           <AuthenticatedApp />
+          <CookieNotice />
         </Router>
         <Toaster />
       </QueryClientProvider>
