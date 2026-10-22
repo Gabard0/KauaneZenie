@@ -731,3 +731,248 @@
 @media(prefers-reduced-motion:reduce) {
   .kz-hero__front-shape {transform:rotate(-9deg)!important;transition:none!important;}
 }
+
+/* 2026-10 · Kauane Zenie: catálogo completo e formação profissional */
+.kz-catalog__grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(14px, 1.6vw, 24px);
+}
+.kz-catalog__image { height: clamp(205px, 24vw, 315px); }
+.kz-catalog__details { min-height: 188px; }
+.kz-catalog__details a { min-height: 44px; }
+.kz-catalog__details a:hover { color: #a54a6b; }
+.kz-brand-note__inner > p { margin-bottom: 0; }
+.kz-catalog { padding-top: clamp(65px, 8vw, 100px); }
+.kz-course {
+  --kz-course-wine: #61174c;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: clamp(15px, 4vw, 75px);
+  align-items: center;
+  min-height: clamp(540px, 50vw, 750px);
+  padding-block: clamp(80px, 10vw, 130px);
+  background: #f1e4e5;
+  background-image:
+    radial-gradient(ellipse at 88% 10%, rgba(198,124,149,.27) 0, transparent 53%),
+    radial-gradient(ellipse at 4% 96%, rgba(255,255,255,.58) 0, transparent 55%);
+  overflow: hidden;
+}
+.kz-course::before {
+  content:""; position:absolute;left:-8%;top:-30%;width:74%;height:135%;
+  border:1px solid rgba(165,71,105,.12);border-radius:50%;
+  transform:rotate(-22deg);pointer-events:none;
+}
+.kz-course__copy { position:relative; z-index:3; }
+.kz-course__copy h2 {
+  font-family:var(--kz-display);
+  font-size:clamp(40px,5.1vw,79px);
+  line-height:1.02; font-weight:400;
+  letter-spacing:-.045em; margin-top:25px;
+  max-width:560px;
+}
+.kz-course__copy h2 em {
+  display:inline;
+  font-weight:400;
+  font-style:italic;color:#a44d6b;
+}
+.kz-course__copy > p:not(.kz-kicker) {
+  margin-top:23px;max-width:370px;line-height:1.8;
+  font-size:14px;color:#765b65;
+}
+.kz-course__cta {
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:14px;min-height:52px;width:fit-content;
+  padding:13px 24px;margin-top:32px;
+  border-radius:99px;
+  background:#61174c;color:white!important;
+  font-size:13px;font-weight:600;
+  box-shadow:0 10px 24px rgba(97,23,76,.14);
+  transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
+}
+.kz-course__cta:hover {
+  transform:translateY(-3px); background:#79275f;
+  box-shadow:0 14px 28px rgba(97,23,76,.19);
+}
+.kz-course__stage { position:relative; z-index:1; width:100%; min-width:0; }
+.kz-course__box-scene {
+  position:relative;isolation:isolate;
+  width:100%;height:440px;
+  display:grid;place-items:center;
+  perspective:1100px;
+  perspective-origin:50% 45%;
+  transform-style:preserve-3d;
+}
+.kz-course__box {
+  position:relative;
+  width:min(92%,550px);
+  aspect-ratio:1.63;
+  transform:rotateX(9deg) rotateY(-12deg) rotateZ(-3deg);
+  transform-style:preserve-3d;
+  filter:drop-shadow(9px 31px 28px rgba(97,23,76,.20));
+  z-index:2;
+}
+.kz-course__inside {
+  position:absolute;
+  inset:0; z-index:0;
+  border:10px solid #e7d5d6;
+  border-radius:12px;
+  background:
+    linear-gradient(40deg,transparent 24%,rgba(97,23,76,.04) 25% 76%,transparent 77%),
+    #fcf5f3;
+  display:flex; flex-direction:column;
+  justify-content:center; align-items:center;gap:6px;
+  text-align:center;
+  transform:translateZ(2px);
+}
+.kz-course__inside-mark {
+  font:600 11px/1.4 var(--kz-text);
+  letter-spacing:.21em;color:#6c254d;
+}
+.kz-course__inside-title {
+  font:400 clamp(25px,3vw,40px)/1.05 var(--kz-display);
+  color:#61174c;
+}
+.kz-course__inside-subtitle {
+  margin-top:10px;
+  padding:8px 15px;
+  border:1px solid #d7b3c0;
+  border-radius:4px;
+  font:500 9px/1.4 var(--kz-text);
+  letter-spacing:.12em;color:#783351;
+}
+.kz-course__box-front {
+  position:absolute;
+  inset:auto 0 -18px;
+  height:27px;
+  border-radius:0 0 9px 9px;
+  background:linear-gradient(#e9d9d7,#d0b6ba);
+  transform:rotateX(-72deg) translateZ(-1px);
+  transform-origin:top;
+  z-index:1;
+  overflow:hidden;
+}
+.kz-course__box-ribbon {
+  position:absolute;left:46%;width:10%;height:100%;
+  background:#6a153b;
+}
+.kz-course__lid {
+  position:absolute;
+  inset:-7px -7px -11px;
+  z-index:4;
+  transform-style:preserve-3d;
+  transform-origin:50% 0%;
+  backface-visibility:visible;
+  pointer-events:none;
+}
+.kz-course__lid-top {
+  position:absolute;inset:0;
+  border:8px solid #eadce0;
+  border-radius:12px;
+  overflow:hidden;
+  background:linear-gradient(115deg,#fff 0%,#f9eff1 55%,#f4e3e8 100%);
+  box-shadow:inset 0 0 0 1px rgba(97,23,76,.08),0 7px 17px rgba(61,10,35,.12);
+  display:grid;place-items:center;
+}
+.kz-course__lid-top img {
+  width:min(65%,310px);height:auto;display:block;
+  filter:brightness(0) saturate(100%) invert(13%) sepia(37%) saturate(2578%) hue-rotate(295deg) brightness(88%);
+  position:relative;z-index:2;
+}
+.kz-course__lid-band {
+  position:absolute;
+  inset:0 auto 0 45%;width:11%;height:100%;
+  background:linear-gradient(90deg,#5d1536,#7b294b 40%,#510d2c);
+  opacity:.93;
+  z-index:1;
+}
+.kz-course__lid-edge {
+  position:absolute;bottom:0;left:0;width:100%;height:18px;
+  transform:rotateX(90deg);
+  transform-origin:bottom;
+  background:#e5d1d7;border-radius:0 0 8px 8px;
+}
+.kz-course__ambient {
+  position:absolute;z-index:0;display:block;
+  width:130px;height:130px;
+  border:1px solid rgba(170,75,109,.18);
+  border-radius:30px;
+  background:linear-gradient(145deg,rgba(255,255,255,.37),rgba(255,255,255,.06));
+  box-shadow:0 10px 35px rgba(111,42,68,.06);
+  -webkit-backdrop-filter:blur(5px);
+  backdrop-filter:blur(5px);
+}
+.kz-course__ambient--one {top:12px;right:-25px;transform:rotate(-15deg);}
+.kz-course__ambient--two {bottom:20px;left:5%;transform:rotate(18deg);width:85px;height:85px;}
+.kz-course__scroll-hint {
+  text-align:center;margin-top:-26px;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#997686;
+}
+.kz-testimonials__source {
+  width:fit-content;max-width:100%;margin:24px auto 0;
+  min-height:44px;padding:12px 17px;
+  display:flex;gap:9px;align-items:center;justify-content:center;
+  color:#61174c!important;font-size:12px;font-weight:600;
+  border:1px solid #d6b9c2;border-radius:100px;
+  transition:background .2s,color .2s;
+}
+.kz-testimonials__source:hover {background:#fff;}
+.kz-testimonial { color:inherit!important;cursor:pointer; }
+.kz-testimonial:hover {box-shadow:inset 0 0 0 1px #c4829c,0 10px 35px rgba(97,23,76,.09);}
+.kz-testimonial__foot span:last-child {display:inline-flex;align-items:center;gap:5px;}
+.kz-directions-button {
+  display:inline-flex;align-items:center;justify-content:center;gap:13px;
+  padding:14px 24px;min-height:54px;
+  color:#61174c!important;background:#fff5f5;
+  font-size:14px;font-weight:700;border-radius:100px;
+  box-shadow:0 8px 27px rgba(0,0,0,.13);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.kz-directions-button:hover {transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.19);}
+.kz-contact__address { max-width:380px; }
+.kz-footer__location {
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:11px;line-height:1.7;
+  color:#fff0f3;
+  flex:1 1 245px;max-width:380px;
+}
+.kz-footer__location > svg {flex-shrink:0;margin-top:3px;}
+.kz-footer__location > div {display:flex;flex-direction:column;}
+.kz-footer__location a {
+  display:inline-flex;align-items:center;gap:7px;
+  color:#f8bacd;font-weight:600;margin-top:7px;
+}
+.kz-footer__bottom {
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.kz-footer__bottom a {color:#ffcedd;display:inline-flex;gap:6px;align-items:center;}
+.kz-footer nav {margin-left:0;}
+@media(max-width:1000px) {
+  .kz-course {grid-template-columns:1fr;row-gap:5px;}
+  .kz-course__copy {max-width:660px;}
+  .kz-course__box-scene {height:400px;}
+  .kz-course__scroll-hint {margin-top:0;}
+}
+@media(max-width:760px) {
+  .kz-catalog__grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+  .kz-catalog__card:last-child {grid-column:auto;}
+  .kz-course {padding-block:70px;}
+  .kz-course__box-scene {height:350px;}
+  .kz-course__box {width:min(90%,490px);}
+  .kz-course__scroll-hint {margin-top:-5px;}
+  .kz-footer__location {max-width:100%;}
+}
+@media(max-width:480px) {
+  .kz-catalog__grid {grid-template-columns:1fr;}
+  .kz-course__box-scene {height:300px;}
+  .kz-course__ambient--one {width:90px;height:90px;right:-15px;}
+  .kz-course__ambient--two {width:60px;height:60px;}
+  .kz-course__copy h2 {font-size:47px;}
+  .kz-course__cta {width:100%;padding-inline:16px;}
+  .kz-course__scroll-hint {font-size:9px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .kz-course__cta,.kz-catalog__details a,.kz-directions-button {transition:none!important;}
+}
